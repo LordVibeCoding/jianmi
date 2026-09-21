@@ -14,7 +14,7 @@ struct JianMiApp: App {
                 .environmentObject(app)
                 .frame(minWidth: 780, minHeight: 500)
         }
-        .defaultSize(width: 1000, height: 640)
+        .defaultSize(width: 1920, height: 1080)
         .windowToolbarStyle(.unified)
 
         // 小工具 · 密码生成器（独立窗口，锁定状态也可用）
