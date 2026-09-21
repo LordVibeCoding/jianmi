@@ -25,6 +25,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         // 浏览器扩展桥接（仅监听 127.0.0.1）
         BridgeServer.shared.start()
 
+        // 启动 5 秒后静默检查更新（每 24h 至多一次，仅提醒不自动下载）
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            UpdateChecker.shared.autoCheck()
+        }
+
         KeyboardShortcuts.onKeyUp(for: .quickCapture) {
             Task { @MainActor in AppDelegate.shared?.toggleQuickCapture() }
         }

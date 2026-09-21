@@ -398,6 +398,27 @@ struct BrowserExtensionSettings: View {
 }
 
 // ── 关于 ─────────────────────────────────────────────────
+struct CheckUpdateButton: View {
+    @State private var isChecking = false
+
+    var body: some View {
+        Button {
+            isChecking = true
+            Task {
+                await UpdateChecker.shared.check(interactive: true)
+                isChecking = false
+            }
+        } label: {
+            if isChecking {
+                ProgressView().controlSize(.small)
+            } else {
+                Text("检查更新…")
+            }
+        }
+        .disabled(isChecking)
+    }
+}
+
 struct AboutSettings: View {
     var body: some View {
         VStack(spacing: 14) {
