@@ -17,6 +17,9 @@ struct QuickCaptureView: View {
     @State private var password = ""
     @State private var chain = ""
     @State private var privateKey = ""
+    @State private var host = ""
+    @State private var port = ""
+    @State private var sshKeyPath = ""
     @State private var notes = ""
     @State private var localOnly = false
     @State private var revealPassword = true
@@ -24,7 +27,10 @@ struct QuickCaptureView: View {
     @State private var error: String?
     @FocusState private var focus: Field?
 
-    enum Field: Hashable { case title, url, username, password, chain, privateKey, notes }
+    enum Field: Hashable {
+        case title, url, username, password, chain, privateKey
+        case host, port, sshKeyPath, notes
+    }
 
     private var category: Category { categories.category(for: typeID) }
     private func has(_ field: FieldKey) -> Bool { category.fields.contains(field) }
@@ -33,8 +39,11 @@ struct QuickCaptureView: View {
     private var visibleFields: [Field] {
         var list: [Field] = [.title]
         if has(.url) { list.append(.url) }
+        if has(.host) { list.append(.host) }
+        if has(.port) { list.append(.port) }
         if has(.username) { list.append(.username) }
         if has(.password) { list.append(.password) }
+        if has(.sshKeyPath) { list.append(.sshKeyPath) }
         if has(.chain) { list.append(.chain) }
         if has(.privateKey) { list.append(.privateKey) }
         if category.isNoteLike { list.append(.notes) }
@@ -119,6 +128,16 @@ struct QuickCaptureView: View {
                 rowDivider
                 fieldRow(icon: "link", placeholder: "网址", text: $url, field: .url)
             }
+            if has(.host) {
+                rowDivider
+                fieldRow(icon: "server.rack", placeholder: "主机 IP / 域名",
+                         text: $host, field: .host)
+            }
+            if has(.port) {
+                rowDivider
+                fieldRow(icon: "number", placeholder: "端口（默认 22）",
+                         text: $port, field: .port)
+            }
             if has(.username) {
                 rowDivider
                 fieldRow(icon: "person", placeholder: "账号（用户名 / 邮箱 / 手机号）",
@@ -127,6 +146,11 @@ struct QuickCaptureView: View {
             if has(.password) {
                 rowDivider
                 passwordRow
+            }
+            if has(.sshKeyPath) {
+                rowDivider
+                fieldRow(icon: "folder", placeholder: "SSH 密钥路径（可选，替代密码）",
+                         text: $sshKeyPath, field: .sshKeyPath, monospaced: true)
             }
             if has(.chain) {
                 rowDivider
@@ -261,7 +285,8 @@ struct QuickCaptureView: View {
     }
 
     private var canSave: Bool {
-        !title.isEmpty || !url.isEmpty || !privateKey.isEmpty || !notes.isEmpty
+        !title.isEmpty || !url.isEmpty || !privateKey.isEmpty
+            || !notes.isEmpty || !host.isEmpty
     }
 
     private func advance(from field: Field) {
@@ -285,6 +310,9 @@ struct QuickCaptureView: View {
         draft.password = password
         draft.chain = chain
         draft.privateKey = privateKey
+        draft.host = host
+        draft.port = port
+        draft.sshKeyPath = sshKeyPath
         draft.notesMarkdown = notes
         draft.localOnly = localOnly
         do {

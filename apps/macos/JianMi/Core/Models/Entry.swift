@@ -49,7 +49,31 @@ struct SecretBody: Codable, Equatable {
     var chain: String?
     /// 钱包：私钥或助记词
     var privateKey: String?
+    /// 服务器：主机 IP / 域名
+    var host: String?
+    /// 服务器：端口（空 = 22）
+    var port: String?
+    /// 服务器：SSH 私钥文件路径（可替代密码）
+    var sshKeyPath: String?
     var customFields: [CustomField] = []
     var notesMarkdown: String = ""
     var passwordHistory: [PasswordRecord] = []
+}
+
+extension SecretBody {
+    /// SSH 一键连接命令：ssh [-i 密钥] [-p 端口] user@host
+    var sshCommand: String? {
+        guard let host, !host.isEmpty else { return nil }
+        var parts = ["ssh"]
+        if let keyPath = sshKeyPath, !keyPath.isEmpty {
+            parts.append("-i")
+            parts.append(keyPath)
+        }
+        if let port, !port.isEmpty, port != "22" {
+            parts.append("-p")
+            parts.append(port)
+        }
+        parts.append(username.isEmpty ? host : "\(username)@\(host)")
+        return parts.joined(separator: " ")
+    }
 }

@@ -111,6 +111,26 @@ final class VaultTests: XCTestCase {
         XCTAssertNil(raw2.range(of: Data("L4rK3vqM".utf8)), "私钥明文泄露到磁盘！")
     }
 
+    func testSSHCommand() {
+        var body = SecretBody()
+        XCTAssertNil(body.sshCommand, "无主机时不生成命令")
+
+        body.host = "192.168.1.100"
+        XCTAssertEqual(body.sshCommand, "ssh 192.168.1.100")
+
+        body.username = "root"
+        XCTAssertEqual(body.sshCommand, "ssh root@192.168.1.100")
+
+        body.port = "22"
+        XCTAssertEqual(body.sshCommand, "ssh root@192.168.1.100", "默认端口不加 -p")
+
+        body.port = "2222"
+        XCTAssertEqual(body.sshCommand, "ssh -p 2222 root@192.168.1.100")
+
+        body.sshKeyPath = "~/.ssh/id_rsa"
+        XCTAssertEqual(body.sshCommand, "ssh -i ~/.ssh/id_rsa -p 2222 root@192.168.1.100")
+    }
+
     func testExport() throws {
         try vault.create(masterPassword: "导出测试密码")
         let store = try awaitMainActor { try EntryStore(vault: self.vault) }

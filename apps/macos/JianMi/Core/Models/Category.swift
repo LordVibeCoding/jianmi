@@ -3,6 +3,7 @@ import SwiftUI
 /// 条目可包含的内置字段。
 enum FieldKey: String, Codable, CaseIterable, Identifiable {
     case url, username, password, totp, chain, privateKey
+    case host, port, sshKeyPath
 
     var id: String { rawValue }
 
@@ -14,6 +15,9 @@ enum FieldKey: String, Codable, CaseIterable, Identifiable {
         case .totp:       return "两步验证（TOTP）"
         case .chain:      return "网络链"
         case .privateKey: return "私钥/助记词"
+        case .host:       return "主机 IP / 域名"
+        case .port:       return "端口"
+        case .sshKeyPath: return "SSH 密钥路径"
         }
     }
 }
@@ -47,7 +51,8 @@ final class CategoryStore: ObservableObject {
                  forcesLocalOnly: true, isBuiltin: true),
         Category(id: "ssh", name: "服务器/SSH", icon: "terminal",
                  colorHex: "#9558F6",
-                 fields: [.url, .username, .password], isBuiltin: true),
+                 fields: [.host, .port, .username, .password, .sshKeyPath],
+                 isBuiltin: true),
         // 「证件」已移除：需要的话用自定义分类创建；
         // 存量 identity 条目仍可在全部条目中查看（兑底样式）并可改分类
         Category(id: "note", name: "安全笔记", icon: "note.text",

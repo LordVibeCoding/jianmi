@@ -180,6 +180,10 @@ enum Exporter {
             if !body.totpSecret.isEmpty { item["totpSecret"] = body.totpSecret }
             if let chain = body.chain, !chain.isEmpty { item["chain"] = chain }
             if let key = body.privateKey, !key.isEmpty { item["privateKey"] = key }
+            if let host = body.host, !host.isEmpty { item["host"] = host }
+            if let port = body.port, !port.isEmpty { item["port"] = port }
+            if let path = body.sshKeyPath, !path.isEmpty { item["sshKeyPath"] = path }
+            if let command = body.sshCommand { item["sshCommand"] = command }
             if !body.customFields.isEmpty {
                 item["customFields"] = body.customFields.map {
                     ["label": $0.label, "value": $0.value, "hidden": $0.kind == .hidden]
@@ -230,6 +234,10 @@ enum Exporter {
         if !body.totpSecret.isEmpty { lines.append("- 两步验证密钥：`\(body.totpSecret)`") }
         if let chain = body.chain, !chain.isEmpty { lines.append("- 网络链：\(chain)") }
         if let key = body.privateKey, !key.isEmpty { lines.append("- 私钥/助记词：`\(key)`") }
+        if let host = body.host, !host.isEmpty { lines.append("- 主机：\(host)") }
+        if let port = body.port, !port.isEmpty { lines.append("- 端口：\(port)") }
+        if let path = body.sshKeyPath, !path.isEmpty { lines.append("- SSH 密钥：`\(path)`") }
+        if let command = body.sshCommand { lines.append("- 连接命令：`\(command)`") }
         for field in body.customFields where !field.value.isEmpty {
             lines.append("- \(field.label)：`\(field.value)`")
         }

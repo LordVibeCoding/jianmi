@@ -56,6 +56,13 @@ struct EntryEditorView: View {
                     if has(.url) {
                         TextField("网址", text: $draft.urlFull, prompt: Text("github.com"))
                     }
+                    if has(.host) {
+                        TextField("主机 IP / 域名", text: $draft.host,
+                                  prompt: Text("192.168.1.100 或 server.example.com"))
+                    }
+                    if has(.port) {
+                        TextField("端口", text: $draft.port, prompt: Text("22"))
+                    }
                     if has(.username) {
                         TextField("账号", text: $draft.username, prompt: Text("用户名 / 邮箱 / 手机号"))
                     }
@@ -93,6 +100,11 @@ struct EntryEditorView: View {
                             }
                         }
                     }
+                    }
+                    if has(.sshKeyPath) {
+                        TextField("SSH 密钥路径", text: $draft.sshKeyPath,
+                                  prompt: Text("~/.ssh/id_rsa（可选，替代密码）"))
+                            .font(.body.monospaced())
                     }
                     if has(.totp) {
                         TextField("两步验证密钥（TOTP）", text: $totpSecret,

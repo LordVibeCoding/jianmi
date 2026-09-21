@@ -88,6 +88,41 @@ struct EntryDetailView: View {
             VStack(alignment: .leading, spacing: 14) {
                 header
 
+                // SSH 连接卡片（一键复制命令）
+                if let command = body.sshCommand {
+                    Card {
+                        HStack(spacing: 12) {
+                            Image(systemName: "terminal")
+                                .font(.system(size: 13))
+                                .foregroundStyle(.secondary)
+                                .frame(width: 20)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text("SSH 连接命令").font(.caption2).foregroundStyle(.secondary)
+                                Text(command)
+                                    .font(.callout.monospaced())
+                                    .textSelection(.enabled)
+                                    .lineLimit(2)
+                            }
+                            Spacer()
+                            copyButton(command, key: "sshCommand")
+                        }
+                        .padding(.horizontal, 14).padding(.vertical, 10)
+
+                        if let host = body.host, !host.isEmpty {
+                            divider
+                            fieldRow(icon: "server.rack", label: "主机",
+                                     value: host + ((body.port?.isEmpty == false && body.port != "22")
+                                                    ? ":\(body.port!)" : ""),
+                                     copyKey: "host")
+                        }
+                        if let keyPath = body.sshKeyPath, !keyPath.isEmpty {
+                            divider
+                            fieldRow(icon: "folder", label: "SSH 密钥路径",
+                                     value: keyPath, copyKey: "sshKeyPath")
+                        }
+                    }
+                }
+
                 // 凭证卡片
                 let chain = body.chain ?? ""
                 let privateKey = body.privateKey ?? ""
