@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// 主窗口：三栏（分类 / 条目列表 / 详情）。
 @MainActor
@@ -10,6 +11,7 @@ struct MainView: View {
     @State private var selectedID: Entry.ID?
     @State private var showingEditor = false
     @State private var categorySheet: CategorySheetTarget?
+    @State private var importMessage: String?
 
     /// sheet(item:) 目标：避免 isPresented + 独立状态的时序问题
     struct CategorySheetTarget: Identifiable {
@@ -36,11 +38,23 @@ struct MainView: View {
         .searchable(text: $store.searchText, placement: .sidebar, prompt: "搜索")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Button { showingEditor = true } label: {
-                    Label("新建条目", systemImage: "plus")
+                Menu {
+                    Button {
+                        showingEditor = true
+                    } label: {
+                        Label("新建条目", systemImage: "square.and.pencil")
+                    }
+                    .keyboardShortcut("n", modifiers: .command)
+                    Divider()
+                    Button {
+                        importMarkdownFiles()
+                    } label: {
+                        Label("导入 Markdown 笔记…", systemImage: "square.and.arrow.down")
+                    }
+                } label: {
+                    Label("新建", systemImage: "plus")
                 }
-                .keyboardShortcut("n", modifiers: .command)
-                .help("新建条目 (⌘N)")
+                .help("新建条目 (⌘N) / 导入")
             }
             ToolbarItem {
                 Button { app.lock() } label: {
@@ -55,6 +69,87 @@ struct MainView: View {
                 if let newEntry { selectedID = newEntry.id }
             }
         }
+        .alert("导入完成", isPresented: Binding(
+            get: { importMessage != nil },
+            set: { if !$0 { importMessage = nil } })
+        ) {
+            Button("好") {}
+        } message: {
+            Text(importMessage ?? "")
+        }
+    }
+
+    // ── Markdown 导入 ───────────────────────────────
+    private func importMarkdownFiles() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [
+            UTType(filenameExtension: "md") ?? .plainText,
+            UTType(filenameExtension: "markdown") ?? .plainText,
+            .plainText,
+        ]
+        panel.allowsMultipleSelection = true
+        panel.canChooseDirectories = false
+        panel.message = "选择要导入为安全笔记的 Markdown 文件（可多选）"
+        panel.prompt = "导入"
+        guard panel.runModal() == .OK, !panel.urls.isEmpty else { return }
+        importNotes(from: panel.urls)
+    }
+
+    private func importNotes(from urls: [URL]) {
+        var imported = 0
+        var failed = 0
+        var lastEntry: Entry?
+
+        for url in urls {
+            guard let content = Self.readTextFile(url),
+                  !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                failed += 1
+                continue
+            }
+            var draft = EntryDraft()
+            draft.type = "note"
+            draft.title = Self.noteTitle(from: content,
+                                         fallback: url.deletingPathExtension().lastPathComponent)
+            draft.notesMarkdown = content
+            if let entry = try? store.add(draft: draft) {
+                imported += 1
+                lastEntry = entry
+            } else {
+                failed += 1
+            }
+        }
+
+        if imported == 1, let entry = lastEntry {
+            selectedID = entry.id
+        }
+        importMessage = failed == 0
+            ? "已导入 \(imported) 篇安全笔记。"
+            : "已导入 \(imported) 篇，\(failed) 个文件读取失败。"
+    }
+
+    /// 读文本文件：UTF-8 优先，兼容 GB18030（中文老文件）。
+    private static func readTextFile(_ url: URL) -> String? {
+        if let text = try? String(contentsOf: url, encoding: .utf8) { return text }
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        let gb18030 = String.Encoding(
+            rawValue: CFStringConvertEncodingToNSStringEncoding(
+                CFStringEncoding(CFStringEncodings.GB_18030_2000.rawValue)))
+        return String(data: data, encoding: gb18030)
+    }
+
+    /// 标题：正文第一个 # 标题优先，否则用文件名。
+    private static func noteTitle(from content: String, fallback: String) -> String {
+        for line in content.components(separatedBy: "\n") {
+            let trimmed = line.trimmingCharacters(in: .whitespaces)
+            if trimmed.isEmpty { continue }
+            if trimmed.hasPrefix("#") {
+                let title = trimmed.drop(while: { $0 == "#" })
+                    .trimmingCharacters(in: .whitespaces)
+                if !title.isEmpty { return title }
+            }
+            break   // 首个非空行不是标题 → 用文件名
+        }
+        return fallback
     }
 
     // ── 侧栏 ─────────────────────────────────────────────
@@ -168,6 +263,14 @@ struct MainView: View {
                 }
         }
         .listStyle(.inset)
+        .dropDestination(for: URL.self) { urls, _ in
+            let files = urls.filter {
+                ["md", "markdown", "txt"].contains($0.pathExtension.lowercased())
+            }
+            guard !files.isEmpty else { return false }
+            importNotes(from: files)
+            return true
+        }
         .overlay {
             if store.entries.isEmpty {
                 ContentUnavailableView {
