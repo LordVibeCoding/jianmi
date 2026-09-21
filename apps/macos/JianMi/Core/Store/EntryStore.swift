@@ -150,6 +150,21 @@ final class EntryStore: ObservableObject {
         }) ?? []
     }
 
+    /// 导出用：指定分类（nil = 全部）的全部未删除条目。
+    func allEntries(categoryID: String?) -> [Entry] {
+        (try? dbQueue.read { db in
+            if let id = categoryID {
+                return try Entry.fetchAll(db, sql: """
+                    SELECT * FROM entry WHERE deletedAt IS NULL AND type = ?
+                    ORDER BY updatedAt DESC
+                    """, arguments: [id])
+            }
+            return try Entry.fetchAll(db, sql: """
+                SELECT * FROM entry WHERE deletedAt IS NULL ORDER BY type, updatedAt DESC
+                """)
+        }) ?? []
+    }
+
     /// 按 uuid 取单条（浏览器扩展用）。
     func entry(uuid: String) -> Entry? {
         try? dbQueue.read { db in try Entry.fetchOne(db, key: uuid) }

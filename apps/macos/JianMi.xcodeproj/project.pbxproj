@@ -31,6 +31,7 @@
 		92BB0A8D02C3B13F9E14A229 /* jianmi-extension-chrome.zip in Resources */ = {isa = PBXBuildFile; fileRef = 5F1ADCAB94DC1A8E54D712A7 /* jianmi-extension-chrome.zip */; };
 		940C822F47BE88D4F649B1FE /* WebFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */; };
 		96768C9241850B35EDEF9176 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 30F77E58F84A0EE5DB46B52C /* AppIcon.icns */; };
+		977526CAFD62CECE84100380 /* ExportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C91D7BECECB875E221B357E /* ExportSheet.swift */; };
 		9F25366C2A82949FCEC052C3 /* MarkdownHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1DE10DC1491B1D8547E5BD /* MarkdownHelper.swift */; };
 		A1F20E7C48F6C3ED58E40AE1 /* PasswordGeneratorTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EABE7DCCBBF9B8DE9F22 /* PasswordGeneratorTool.swift */; };
 		A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81C2324DF37714272D1036 /* AppDatabase.swift */; };
@@ -76,6 +77,7 @@
 		254269614F1CFD3F8058443C /* VaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTests.swift; sourceTree = "<group>"; };
 		30F77E58F84A0EE5DB46B52C /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		3C77876BF1D30A11051CE08F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		4C91D7BECECB875E221B357E /* ExportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportSheet.swift; sourceTree = "<group>"; };
 		4F17B1771CC0DC91D9429099 /* PinnedEntryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedEntryPanel.swift; sourceTree = "<group>"; };
 		5F1ADCAB94DC1A8E54D712A7 /* jianmi-extension-chrome.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "jianmi-extension-chrome.zip"; sourceTree = "<group>"; };
 		60E3264965F7935C34A2A6BA /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 				712831FC96155DC8EDE8C463 /* CategoryEditorView.swift */,
 				DF587926DF336D5981610E7D /* EntryDetailView.swift */,
 				E4524EC5978685A6CB0FE474 /* EntryEditorView.swift */,
+				4C91D7BECECB875E221B357E /* ExportSheet.swift */,
 				818991779B679961A780C377 /* MainView.swift */,
 			);
 			path = Main;
@@ -494,6 +497,7 @@
 				92A21430A900A3959A521F55 /* EntryDetailView.swift in Sources */,
 				B7CB5699A052DE51CF32DF15 /* EntryEditorView.swift in Sources */,
 				459C31F7BA32AA832567C74A /* EntryStore.swift in Sources */,
+				977526CAFD62CECE84100380 /* ExportSheet.swift in Sources */,
 				D752252C6044A4A33138BC0D /* JianMiApp.swift in Sources */,
 				A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */,
 				88FF93E335AA62D4686EA49F /* MainView.swift in Sources */,

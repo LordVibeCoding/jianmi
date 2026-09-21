@@ -111,6 +111,52 @@ final class VaultTests: XCTestCase {
         XCTAssertNil(raw2.range(of: Data("L4rK3vqM".utf8)), "私钥明文泄露到磁盘！")
     }
 
+    func testExport() throws {
+        try vault.create(masterPassword: "导出测试密码")
+        let store = try awaitMainActor { try EntryStore(vault: self.vault) }
+
+        var login = EntryDraft()
+        login.title = "GitHub"
+        login.username = "octocat"
+        login.password = "S3cret!"
+        login.urlFull = "https://github.com"
+        _ = try awaitMainActor { try store.add(draft: login) }
+
+        var note = EntryDraft()
+        note.type = "note"
+        note.title = "测试笔记"
+        note.notesMarkdown = "正文内容\n第二行"
+        _ = try awaitMainActor { try store.add(draft: note) }
+
+        // JSON：字段完整、可解析
+        let data = try awaitMainActor {
+            try Exporter.json(entries: store.allEntries(categoryID: nil), store: store)
+        }
+        let root = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+        XCTAssertEqual(root["count"] as? Int, 2)
+        let items = root["entries"] as! [[String: Any]]
+        let github = items.first { $0["title"] as? String == "GitHub" }!
+        XCTAssertEqual(github["password"] as? String, "S3cret!")
+        XCTAssertEqual(github["username"] as? String, "octocat")
+
+        // 单分类范围
+        let onlyNotes = try awaitMainActor { store.allEntries(categoryID: "note") }
+        XCTAssertEqual(onlyNotes.count, 1)
+
+        // Markdown：笔记导出可与导入往返（# 标题 + 正文）
+        let tempDir = FileManager.default.temporaryDirectory
+            .appendingPathComponent("jianmi-export-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: tempDir) }
+        try awaitMainActor {
+            try Exporter.markdownFiles(entries: onlyNotes, store: store, to: tempDir)
+        }
+        let noteFile = tempDir.appendingPathComponent("测试笔记.md")
+        let content = try String(contentsOf: noteFile, encoding: .utf8)
+        XCTAssertTrue(content.hasPrefix("# 测试笔记"))
+        XCTAssertTrue(content.contains("正文内容\n第二行"))
+    }
+
     /// 在 MainActor 上同步执行（测试辅助）。
     private func awaitMainActor<T>(_ body: @MainActor @escaping () throws -> T) throws -> T {
         var result: Result<T, Error>!

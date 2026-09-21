@@ -14,6 +14,7 @@ struct MainView: View {
     @State private var showingEditor = false
     @State private var categorySheet: CategorySheetTarget?
     @State private var importMessage: String?
+    @State private var showingExport = false
 
     /// sheet(item:) 目标：避免 isPresented + 独立状态的时序问题
     struct CategorySheetTarget: Identifiable {
@@ -62,6 +63,9 @@ struct MainView: View {
                             initialType: defaultNewType) { newEntry in
                 if let newEntry { selectedID = newEntry.id }
             }
+        }
+        .sheet(isPresented: $showingExport) {
+            ExportSheet(store: store)
         }
         .alert("导入完成", isPresented: Binding(
             get: { importMessage != nil },
@@ -299,6 +303,11 @@ struct MainView: View {
                             importMarkdownFiles()
                         } label: {
                             Label("导入 Markdown 笔记…", systemImage: "square.and.arrow.down")
+                        }
+                        Button {
+                            showingExport = true
+                        } label: {
+                            Label("导出…", systemImage: "square.and.arrow.up")
                         }
                     } label: {
                         Image(systemName: "ellipsis.circle")
