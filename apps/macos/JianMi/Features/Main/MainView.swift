@@ -196,6 +196,7 @@ struct MainView: View {
                     }
                     .buttonStyle(.borderless)
                     .help("新建分类")
+                    .padding(.trailing, 10)
                 }
             }
         }
