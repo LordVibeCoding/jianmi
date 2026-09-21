@@ -184,6 +184,11 @@ enum Exporter {
             if let port = body.port, !port.isEmpty { item["port"] = port }
             if let path = body.sshKeyPath, !path.isEmpty { item["sshKeyPath"] = path }
             if let command = body.sshCommand { item["sshCommand"] = command }
+            if let extras = body.extraAccounts, !extras.isEmpty {
+                item["extraAccounts"] = extras.map {
+                    ["label": $0.label, "username": $0.username, "password": $0.password]
+                }
+            }
             if !body.customFields.isEmpty {
                 item["customFields"] = body.customFields.map {
                     ["label": $0.label, "value": $0.value, "hidden": $0.kind == .hidden]
@@ -238,6 +243,12 @@ enum Exporter {
         if let port = body.port, !port.isEmpty { lines.append("- 端口：\(port)") }
         if let path = body.sshKeyPath, !path.isEmpty { lines.append("- SSH 密钥：`\(path)`") }
         if let command = body.sshCommand { lines.append("- 连接命令：`\(command)`") }
+        if let extras = body.extraAccounts {
+            for (index, account) in extras.enumerated() {
+                let name = account.label.isEmpty ? "账号\(index + 2)" : account.label
+                lines.append("- \(name)：`\(account.username)` / `\(account.password)`")
+            }
+        }
         for field in body.customFields where !field.value.isEmpty {
             lines.append("- \(field.label)：`\(field.value)`")
         }

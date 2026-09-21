@@ -155,6 +155,19 @@ struct EntryDetailView: View {
                     }
                 }
 
+                // 更多账号
+                if let extras = body.extraAccounts, !extras.isEmpty {
+                    VStack(alignment: .leading, spacing: 6) {
+                        sectionLabel("更多账号")
+                        Card {
+                            ForEach(Array(extras.enumerated()), id: \.element.id) { index, account in
+                                ExtraAccountRow(account: account, index: index + 2)
+                                if index < extras.count - 1 { divider }
+                            }
+                        }
+                    }
+                }
+
                 // 网址卡片
                 if !body.urlFull.isEmpty {
                     Card {
@@ -371,6 +384,65 @@ struct EntryDetailView: View {
         .buttonStyle(.borderless)
         .help((key == "password" || key == "privateKey")
               ? "复制（30 秒后自动清除剪贴板）" : "复制")
+    }
+}
+
+/// 额外账号行：账号 + 密码（独立显隐/复制）。
+struct ExtraAccountRow: View {
+    let account: SecretBody.ExtraAccount
+    let index: Int
+    @State private var reveal = false
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "person.2")
+                .font(.system(size: 13))
+                .foregroundStyle(.secondary)
+                .frame(width: 20)
+                .padding(.top, 2)
+            VStack(alignment: .leading, spacing: 5) {
+                Text(account.label.isEmpty ? "账号 \(index)" : account.label)
+                    .font(.caption2).foregroundStyle(.secondary)
+                if !account.username.isEmpty {
+                    HStack(spacing: 6) {
+                        Text(account.username)
+                            .font(.callout)
+                            .textSelection(.enabled)
+                            .lineLimit(1)
+                        Button {
+                            SecurePasteboard.copy(account.username, clearAfter: 0)
+                        } label: {
+                            Image(systemName: "doc.on.doc").font(.caption)
+                        }
+                        .buttonStyle(.borderless)
+                        .help("复制账号")
+                    }
+                }
+                if !account.password.isEmpty {
+                    HStack(spacing: 6) {
+                        Text(reveal ? account.password : String(repeating: "•", count: 10))
+                            .font(.callout.monospaced())
+                            .textSelection(.enabled)
+                            .lineLimit(1)
+                        Button {
+                            reveal.toggle()
+                        } label: {
+                            Image(systemName: reveal ? "eye.slash" : "eye").font(.caption)
+                        }
+                        .buttonStyle(.borderless)
+                        Button {
+                            SecurePasteboard.copy(account.password)
+                        } label: {
+                            Image(systemName: "doc.on.doc").font(.caption)
+                        }
+                        .buttonStyle(.borderless)
+                        .help("复制密码（30 秒后自动清除）")
+                    }
+                }
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 14).padding(.vertical, 8)
     }
 }
 

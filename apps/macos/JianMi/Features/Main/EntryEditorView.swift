@@ -135,6 +135,48 @@ struct EntryEditorView: View {
                     }
                 }
 
+                // 同一站点的多个账号
+                if !isNote, has(.username) || has(.password) {
+                    Section("更多账号（同一站点的其他账号）") {
+                        ForEach($draft.extraAccounts) { $account in
+                            VStack(spacing: 6) {
+                                HStack(spacing: 8) {
+                                    TextField("备注", text: $account.label,
+                                              prompt: Text("如：小号"))
+                                        .frame(width: 90)
+                                    TextField("账号", text: $account.username,
+                                              prompt: Text("用户名 / 邮箱"))
+                                }
+                                HStack(spacing: 8) {
+                                    TextField("密码", text: $account.password)
+                                        .font(.body.monospaced())
+                                    Button {
+                                        account.password = PasswordGenerator.generate()
+                                    } label: {
+                                        Image(systemName: "dice")
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .help("生成强密码")
+                                    Button {
+                                        draft.extraAccounts.removeAll { $0.id == account.id }
+                                    } label: {
+                                        Image(systemName: "minus.circle.fill")
+                                            .foregroundStyle(.red)
+                                    }
+                                    .buttonStyle(.borderless)
+                                }
+                            }
+                            .padding(.vertical, 2)
+                        }
+                        Button {
+                            draft.extraAccounts.append(.init())
+                        } label: {
+                            Label("添加一组账号", systemImage: "person.badge.plus")
+                        }
+                        .buttonStyle(.borderless)
+                    }
+                }
+
                 Section {
                     TextField("标签", text: $tagsText, prompt: Text("用逗号分隔，如：工作, 主力邮箱"))
                     Toggle(isOn: $draft.localOnly) {

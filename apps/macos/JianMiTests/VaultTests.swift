@@ -89,6 +89,21 @@ final class VaultTests: XCTestCase {
         XCTAssertEqual(body.username, "octocat")
         XCTAssertEqual(body.password, "S3cret!P@ss")
 
+        // 多账号：往返 + 磁盘无明文
+        var multiDraft = EntryDraft.from(entry: entry, body: body)
+        multiDraft.extraAccounts = [
+            .init(label: "小号", username: "alt@example.com", password: "AltP@ss999"),
+            .init(label: "", username: "third", password: ""),
+        ]
+        try awaitMainActor { try store.update(entry, with: multiDraft) }
+        let updated = try awaitMainActor { self.requireEntry(store, uuid: entry.uuid) }
+        let multiBody = try awaitMainActor { try store.decryptBody(of: updated) }
+        XCTAssertEqual(multiBody.extraAccounts?.count, 2)
+        XCTAssertEqual(multiBody.extraAccounts?[0].username, "alt@example.com")
+        XCTAssertEqual(multiBody.extraAccounts?[0].password, "AltP@ss999")
+        let rawMulti = try Data(contentsOf: vault.dbURL)
+        XCTAssertNil(rawMulti.range(of: Data("AltP@ss999".utf8)), "额外账号密码明文泄露！")
+
         // 磁盘上不可出现明文机密（验收标准：DESIGN.md §8 M1）
         let raw = try Data(contentsOf: vault.dbURL)
         XCTAssertNil(raw.range(of: Data("S3cret!P@ss".utf8)), "密码明文泄露到磁盘！")
@@ -175,6 +190,11 @@ final class VaultTests: XCTestCase {
         let content = try String(contentsOf: noteFile, encoding: .utf8)
         XCTAssertTrue(content.hasPrefix("# 测试笔记"))
         XCTAssertTrue(content.contains("正文内容\n第二行"))
+    }
+
+    @MainActor
+    private func requireEntry(_ store: EntryStore, uuid: String) -> Entry {
+        store.entry(uuid: uuid)!
     }
 
     /// 在 MainActor 上同步执行（测试辅助）。

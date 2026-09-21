@@ -41,6 +41,14 @@ struct SecretBody: Codable, Equatable {
         var changedAt: Date
     }
 
+    /// 同一站点的额外账号（主账号之外的第 2/3/N 个号）
+    struct ExtraAccount: Codable, Equatable, Identifiable {
+        var id: UUID = UUID()
+        var label: String = ""      // 备注，如「小号」「工作号」
+        var username: String = ""
+        var password: String = ""
+    }
+
     var username: String = ""
     var password: String = ""
     var urlFull: String = ""
@@ -55,6 +63,8 @@ struct SecretBody: Codable, Equatable {
     var port: String?
     /// 服务器：SSH 私钥文件路径（可替代密码）
     var sshKeyPath: String?
+    /// 同站点额外账号
+    var extraAccounts: [ExtraAccount]?
     var customFields: [CustomField] = []
     var notesMarkdown: String = ""
     var passwordHistory: [PasswordRecord] = []

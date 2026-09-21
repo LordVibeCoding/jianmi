@@ -22,6 +22,7 @@ struct EntryDraft {
     var host: String = ""
     var port: String = ""
     var sshKeyPath: String = ""
+    var extraAccounts: [SecretBody.ExtraAccount] = []
     var customFields: [SecretBody.CustomField] = []
     var notesMarkdown: String = ""
     var tags: [String] = []
@@ -36,6 +37,7 @@ struct EntryDraft {
             chain: body.chain ?? "", privateKey: body.privateKey ?? "",
             host: body.host ?? "", port: body.port ?? "",
             sshKeyPath: body.sshKeyPath ?? "",
+            extraAccounts: body.extraAccounts ?? [],
             customFields: body.customFields,
             notesMarkdown: body.notesMarkdown, tags: entry.tags,
             localOnly: entry.localOnly, favorite: entry.favorite)
@@ -206,6 +208,8 @@ final class EntryStore: ObservableObject {
         body.host = draft.host.isEmpty ? nil : draft.host
         body.port = draft.port.isEmpty ? nil : draft.port
         body.sshKeyPath = draft.sshKeyPath.isEmpty ? nil : draft.sshKeyPath
+        let extras = draft.extraAccounts.filter { !$0.username.isEmpty || !$0.password.isEmpty }
+        body.extraAccounts = extras.isEmpty ? nil : extras
         body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
@@ -249,6 +253,8 @@ final class EntryStore: ObservableObject {
         body.host = draft.host.isEmpty ? nil : draft.host
         body.port = draft.port.isEmpty ? nil : draft.port
         body.sshKeyPath = draft.sshKeyPath.isEmpty ? nil : draft.sshKeyPath
+        let extras = draft.extraAccounts.filter { !$0.username.isEmpty || !$0.password.isEmpty }
+        body.extraAccounts = extras.isEmpty ? nil : extras
         body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
