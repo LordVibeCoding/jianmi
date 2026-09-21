@@ -198,6 +198,16 @@ cd server && cargo build --release                # 同步服务端
 </details>
 
 <details>
+<summary><b>首次启动永远卡住 / 提示「没有响应」</b></summary>
+
+开着 TUN 模式代理（Surge / Clash 等）时，Gatekeeper 首次启动的在线公证核查
+可能被代理黑洞，导致应用卡死在 `dyld` 阶段。
+解法：暂停代理后首次打开一次即可；或直接从源码安装
+`./scripts/install_local.sh`（注册本地执行策略豁免，完全不走网络核查）。
+该核查仅首次一次，之后启动秒开。
+</details>
+
+<details>
 <summary><b>忘记主密码怎么办？</b></summary>
 
 用建库时展示（仅一次！）的恢复码。没有别的办法 —— 没有邮箱重置，没有客服后门。请打印收好。

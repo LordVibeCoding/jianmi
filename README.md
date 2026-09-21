@@ -198,6 +198,16 @@ This project intentionally ships without an Apple Developer subscription; build 
 </details>
 
 <details>
+<summary><b>App hangs forever on first launch (spinner / "not responding")</b></summary>
+
+If you run a TUN-mode proxy (Surge, Clash, etc.), Gatekeeper's one-time online
+notarization lookup may be black-holed, freezing the app inside `dyld`.
+Fix: pause the proxy for one launch, or build & install from source with
+`./scripts/install_local.sh` (registers a local execution-policy exemption — no
+network check at all). This is a one-time assessment; later launches are instant.
+</details>
+
+<details>
 <summary><b>What happens if I forget my master password?</b></summary>
 
 Use the 24-group recovery code shown (once!) at vault creation. There is no other way — no email reset, no support backdoor. Print it, put it somewhere safe.

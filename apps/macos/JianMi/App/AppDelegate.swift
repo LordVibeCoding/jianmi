@@ -22,6 +22,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         AppDelegate.shared = self
 
+        // 浏览器扩展桥接（仅监听 127.0.0.1）
+        BridgeServer.shared.start()
+
         KeyboardShortcuts.onKeyUp(for: .quickCapture) {
             Task { @MainActor in AppDelegate.shared?.toggleQuickCapture() }
         }

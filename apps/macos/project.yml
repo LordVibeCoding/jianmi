@@ -27,7 +27,7 @@ settings:
     DEVELOPMENT_TEAM: ""
     ENABLE_HARDENED_RUNTIME: NO
     MACOSX_DEPLOYMENT_TARGET: "14.0"
-    MARKETING_VERSION: 0.2.0
+    MARKETING_VERSION: 0.2.1
     CURRENT_PROJECT_VERSION: 1
 
 targets:
@@ -49,6 +49,8 @@ targets:
       properties:
         CFBundleDisplayName: 简密
         CFBundleName: JianMi
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSUIElement: true
         NSFaceIDUsageDescription: 使用触控 ID 解锁您的密码库。
         NSHumanReadableCopyright: © 2025 简密. 本地私用构建.

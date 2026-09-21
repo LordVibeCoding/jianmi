@@ -56,6 +56,7 @@ final class BridgeServer {
 
     // ── 生命周期 ──────────────────────────────────────────
     func start(port: UInt16 = BridgeServer.defaultPort) {
+        NSLog("BridgeServer.start(port: %d)", port)
         guard listener == nil else { return }
         _ = token   // 确保令牌已生成
 
@@ -73,6 +74,7 @@ final class BridgeServer {
             BridgeHTTP.handle(conn)
         }
         listener.stateUpdateHandler = { [weak self] state in
+            NSLog("BridgeServer state: %@", String(describing: state))
             Task { @MainActor in
                 self?.isRunning = (state == .ready)
             }
