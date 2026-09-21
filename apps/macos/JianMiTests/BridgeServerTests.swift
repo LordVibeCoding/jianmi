@@ -9,6 +9,8 @@ final class BridgeServerTests: XCTestCase {
     @MainActor
     private func ensureServer() async {
         if !Self.started {
+            // 测试宿主 App 启动时已在 48787 开了共享实例 → 先停掉再用测试端口
+            BridgeServer.shared.stop()
             BridgeServer.shared.start(port: Self.testPort)
             Self.started = true
             try? await Task.sleep(for: .milliseconds(300))
