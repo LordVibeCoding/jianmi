@@ -3,7 +3,7 @@ import Foundation
 /// 强密码生成器（系统 CSPRNG：SystemRandomNumberGenerator → arc4random_buf）。
 struct PasswordGenerator {
     struct Options {
-        var length: Int = 20
+        var length: Int = 10
         var upper = true
         var lower = true
         var digits = true
