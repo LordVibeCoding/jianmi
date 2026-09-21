@@ -39,25 +39,6 @@ struct MainView: View {
         }
         .searchable(text: $store.searchText, placement: .sidebar, prompt: "搜索")
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    Button {
-                        showingEditor = true
-                    } label: {
-                        Label("新建条目", systemImage: "square.and.pencil")
-                    }
-                    .keyboardShortcut("n", modifiers: .command)
-                    Divider()
-                    Button {
-                        importMarkdownFiles()
-                    } label: {
-                        Label("导入 Markdown 笔记…", systemImage: "square.and.arrow.down")
-                    }
-                } label: {
-                    Label("新建", systemImage: "plus")
-                }
-                .help("新建条目 (⌘N) / 导入")
-            }
             ToolbarItem {
                 Button { app.lock() } label: {
                     Label("锁定", systemImage: "lock")
@@ -77,7 +58,8 @@ struct MainView: View {
             }
         }
         .sheet(isPresented: $showingEditor) {
-            EntryEditorView(store: store, editing: nil) { newEntry in
+            EntryEditorView(store: store, editing: nil,
+                            initialType: defaultNewType) { newEntry in
                 if let newEntry { selectedID = newEntry.id }
             }
         }
@@ -89,6 +71,13 @@ struct MainView: View {
         } message: {
             Text(importMessage ?? "")
         }
+    }
+
+    /// 新建条目的默认分类：跟随当前侧栏选中的分类；
+    /// 在全部/收藏/仅本机时默认「账号」，用户可自行切换。
+    private var defaultNewType: String {
+        if case .category(let id) = store.filter { return id }
+        return "login"
     }
 
     // ── Markdown 导入 ───────────────────────────────
@@ -291,6 +280,39 @@ struct MainView: View {
                 }
         }
         .listStyle(.inset)
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            VStack(spacing: 0) {
+                Divider()
+                HStack {
+                    Button {
+                        showingEditor = true
+                    } label: {
+                        Label(newButtonTitle, systemImage: "plus.circle.fill")
+                            .font(.callout)
+                    }
+                    .buttonStyle(.borderless)
+                    .keyboardShortcut("n", modifiers: .command)
+                    .help("新建条目 (⌘N)")
+                    Spacer()
+                    Menu {
+                        Button {
+                            importMarkdownFiles()
+                        } label: {
+                            Label("导入 Markdown 笔记…", systemImage: "square.and.arrow.down")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }
+                    .buttonStyle(.borderless)
+                    .menuIndicator(.hidden)
+                    .fixedSize()
+                    .help("更多操作")
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 7)
+            }
+            .background(.bar)
+        }
         .dropDestination(for: URL.self) { urls, _ in
             let files = urls.filter {
                 ["md", "markdown", "txt"].contains($0.pathExtension.lowercased())
@@ -311,6 +333,13 @@ struct MainView: View {
                 }
             }
         }
+    }
+
+    private var newButtonTitle: String {
+        if case .category(let id) = store.filter {
+            return "新建\(CategoryStore.shared.category(for: id).name)"
+        }
+        return "新建条目"
     }
 
     private var emptyDetail: some View {

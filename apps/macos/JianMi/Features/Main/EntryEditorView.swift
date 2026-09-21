@@ -8,6 +8,8 @@ import SwiftUI
 struct EntryEditorView: View {
     @ObservedObject var store: EntryStore
     let editing: Entry?
+    /// 新建时的默认分类（跟随主窗口当前选中分类）
+    var initialType: String = "login"
     var onSave: (Entry?) -> Void = { _ in }
 
     @Environment(\.dismiss) private var dismiss
@@ -219,6 +221,12 @@ struct EntryEditorView: View {
     private func load() {
         guard !loaded else { return }
         loaded = true
+        if editing == nil {
+            draft.type = initialType
+            if categories.category(for: initialType).forcesLocalOnly {
+                draft.localOnly = true
+            }
+        }
         if let entry = editing {
             do {
                 let body = try store.decryptBody(of: entry)
