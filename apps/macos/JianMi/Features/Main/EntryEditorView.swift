@@ -140,7 +140,7 @@ struct EntryEditorView: View {
 
                     if previewNotes {
                         ScrollView {
-                            Markdown(draft.notesMarkdown.isEmpty ? "*暂无内容*" : draft.notesMarkdown)
+                            Markdown(draft.notesMarkdown.isEmpty ? "*暂无内容*" : draft.notesMarkdown.noteMarkdown)
                                 .markdownTheme(.gitHub)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding(.vertical, 4)

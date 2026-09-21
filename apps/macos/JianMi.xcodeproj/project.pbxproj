@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C4233FF9DEEEF31B41A5FDC /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B57CEC1781F94F5E0462AEC /* VaultManager.swift */; };
 		0CF1B3B44DFE4FF7CA400E54 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 620B97D08F471CDF09397D9C /* Sodium */; };
+		151143EE31DC130421098CE3 /* MarkdownHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBD69D36C71C5AFC25D83342 /* MarkdownHelperTests.swift */; };
 		1797F18929B85AB5147A297A /* TOTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A14BF135009ECB02E50F50 /* TOTP.swift */; };
 		179D84B2A49B47C00C6BA18E /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 3870863A9205618EAEA6B165 /* KeyboardShortcuts */; };
 		26CF7E8C85818443FC967424 /* RecoveryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A861DFE34F4CC5D3A51D0A /* RecoveryCode.swift */; };
@@ -28,6 +29,7 @@
 		92BB0A8D02C3B13F9E14A229 /* jianmi-extension-chrome.zip in Resources */ = {isa = PBXBuildFile; fileRef = 5F1ADCAB94DC1A8E54D712A7 /* jianmi-extension-chrome.zip */; };
 		940C822F47BE88D4F649B1FE /* WebFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */; };
 		96768C9241850B35EDEF9176 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 30F77E58F84A0EE5DB46B52C /* AppIcon.icns */; };
+		9F25366C2A82949FCEC052C3 /* MarkdownHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1DE10DC1491B1D8547E5BD /* MarkdownHelper.swift */; };
 		A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81C2324DF37714272D1036 /* AppDatabase.swift */; };
 		A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */; };
 		A89DA9ABED238130484F2044 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 15E093A8FFCEDC337A161022 /* GRDB */; };
@@ -64,6 +66,7 @@
 		0A4505E208AFB7A0227B6C9A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0A81C2324DF37714272D1036 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
 		1B57CEC1781F94F5E0462AEC /* VaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManager.swift; sourceTree = "<group>"; };
+		1F1DE10DC1491B1D8547E5BD /* MarkdownHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHelper.swift; sourceTree = "<group>"; };
 		22BBBAAB83E3BDA713B40087 /* SpotlightPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightPanel.swift; sourceTree = "<group>"; };
 		254269614F1CFD3F8058443C /* VaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTests.swift; sourceTree = "<group>"; };
 		30F77E58F84A0EE5DB46B52C /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
@@ -88,6 +91,7 @@
 		A5A14BF135009ECB02E50F50 /* TOTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTP.swift; sourceTree = "<group>"; };
 		A754AB0E851585AEA1972F67 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
 		B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoEngine.swift; sourceTree = "<group>"; };
+		BBD69D36C71C5AFC25D83342 /* MarkdownHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHelperTests.swift; sourceTree = "<group>"; };
 		C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
 		C4515B3E7D1DD1295972C12C /* jianmi-extension-firefox.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "jianmi-extension-firefox.zip"; sourceTree = "<group>"; };
 		C6A861DFE34F4CC5D3A51D0A /* RecoveryCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryCode.swift; sourceTree = "<group>"; };
@@ -254,6 +258,7 @@
 			children = (
 				722BBCAEE0E0A82F008F4600 /* BridgeServerTests.swift */,
 				A754AB0E851585AEA1972F67 /* CryptoTests.swift */,
+				BBD69D36C71C5AFC25D83342 /* MarkdownHelperTests.swift */,
 				254269614F1CFD3F8058443C /* VaultTests.swift */,
 				A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */,
 			);
@@ -322,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				6566B9FEB09660CC52B3828E /* AutoTyper.swift */,
+				1F1DE10DC1491B1D8547E5BD /* MarkdownHelper.swift */,
 				C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */,
 				E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */,
 				A5A14BF135009ECB02E50F50 /* TOTP.swift */,
@@ -446,6 +452,7 @@
 			files = (
 				D73F6B7ECB05C351C702CD2A /* BridgeServerTests.swift in Sources */,
 				4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */,
+				151143EE31DC130421098CE3 /* MarkdownHelperTests.swift in Sources */,
 				E158EE8ABE233F66A9944714 /* VaultTests.swift in Sources */,
 				940C822F47BE88D4F649B1FE /* WebFixtureTests.swift in Sources */,
 			);
@@ -468,6 +475,7 @@
 				D752252C6044A4A33138BC0D /* JianMiApp.swift in Sources */,
 				A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */,
 				88FF93E335AA62D4686EA49F /* MainView.swift in Sources */,
+				9F25366C2A82949FCEC052C3 /* MarkdownHelper.swift in Sources */,
 				B26B83D7B0AC9ED11CA6915A /* MenuBarView.swift in Sources */,
 				EF0316E081B037BE2EA818DE /* OnboardingView.swift in Sources */,
 				FFA2EB59E0B0AA15068926FC /* PasswordGenerator.swift in Sources */,

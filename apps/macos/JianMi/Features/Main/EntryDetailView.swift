@@ -137,7 +137,7 @@ struct EntryDetailView: View {
                 if !body.notesMarkdown.isEmpty {
                     if entry.type == .note {
                         Card {
-                            Markdown(body.notesMarkdown)
+                            Markdown(body.notesMarkdown.noteMarkdown)
                                 .markdownTheme(.gitHub)
                                 .textSelection(.enabled)
                                 .padding(16)
@@ -147,7 +147,7 @@ struct EntryDetailView: View {
                         VStack(alignment: .leading, spacing: 6) {
                             sectionLabel("笔记")
                             Card {
-                                Markdown(body.notesMarkdown)
+                                Markdown(body.notesMarkdown.noteMarkdown)
                                     .markdownTheme(.gitHub)
                                     .textSelection(.enabled)
                                     .padding(14)
