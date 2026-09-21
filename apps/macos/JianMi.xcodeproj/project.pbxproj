@@ -23,6 +23,7 @@
 		88FF93E335AA62D4686EA49F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818991779B679961A780C377 /* MainView.swift */; };
 		8F38199495046854E7677252 /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E3264965F7935C34A2A6BA /* UnlockView.swift */; };
 		92A21430A900A3959A521F55 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF587926DF336D5981610E7D /* EntryDetailView.swift */; };
+		940C822F47BE88D4F649B1FE /* WebFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */; };
 		96768C9241850B35EDEF9176 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 30F77E58F84A0EE5DB46B52C /* AppIcon.icns */; };
 		A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81C2324DF37714272D1036 /* AppDatabase.swift */; };
 		A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */; };
@@ -78,6 +79,7 @@
 		9620FF2A1E609C61C9BB6E08 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		9CDFBB4EC14F9329914E4282 /* JianMi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JianMi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0512A58C2CFC6D9052003CC /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebFixtureTests.swift; sourceTree = "<group>"; };
 		A5A14BF135009ECB02E50F50 /* TOTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTP.swift; sourceTree = "<group>"; };
 		A754AB0E851585AEA1972F67 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
 		B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoEngine.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 			children = (
 				A754AB0E851585AEA1972F67 /* CryptoTests.swift */,
 				254269614F1CFD3F8058443C /* VaultTests.swift */,
+				A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */,
 			);
 			path = JianMiTests;
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 			files = (
 				4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */,
 				E158EE8ABE233F66A9944714 /* VaultTests.swift in Sources */,
+				940C822F47BE88D4F649B1FE /* WebFixtureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

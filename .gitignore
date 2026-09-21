@@ -14,6 +14,7 @@ apps/macos/**/build/
 
 # Rust
 server/target/
+server/data/
 **/*.rs.bk
 
 # Node（如 web 端引入构建工具）

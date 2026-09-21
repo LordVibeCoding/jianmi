@@ -73,7 +73,8 @@ final class VaultManager {
         try FileManager.default.createDirectory(
             at: directoryURL, withIntermediateDirectories: true)
         let data = try JSONEncoder().encode(meta)
-        try data.write(to: metaURL, options: [.atomic, .completeFileProtection])
+        // vault.json 只含密文（盐 + 被主密码包裹的 VaultKey），磁盘加密交给 FileVault
+        try data.write(to: metaURL, options: [.atomic])
     }
 
     // ── 创建密码库 ────────────────────────────────────────

@@ -1,0 +1,17 @@
+[Unit]
+Description=JianMi self-hosted sync server (zero-knowledge)
+After=network.target
+
+[Service]
+ExecStart=__HOME__/jianmi/jianmi-server --addr 0.0.0.0:__PORT__ --data __HOME__/jianmi/data
+WorkingDirectory=__HOME__/jianmi
+Restart=always
+RestartSec=3
+# 加固：即使被攻破也只有密文可拿
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=__HOME__/jianmi
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

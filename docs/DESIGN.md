@@ -195,6 +195,9 @@ GET  /api/health
 
 ## 8. 里程碑与验收标准
 
+> 进度：M0-M4 已完成 ✅（含 M5 部分：TOTP/Auto-Type/改主密码/自定义字段/密码历史）。
+> 跨语言加密兼容性（Swift 加密 → 浏览器 JS 解密）由 scripts/verify_web_crypto.mjs 自动化验证。
+
 ### M0 —— 仓库与设计 ✅
 Git + GitHub 私仓 + 本文档
 

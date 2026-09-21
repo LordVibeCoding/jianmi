@@ -23,7 +23,9 @@
 | 同步服务端 | Rust (axum) | 单二进制、几 MB 内存、零运行时依赖 |
 | Web 端 | 静态页 + libsodium.js/argon2-wasm | 浏览器内解密，服务器零知识 |
 
-## 本地构建（无需开发者账号）
+## 快速上手
+
+### macOS App（无需开发者账号）
 
 ```bash
 brew install xcodegen          # 首次
@@ -32,6 +34,21 @@ xcodegen generate              # 生成 JianMi.xcodeproj
 open JianMi.xcodeproj          # Xcode 中 ⌘R 运行，或：
 xcodebuild -scheme JianMi build
 xcodebuild -scheme JianMi test # 跑全部单元测试
+```
+
+**全局快捷键**（可在设置中自定义）：
+- `⌥⌘N` 快速捕获 —— 自动抓取浏览器当前网址，填账号密码回车即存
+- `⌥⌘P` 快速搜索 —— ↩复制密码 / ⌥↩复制账号 / ⌘↩打开网址 / ⌃↩自动键入
+
+### 同步服务端（自己的服务器）
+
+```bash
+cd server && cargo build --release
+./target/release/jianmi-server --addr 0.0.0.0:8787 --data ./data
+# 首次启动打印访问令牌 → 填入 App 设置→同步；浏览器访问同地址即 Web 视图
+
+# 或一键部署到 Linux 服务器（含 systemd 守护）：
+./scripts/deploy_server.sh user@your-server-ip
 ```
 
 ## 仓库结构
@@ -48,9 +65,10 @@ xcodebuild -scheme JianMi test # 跑全部单元测试
 
 - [x] **M0** 仓库初始化 + 完整设计文档
 - [x] **M1** 核心：加密引擎、本地库、主窗口 CRUD、主密码 + Touch ID 解锁
-- [ ] **M2** 效率：全局快捷键、快速捕获（⌥⌘N）、快速搜索（⌥⌘P）、菜单栏、剪贴板安全
-- [ ] **M3** 同步：Rust 服务端、token 鉴权、条目级增量同步、local_only
-- [ ] **M4** Web：浏览器内解密只读视图
-- [ ] **M5** 进阶：系统 AutoFill 扩展、TOTP、Auto-Type、附件、安全审计
+- [x] **M2** 效率：全局快捷键、快速捕获（⌥⌘N + 浏览器网址抓取）、快速搜索（⌥⌘P）、菜单栏、剪贴板安全、设置窗口、钉住悬浮窗
+- [x] **M3** 同步：Rust 服务端、token 鉴权、条目级增量同步、冲突副本、local_only 硬隔离
+- [x] **M4** Web：浏览器内解密只读视图（跨语言加密兼容性已由自动化验证）
+- [x] **M5（部分）** TOTP 两步验证码、Auto-Type 自动键入、改主密码、自定义字段、密码历史
+- [ ] **待办** 附件、安全审计（弱密码/重复检测）、导入导出（系统 AutoFill 需开发者账号，已用 Auto-Type 替代）
 
 详细设计见 [docs/DESIGN.md](docs/DESIGN.md)。
