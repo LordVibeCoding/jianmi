@@ -56,12 +56,23 @@ final class CategoryStore: ObservableObject {
     ]
 
     @Published private(set) var custom: [Category] = []
+    /// 内置分类的用户自定义覆盖（改名/换图标/换色/改字段）
+    @Published private(set) var overrides: [String: Category] = [:]
 
-    var all: [Category] { Self.builtins + custom }
+    var all: [Category] {
+        Self.builtins.map { overrides[$0.id] ?? $0 } + custom
+    }
 
     private static let defaultsKey = "categories.custom"
+    private static let overridesKey = "categories.overrides"
 
     init() { load() }
+
+    static func baseBuiltin(id: String) -> Category? {
+        builtins.first { $0.id == id }
+    }
+
+    func isOverridden(_ id: String) -> Bool { overrides[id] != nil }
 
     /// 旧类型 ID 归一化：网站/App/银行卡 → 账号。
     nonisolated static func normalize(_ id: String) -> String {
@@ -81,11 +92,24 @@ final class CategoryStore: ObservableObject {
 
     // ── 自定义分类 CRUD ──────────────────────────────────
     func save(_ category: Category) {
-        if let index = custom.firstIndex(where: { $0.id == category.id }) {
+        if let base = Self.baseBuiltin(id: category.id) {
+            var override = category
+            // 内置底线不可篡改：钱包类强制仅本机不许关，笔记类始终是文档模式
+            override.isBuiltin = true
+            override.isNoteLike = base.isNoteLike
+            if base.forcesLocalOnly { override.forcesLocalOnly = true }
+            overrides[category.id] = override
+        } else if let index = custom.firstIndex(where: { $0.id == category.id }) {
             custom[index] = category
         } else {
             custom.append(category)
         }
+        persist()
+    }
+
+    /// 内置分类恢复默认外观与字段。
+    func resetBuiltin(id: String) {
+        overrides.removeValue(forKey: id)
         persist()
     }
 
@@ -95,14 +119,22 @@ final class CategoryStore: ObservableObject {
     }
 
     private func load() {
-        guard let data = UserDefaults.standard.data(forKey: Self.defaultsKey),
-              let list = try? JSONDecoder().decode([Category].self, from: data) else { return }
-        custom = list
+        if let data = UserDefaults.standard.data(forKey: Self.defaultsKey),
+           let list = try? JSONDecoder().decode([Category].self, from: data) {
+            custom = list
+        }
+        if let data = UserDefaults.standard.data(forKey: Self.overridesKey),
+           let map = try? JSONDecoder().decode([String: Category].self, from: data) {
+            overrides = map
+        }
     }
 
     private func persist() {
         if let data = try? JSONEncoder().encode(custom) {
             UserDefaults.standard.set(data, forKey: Self.defaultsKey)
+        }
+        if let data = try? JSONEncoder().encode(overrides) {
+            UserDefaults.standard.set(data, forKey: Self.overridesKey)
         }
     }
 }

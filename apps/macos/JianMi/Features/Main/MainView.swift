@@ -65,11 +65,17 @@ struct MainView: View {
                     sidebarRow(.category(category.id),
                                label: category.name, icon: category.icon)
                         .contextMenu {
-                            if !category.isBuiltin {
-                                Button("编辑分类…") {
-                                    editingCategory = category
-                                    showingCategoryEditor = true
+                            Button("编辑分类…") {
+                                editingCategory = category
+                                showingCategoryEditor = true
+                            }
+                            if category.isBuiltin, categories.isOverridden(category.id) {
+                                Button("恢复默认") {
+                                    categories.resetBuiltin(id: category.id)
                                 }
+                            }
+                            if !category.isBuiltin {
+                                Divider()
                                 Button("删除分类", role: .destructive) {
                                     categories.remove(id: category.id)
                                     if store.filter == .category(category.id) {
