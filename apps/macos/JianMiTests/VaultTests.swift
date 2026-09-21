@@ -85,13 +85,21 @@ final class VaultTests: XCTestCase {
         XCTAssertNil(raw.range(of: Data("S3cret!P@ss".utf8)), "密码明文泄露到磁盘！")
         XCTAssertNil(raw.range(of: Data("octocat".utf8)), "账号明文泄露到磁盘！")
 
-        // 钱包类型强制仅本机
+        // 钱包类型强制仅本机 + 链/私钥字段
         var walletDraft = EntryDraft()
-        walletDraft.type = .wallet
+        walletDraft.type = "wallet"
         walletDraft.title = "BTC 钱包"
+        walletDraft.chain = "Bitcoin"
+        walletDraft.privateKey = "L4rK3vqM...测试私钥"
         walletDraft.localOnly = false   // 即使用户没勾
         let wallet = try awaitMainActor { try store.add(draft: walletDraft) }
         XCTAssertTrue(wallet.localOnly, "钱包类条目必须强制 localOnly")
+        let walletBody = try awaitMainActor { try store.decryptBody(of: wallet) }
+        XCTAssertEqual(walletBody.chain, "Bitcoin")
+        XCTAssertEqual(walletBody.privateKey, "L4rK3vqM...测试私钥")
+        // 私钥不可以明文落盘
+        let raw2 = try Data(contentsOf: vault.dbURL)
+        XCTAssertNil(raw2.range(of: Data("L4rK3vqM".utf8)), "私钥明文泄露到磁盘！")
     }
 
     /// 在 MainActor 上同步执行（测试辅助）。

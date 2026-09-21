@@ -64,13 +64,21 @@ struct PinnedEntryView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
-                TypeBadge(type: entry.type, size: 24)
+                TypeBadge(typeID: entry.type, size: 24)
                 Text(entry.title).font(.headline).lineLimit(1)
                 Spacer()
             }
             if let b = body_ {
                 if !b.username.isEmpty {
                     pinRow(label: "账号", value: b.username, mono: false)
+                }
+                if let chain = b.chain, !chain.isEmpty {
+                    pinRow(label: "链", value: chain, mono: false)
+                }
+                if let key = b.privateKey, !key.isEmpty {
+                    pinRow(label: "私钥",
+                           value: reveal ? key : "••••••••••••",
+                           copyValue: key, mono: true, revealable: true)
                 }
                 if !b.password.isEmpty {
                     pinRow(label: "密码",

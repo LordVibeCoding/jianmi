@@ -54,7 +54,7 @@ struct SyncRecord: Codable {
 /// 零知识同步载荷：条目全部字段（含明文元数据）整体加密后上传。
 /// 服务器只见 uuid/version/seq/deleted + 密文。
 struct SyncPayload: Codable {
-    var type: EntryType
+    var type: String        // 分类 ID（旧设备的 website/app/bank_card 在应用时归一化）
     var title: String
     var urlHost: String?
     var tags: [String]
@@ -256,7 +256,7 @@ final class SyncEngine: ObservableObject {
         let payload = try decryptPayload(record)
         var entry = Entry(
             uuid: record.uuid,
-            type: payload.type,
+            type: CategoryStore.normalize(payload.type),
             title: payload.title,
             urlHost: payload.urlHost,
             tags: payload.tags,

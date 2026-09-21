@@ -81,7 +81,7 @@ struct QuickSearchView: View {
 
     private func row(_ entry: Entry, selected: Bool) -> some View {
         HStack(spacing: 10) {
-            TypeBadge(type: entry.type, size: 28)
+            TypeBadge(typeID: entry.type, size: 28)
             VStack(alignment: .leading, spacing: 1) {
                 Text(entry.title)
                     .font(.system(size: 13, weight: .medium))

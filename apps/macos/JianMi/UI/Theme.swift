@@ -11,38 +11,24 @@ extension MarkdownUI.Theme {
     }
 }
 
-// ── 类型配色（1Password 风格的彩色圆角图标）─────────────────
-extension EntryType {
-    var color: Color {
-        switch self {
-        case .website:  return .blue
-        case .app:      return .indigo
-        case .bankCard: return .green
-        case .wallet:   return .orange
-        case .ssh:      return .purple
-        case .identity: return .teal
-        case .note:     return .yellow
-        }
-    }
-}
-
-/// 彩色渐变圆角类型徽章。
+/// 彩色渐变圆角分类徽章（按分类 ID 解析图标与配色）。
 struct TypeBadge: View {
-    let type: EntryType
+    let typeID: String
     var size: CGFloat = 30
 
     var body: some View {
+        let category = CategoryStore.shared.category(for: typeID)
         RoundedRectangle(cornerRadius: size * 0.28, style: .continuous)
             .fill(LinearGradient(
-                colors: [type.color.opacity(0.75), type.color],
+                colors: [category.color.opacity(0.75), category.color],
                 startPoint: .top, endPoint: .bottom))
             .frame(width: size, height: size)
             .overlay {
-                Image(systemName: type.icon)
+                Image(systemName: category.icon)
                     .font(.system(size: size * 0.46, weight: .semibold))
                     .foregroundStyle(.white)
             }
-            .shadow(color: type.color.opacity(0.35), radius: 2, y: 1)
+            .shadow(color: category.color.opacity(0.35), radius: 2, y: 1)
     }
 }
 

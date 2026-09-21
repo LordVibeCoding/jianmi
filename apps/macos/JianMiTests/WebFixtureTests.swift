@@ -34,7 +34,7 @@ final class WebFixtureTests: XCTestCase {
             key: vaultKey, aad: Data(uuid.utf8))
 
         let payload = SyncPayload(
-            type: .website, title: "GitHub", urlHost: "github.com",
+            type: "login", title: "GitHub", urlHost: "github.com",
             tags: ["测试"], favorite: true,
             createdAt: Date(), updatedAt: Date(), deletedAt: nil,
             secretBlob: secretBlob)

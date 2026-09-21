@@ -2,6 +2,7 @@ import MarkdownUI
 import SwiftUI
 
 /// 条目详情：卡片式布局 + Markdown 笔记渲染 + TOTP + 自定义字段。
+@MainActor
 struct EntryDetailView: View {
     @ObservedObject var store: EntryStore
     let entry: Entry
@@ -10,6 +11,9 @@ struct EntryDetailView: View {
     @State private var body_: SecretBody?
     @State private var decryptError: String?
     @State private var revealPassword = false
+    @State private var revealPrivateKey = false
+
+    private var category: Category { CategoryStore.shared.category(for: entry.type) }
     @State private var showingEditor = false
     @State private var confirmDelete = false
     @State private var copiedField: String?
@@ -85,20 +89,33 @@ struct EntryDetailView: View {
                 header
 
                 // 凭证卡片
-                if !body.username.isEmpty || !body.password.isEmpty || !body.totpSecret.isEmpty {
+                let chain = body.chain ?? ""
+                let privateKey = body.privateKey ?? ""
+                if !body.username.isEmpty || !body.password.isEmpty
+                    || !body.totpSecret.isEmpty || !chain.isEmpty || !privateKey.isEmpty {
                     Card {
                         if !body.username.isEmpty {
                             fieldRow(icon: "person", label: "账号",
                                      value: body.username, copyKey: "username")
-                            if !body.password.isEmpty || !body.totpSecret.isEmpty { divider }
+                            if !body.password.isEmpty || !body.totpSecret.isEmpty
+                                || !chain.isEmpty || !privateKey.isEmpty { divider }
                         }
                         if !body.password.isEmpty {
                             passwordRow(body.password)
-                            if !body.totpSecret.isEmpty { divider }
+                            if !body.totpSecret.isEmpty || !chain.isEmpty || !privateKey.isEmpty { divider }
                         }
                         if !body.totpSecret.isEmpty {
                             TOTPRow(secret: body.totpSecret)
                                 .padding(.horizontal, 14).padding(.vertical, 10)
+                            if !chain.isEmpty || !privateKey.isEmpty { divider }
+                        }
+                        if !chain.isEmpty {
+                            fieldRow(icon: "point.3.connected.trianglepath.dotted", label: "网络链",
+                                     value: chain, copyKey: "chain")
+                            if !privateKey.isEmpty { divider }
+                        }
+                        if !privateKey.isEmpty {
+                            privateKeyRow(privateKey)
                         }
                     }
                 }
@@ -135,7 +152,7 @@ struct EntryDetailView: View {
 
                 // Markdown 笔记
                 if !body.notesMarkdown.isEmpty {
-                    if entry.type == .note {
+                    if category.isNoteLike {
                         // 安全笔记 = 备忘录风格：正文直接铺在窗口上，无框无块背景
                         Divider().opacity(0.4)
                         Markdown(body.notesMarkdown.noteMarkdown)
@@ -187,19 +204,19 @@ struct EntryDetailView: View {
 
                 footer
             }
-            .padding(entry.type == .note ? 28 : 20)
-            .frame(maxWidth: entry.type == .note ? 760 : 560, alignment: .leading)
-            .frame(maxWidth: .infinity, alignment: entry.type == .note ? .leading : .center)
+            .padding(category.isNoteLike ? 28 : 20)
+            .frame(maxWidth: category.isNoteLike ? 760 : 560, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: category.isNoteLike ? .leading : .center)
         }
     }
 
     private var header: some View {
         HStack(spacing: 14) {
-            TypeBadge(type: entry.type, size: 48)
+            TypeBadge(typeID: entry.type, size: 48)
             VStack(alignment: .leading, spacing: 3) {
                 Text(entry.title).font(.title2.bold())
                 HStack(spacing: 8) {
-                    Text(entry.type.label)
+                    Text(category.name)
                     if entry.localOnly {
                         Label("仅本机", systemImage: "lock.laptopcomputer")
                             .foregroundStyle(.orange)
@@ -279,9 +296,35 @@ struct EntryDetailView: View {
         .padding(.horizontal, 14).padding(.vertical, 8)
     }
 
+    private func privateKeyRow(_ key: String) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: "key.horizontal")
+                .font(.system(size: 13))
+                .foregroundStyle(.secondary)
+                .frame(width: 20)
+            VStack(alignment: .leading, spacing: 1) {
+                Text("私钥/助记词").font(.caption2).foregroundStyle(.secondary)
+                Text(revealPrivateKey ? key : String(repeating: "•", count: 16))
+                    .font(.callout.monospaced())
+                    .textSelection(.enabled)
+                    .lineLimit(revealPrivateKey ? 6 : 1)
+            }
+            Spacer()
+            Button {
+                revealPrivateKey.toggle()
+            } label: {
+                Image(systemName: revealPrivateKey ? "eye.slash" : "eye")
+            }
+            .buttonStyle(.borderless)
+            copyButton(key, key: "privateKey")
+        }
+        .padding(.horizontal, 14).padding(.vertical, 8)
+    }
+
     private func copyButton(_ value: String, key: String) -> some View {
         Button {
-            SecurePasteboard.copy(value, clearAfter: key == "password" ? 30 : 0)
+            SecurePasteboard.copy(
+                value, clearAfter: (key == "password" || key == "privateKey") ? 30 : 0)
             copiedField = key
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 if copiedField == key { copiedField = nil }
@@ -291,7 +334,8 @@ struct EntryDetailView: View {
                 .foregroundStyle(copiedField == key ? .green : .secondary)
         }
         .buttonStyle(.borderless)
-        .help(key == "password" ? "复制（30 秒后自动清除剪贴板）" : "复制")
+        .help((key == "password" || key == "privateKey")
+              ? "复制（30 秒后自动清除剪贴板）" : "复制")
     }
 }
 

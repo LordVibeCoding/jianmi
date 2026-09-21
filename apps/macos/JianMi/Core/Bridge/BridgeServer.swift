@@ -131,7 +131,7 @@ final class BridgeServer {
                     "uuid": entry.uuid,
                     "title": entry.title,
                     "host": entry.urlHost ?? "",
-                    "type": entry.type.rawValue,
+                    "type": entry.type,
                     "username": body?.username ?? "",
                     "hasTotp": !(body?.totpSecret.isEmpty ?? true),
                 ]

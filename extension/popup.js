@@ -1,6 +1,7 @@
 // 简密扩展 · Popup
 const BASE = "http://127.0.0.1:48787";
 const TYPE_ICON = {
+  login: ["🔑", "#2f81f7"],
   website: ["🌐", "#2f81f7"], app: ["📱", "#6e7dfa"], bank_card: ["💳", "#3fb950"],
   wallet: ["🪙", "#d29922"], ssh: ["🖥", "#a371f7"], identity: ["🪪", "#39c5cf"],
   note: ["📝", "#e3b341"],

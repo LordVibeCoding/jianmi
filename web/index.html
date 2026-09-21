@@ -129,6 +129,8 @@ let vaultKey = null;        // Uint8Array(32)，仅存内存
 let entries = [];           // 解密后的元数据列表
 
 const TYPE_STYLE = {
+  login:    ["🔑", "#2f81f7"],
+  // 旧版分类（已并入「账号」，保留兼容旧同步数据）
   website:  ["🌐", "#2f81f7"], app: ["📱", "#6e7dfa"], bank_card: ["💳", "#3fb950"],
   wallet:   ["🪙", "#d29922"], ssh: ["🖥", "#a371f7"], identity: ["🪪", "#39c5cf"],
   note:     ["📝", "#e3b341"],

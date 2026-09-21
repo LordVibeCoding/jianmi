@@ -52,6 +52,14 @@ enum AppDatabase {
                 t.column("value", .text).notNull()
             }
         }
+
+        // v3: 网站/App/银行卡 统一并入「账号」分类
+        migrator.registerMigration("v3-unified-login") { db in
+            try db.execute(sql: """
+                UPDATE entry SET type = 'login'
+                WHERE type IN ('website', 'app', 'bank_card')
+                """)
+        }
         return migrator
     }
 }

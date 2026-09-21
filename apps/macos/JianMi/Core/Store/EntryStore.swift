@@ -6,35 +6,19 @@ enum SidebarFilter: Hashable {
     case all
     case favorites
     case localOnly
-    case type(EntryType)
-
-    var label: String {
-        switch self {
-        case .all:            return "全部条目"
-        case .favorites:      return "收藏"
-        case .localOnly:      return "仅本机"
-        case .type(let t):    return t.label
-        }
-    }
-
-    var icon: String {
-        switch self {
-        case .all:            return "tray.full"
-        case .favorites:      return "star"
-        case .localOnly:      return "lock.laptopcomputer"
-        case .type(let t):    return t.icon
-        }
-    }
+    case category(String)
 }
 
 /// 条目编辑草稿（UI 层与加密层的桥）。
 struct EntryDraft {
-    var type: EntryType = .website
+    var type: String = "login"
     var title: String = ""
     var urlFull: String = ""
     var username: String = ""
     var password: String = ""
     var totpSecret: String = ""
+    var chain: String = ""
+    var privateKey: String = ""
     var customFields: [SecretBody.CustomField] = []
     var notesMarkdown: String = ""
     var tags: [String] = []
@@ -45,7 +29,9 @@ struct EntryDraft {
         EntryDraft(
             type: entry.type, title: entry.title, urlFull: body.urlFull,
             username: body.username, password: body.password,
-            totpSecret: body.totpSecret, customFields: body.customFields,
+            totpSecret: body.totpSecret,
+            chain: body.chain ?? "", privateKey: body.privateKey ?? "",
+            customFields: body.customFields,
             notesMarkdown: body.notesMarkdown, tags: entry.tags,
             localOnly: entry.localOnly, favorite: entry.favorite)
     }
@@ -90,9 +76,9 @@ final class EntryStore: ObservableObject {
                 case .all: break
                 case .favorites: conditions.append("entry.favorite = 1")
                 case .localOnly: conditions.append("entry.localOnly = 1")
-                case .type(let t):
+                case .category(let id):
                     conditions.append("entry.type = ?")
-                    args.append(t.rawValue)
+                    args.append(id)
                 }
                 sql += " WHERE " + conditions.joined(separator: " AND ")
                 sql += " ORDER BY entry.favorite DESC, entry.updatedAt DESC"
@@ -118,9 +104,9 @@ final class EntryStore: ObservableObject {
                 let rows = try Row.fetchAll(
                     db, sql: "SELECT type, COUNT(*) AS c FROM entry WHERE deletedAt IS NULL GROUP BY type")
                 for row in rows {
-                    if let t = EntryType(rawValue: row["type"]) {
-                        result[.type(t)] = row["c"]
-                    }
+                    let id = CategoryStore.normalize(row["type"])
+                    let count: Int = row["c"]
+                    result[.category(id), default: 0] += count
                 }
             }
         } catch {}
@@ -195,6 +181,8 @@ final class EntryStore: ObservableObject {
         body.password = draft.password
         body.urlFull = draft.urlFull
         body.totpSecret = draft.totpSecret
+        body.chain = draft.chain.isEmpty ? nil : draft.chain
+        body.privateKey = draft.privateKey.isEmpty ? nil : draft.privateKey
         body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
@@ -205,7 +193,8 @@ final class EntryStore: ObservableObject {
             title: draft.title.isEmpty ? "未命名" : draft.title,
             urlHost: Self.host(from: draft.urlFull),
             tags: draft.tags,
-            localOnly: draft.localOnly || draft.type.forcesLocalOnly,
+            localOnly: draft.localOnly
+                || CategoryStore.shared.category(for: draft.type).forcesLocalOnly,
             favorite: draft.favorite,
             version: 1,
             createdAt: now,
@@ -232,6 +221,8 @@ final class EntryStore: ObservableObject {
         body.password = draft.password
         body.urlFull = draft.urlFull
         body.totpSecret = draft.totpSecret
+        body.chain = draft.chain.isEmpty ? nil : draft.chain
+        body.privateKey = draft.privateKey.isEmpty ? nil : draft.privateKey
         body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
@@ -240,7 +231,8 @@ final class EntryStore: ObservableObject {
         updated.title = draft.title.isEmpty ? "未命名" : draft.title
         updated.urlHost = Self.host(from: draft.urlFull)
         updated.tags = draft.tags
-        updated.localOnly = draft.localOnly || draft.type.forcesLocalOnly
+        updated.localOnly = draft.localOnly
+            || CategoryStore.shared.category(for: draft.type).forcesLocalOnly
         updated.favorite = draft.favorite
         updated.version += 1
         updated.updatedAt = Date()

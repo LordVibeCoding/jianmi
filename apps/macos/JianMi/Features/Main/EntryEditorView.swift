@@ -2,13 +2,16 @@ import MarkdownUI
 import SwiftUI
 
 /// 新建 / 编辑条目（sheet）。
-/// 安全笔记类型 = 纯 Markdown 文档模式：不显示账号/密码/网址等凭证字段。
+/// 字段由分类定义驱动：账号类显示网址/账号/密码/TOTP，
+/// 钱包类只显示网络链/私钥，安全笔记 = 纯 Markdown 文档模式。
+@MainActor
 struct EntryEditorView: View {
     @ObservedObject var store: EntryStore
     let editing: Entry?
     var onSave: (Entry?) -> Void = { _ in }
 
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var categories = CategoryStore.shared
 
     @State private var draft = EntryDraft()
     @State private var totpSecret = ""
@@ -17,16 +20,20 @@ struct EntryEditorView: View {
     @State private var error: String?
     @State private var showGenerator = false
     @State private var revealPassword = true
+    @State private var revealPrivateKey = true
     @State private var previewNotes = false
     @State private var loaded = false
 
-    private var isNote: Bool { draft.type == .note }
+    private var category: Category { categories.category(for: draft.type) }
+    private var isNote: Bool { category.isNoteLike }
+
+    private func has(_ field: FieldKey) -> Bool { category.fields.contains(field) }
 
     var body: some View {
         VStack(spacing: 0) {
             // 标题栏
             HStack(spacing: 10) {
-                TypeBadge(type: draft.type, size: 28)
+                TypeBadge(typeID: draft.type, size: 28)
                 Text(editing == nil ? "新建条目" : "编辑「\(editing!.title)」")
                     .font(.headline)
                 Spacer()
@@ -37,16 +44,20 @@ struct EntryEditorView: View {
 
             Form {
                 Section {
-                    Picker("类型", selection: $draft.type) {
-                        ForEach(EntryType.allCases) { t in
-                            Label(t.label, systemImage: t.icon).tag(t)
+                    Picker("分类", selection: $draft.type) {
+                        ForEach(categories.all) { c in
+                            Label(c.name, systemImage: c.icon).tag(c.id)
                         }
                     }
                     TextField("名称", text: $draft.title,
                               prompt: Text(isNote ? "笔记标题" : "如：GitHub"))
-                    if !isNote {
-                    TextField("网址", text: $draft.urlFull, prompt: Text("github.com"))
-                    TextField("账号", text: $draft.username, prompt: Text("用户名 / 邮箱 / 手机号"))
+                    if has(.url) {
+                        TextField("网址", text: $draft.urlFull, prompt: Text("github.com"))
+                    }
+                    if has(.username) {
+                        TextField("账号", text: $draft.username, prompt: Text("用户名 / 邮箱 / 手机号"))
+                    }
+                    if has(.password) {
                     HStack {
                         Group {
                             if revealPassword {
@@ -80,8 +91,33 @@ struct EntryEditorView: View {
                             }
                         }
                     }
-                    TextField("两步验证密钥（TOTP）", text: $totpSecret,
-                              prompt: Text("base32 密钥或 otpauth:// 链接"))
+                    }
+                    if has(.totp) {
+                        TextField("两步验证密钥（TOTP）", text: $totpSecret,
+                                  prompt: Text("base32 密钥或 otpauth:// 链接"))
+                    }
+                    if has(.chain) {
+                        TextField("网络链", text: $draft.chain,
+                                  prompt: Text("如：Ethereum / Solana / BTC"))
+                    }
+                    if has(.privateKey) {
+                        HStack {
+                            Group {
+                                if revealPrivateKey {
+                                    TextField("私钥/助记词", text: $draft.privateKey,
+                                              prompt: Text("私钥或 12/24 词助记词"))
+                                } else {
+                                    SecureField("私钥/助记词", text: $draft.privateKey)
+                                }
+                            }
+                            .font(.body.monospaced())
+                            Button {
+                                revealPrivateKey.toggle()
+                            } label: {
+                                Image(systemName: revealPrivateKey ? "eye.slash" : "eye")
+                            }
+                            .buttonStyle(.borderless)
+                        }
                     }
                 }
 
@@ -90,13 +126,13 @@ struct EntryEditorView: View {
                     Toggle(isOn: $draft.localOnly) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("仅本机（不同步到服务器）")
-                            if draft.type.forcesLocalOnly {
-                                Text("钱包类条目强制仅本机，保护你的资产")
+                            if category.forcesLocalOnly {
+                                Text("此分类强制仅本机，保护你的机密")
                                     .font(.caption).foregroundStyle(.orange)
                             }
                         }
                     }
-                    .disabled(draft.type.forcesLocalOnly)
+                    .disabled(category.forcesLocalOnly)
                 }
 
                 if !isNote {
@@ -167,14 +203,16 @@ struct EntryEditorView: View {
                     .keyboardShortcut(.defaultAction)
                     .buttonStyle(.borderedProminent)
                     .disabled(draft.title.isEmpty && draft.urlFull.isEmpty
-                              && draft.notesMarkdown.isEmpty)
+                              && draft.notesMarkdown.isEmpty && draft.privateKey.isEmpty)
             }
             .padding(14)
         }
         .frame(width: 520, height: 620)
         .onAppear(perform: load)
         .onChange(of: draft.type) { _, newType in
-            if newType.forcesLocalOnly { draft.localOnly = true }
+            if categories.category(for: newType).forcesLocalOnly {
+                draft.localOnly = true
+            }
         }
     }
 
@@ -189,6 +227,7 @@ struct EntryEditorView: View {
                 customFields = body.customFields
                 tagsText = entry.tags.joined(separator: ", ")
                 revealPassword = false
+                revealPrivateKey = false
             } catch {
                 self.error = error.localizedDescription
             }

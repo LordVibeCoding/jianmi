@@ -1,12 +1,16 @@
 import SwiftUI
 
 /// 主窗口：三栏（分类 / 条目列表 / 详情）。
+@MainActor
 struct MainView: View {
     @EnvironmentObject private var app: AppState
     @ObservedObject var store: EntryStore
+    @ObservedObject private var categories = CategoryStore.shared
 
     @State private var selectedID: Entry.ID?
     @State private var showingEditor = false
+    @State private var editingCategory: Category?
+    @State private var showingCategoryEditor = false
 
     var body: some View {
         NavigationSplitView {
@@ -52,13 +56,42 @@ struct MainView: View {
     private var sidebar: some View {
         List(selection: filterBinding) {
             Section("资料库") {
-                sidebarRow(.all)
-                sidebarRow(.favorites)
-                sidebarRow(.localOnly)
+                sidebarRow(.all, label: "全部条目", icon: "tray.full")
+                sidebarRow(.favorites, label: "收藏", icon: "star")
+                sidebarRow(.localOnly, label: "仅本机", icon: "lock.laptopcomputer")
             }
-            Section("分类") {
-                ForEach(EntryType.allCases) { type in
-                    sidebarRow(.type(type))
+            Section {
+                ForEach(categories.all) { category in
+                    sidebarRow(.category(category.id),
+                               label: category.name, icon: category.icon)
+                        .contextMenu {
+                            if !category.isBuiltin {
+                                Button("编辑分类…") {
+                                    editingCategory = category
+                                    showingCategoryEditor = true
+                                }
+                                Button("删除分类", role: .destructive) {
+                                    categories.remove(id: category.id)
+                                    if store.filter == .category(category.id) {
+                                        store.filter = .all
+                                    }
+                                }
+                            }
+                        }
+                }
+            } header: {
+                HStack {
+                    Text("分类")
+                    Spacer()
+                    Button {
+                        editingCategory = nil
+                        showingCategoryEditor = true
+                    } label: {
+                        Image(systemName: "plus.circle")
+                            .font(.system(size: 12))
+                    }
+                    .buttonStyle(.borderless)
+                    .help("新建分类")
                 }
             }
         }
@@ -85,13 +118,16 @@ struct MainView: View {
                 .background(.bar)
             }
         }
+        .sheet(isPresented: $showingCategoryEditor) {
+            CategoryEditorView(editing: editingCategory)
+        }
     }
 
-    private func sidebarRow(_ filter: SidebarFilter) -> some View {
+    private func sidebarRow(_ filter: SidebarFilter, label: String, icon: String) -> some View {
         Label {
-            Text(filter.label)
+            Text(label)
         } icon: {
-            Image(systemName: filter.icon)
+            Image(systemName: icon)
         }
         .badge(store.counts[filter] ?? 0)
         .tag(filter)
@@ -154,12 +190,13 @@ struct MainView: View {
 }
 
 /// 列表行。
+@MainActor
 struct EntryRow: View {
     let entry: Entry
 
     var body: some View {
         HStack(spacing: 10) {
-            TypeBadge(type: entry.type, size: 32)
+            TypeBadge(typeID: entry.type, size: 32)
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 5) {
                     Text(entry.title)
@@ -176,7 +213,7 @@ struct EntryRow: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                Text(entry.urlHost ?? entry.type.label)
+                Text(entry.urlHost ?? CategoryStore.shared.category(for: entry.type).name)
                     .font(.system(size: 11))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
