@@ -208,8 +208,7 @@ final class EntryStore: ObservableObject {
         body.host = draft.host.isEmpty ? nil : draft.host
         body.port = draft.port.isEmpty ? nil : draft.port
         body.sshKeyPath = draft.sshKeyPath.isEmpty ? nil : draft.sshKeyPath
-        let extras = draft.extraAccounts.filter { !$0.username.isEmpty || !$0.password.isEmpty }
-        body.extraAccounts = extras.isEmpty ? nil : extras
+        body.extraAccounts = Self.cleanExtras(draft.extraAccounts)
         body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
@@ -253,8 +252,7 @@ final class EntryStore: ObservableObject {
         body.host = draft.host.isEmpty ? nil : draft.host
         body.port = draft.port.isEmpty ? nil : draft.port
         body.sshKeyPath = draft.sshKeyPath.isEmpty ? nil : draft.sshKeyPath
-        let extras = draft.extraAccounts.filter { !$0.username.isEmpty || !$0.password.isEmpty }
-        body.extraAccounts = extras.isEmpty ? nil : extras
+        body.extraAccounts = Self.cleanExtras(draft.extraAccounts)
         body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
@@ -293,6 +291,20 @@ final class EntryStore: ObservableObject {
         try dbQueue.write { db in try updated.update(db) }
         reload()
         onChange?()
+    }
+
+    /// 额外账号清洗：TOTP 归一化 + 去掉全空组。
+    nonisolated private static func cleanExtras(
+        _ list: [SecretBody.ExtraAccount]
+    ) -> [SecretBody.ExtraAccount]? {
+        let cleaned = list
+            .map { account -> SecretBody.ExtraAccount in
+                var a = account
+                a.totpSecret = TOTP.normalizeSecret(a.totpSecret)
+                return a
+            }
+            .filter { !$0.username.isEmpty || !$0.password.isEmpty || !$0.totpSecret.isEmpty }
+        return cleaned.isEmpty ? nil : cleaned
     }
 
     // ── 工具 ──────────────────────────────────────────────

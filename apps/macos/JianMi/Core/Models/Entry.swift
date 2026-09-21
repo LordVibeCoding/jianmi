@@ -41,12 +41,13 @@ struct SecretBody: Codable, Equatable {
         var changedAt: Date
     }
 
-    /// 同一站点的额外账号（主账号之外的第 2/3/N 个号）
+    /// 同一站点的额外账号，字段与主账号对齐（账号/密码/TOTP）
     struct ExtraAccount: Codable, Equatable, Identifiable {
         var id: UUID = UUID()
-        var label: String = ""      // 备注，如「小号」「工作号」
+        var label: String = ""      // 保留字段兼容旧数据，UI 已不再使用
         var username: String = ""
         var password: String = ""
+        var totpSecret: String = ""
     }
 
     var username: String = ""

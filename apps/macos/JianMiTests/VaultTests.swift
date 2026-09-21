@@ -92,8 +92,9 @@ final class VaultTests: XCTestCase {
         // 多账号：往返 + 磁盘无明文
         var multiDraft = EntryDraft.from(entry: entry, body: body)
         multiDraft.extraAccounts = [
-            .init(label: "小号", username: "alt@example.com", password: "AltP@ss999"),
-            .init(label: "", username: "third", password: ""),
+            .init(username: "alt@example.com", password: "AltP@ss999",
+                  totpSecret: "JBSWY3DPEHPK3PXP"),
+            .init(username: "third", password: ""),
         ]
         try awaitMainActor { try store.update(entry, with: multiDraft) }
         let updated = try awaitMainActor { self.requireEntry(store, uuid: entry.uuid) }
@@ -101,6 +102,9 @@ final class VaultTests: XCTestCase {
         XCTAssertEqual(multiBody.extraAccounts?.count, 2)
         XCTAssertEqual(multiBody.extraAccounts?[0].username, "alt@example.com")
         XCTAssertEqual(multiBody.extraAccounts?[0].password, "AltP@ss999")
+        XCTAssertEqual(multiBody.extraAccounts?[0].totpSecret, "JBSWY3DPEHPK3PXP")
+        XCTAssertNotNil(TOTP.code(secret: multiBody.extraAccounts![0].totpSecret),
+                        "额外账号的 TOTP 必须能生成验证码")
         let rawMulti = try Data(contentsOf: vault.dbURL)
         XCTAssertNil(rawMulti.range(of: Data("AltP@ss999".utf8)), "额外账号密码明文泄露！")
 

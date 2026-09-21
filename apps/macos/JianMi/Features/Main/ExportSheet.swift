@@ -186,7 +186,11 @@ enum Exporter {
             if let command = body.sshCommand { item["sshCommand"] = command }
             if let extras = body.extraAccounts, !extras.isEmpty {
                 item["extraAccounts"] = extras.map {
-                    ["label": $0.label, "username": $0.username, "password": $0.password]
+                    var account: [String: Any] = [
+                        "username": $0.username, "password": $0.password,
+                    ]
+                    if !$0.totpSecret.isEmpty { account["totpSecret"] = $0.totpSecret }
+                    return account
                 }
             }
             if !body.customFields.isEmpty {
@@ -245,8 +249,9 @@ enum Exporter {
         if let command = body.sshCommand { lines.append("- 连接命令：`\(command)`") }
         if let extras = body.extraAccounts {
             for (index, account) in extras.enumerated() {
-                let name = account.label.isEmpty ? "账号\(index + 2)" : account.label
-                lines.append("- \(name)：`\(account.username)` / `\(account.password)`")
+                var line = "- 账号\(index + 2)：`\(account.username)` / `\(account.password)`"
+                if !account.totpSecret.isEmpty { line += " / TOTP: `\(account.totpSecret)`" }
+                lines.append(line)
             }
         }
         for field in body.customFields where !field.value.isEmpty {

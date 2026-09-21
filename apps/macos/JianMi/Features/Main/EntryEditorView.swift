@@ -137,41 +137,42 @@ struct EntryEditorView: View {
 
                 // 同一站点的多个账号
                 if !isNote, has(.username) || has(.password) {
-                    Section("更多账号（同一站点的其他账号）") {
-                        ForEach($draft.extraAccounts) { $account in
-                            VStack(spacing: 6) {
-                                HStack(spacing: 8) {
-                                    TextField("备注", text: $account.label,
-                                              prompt: Text("如：小号"))
-                                        .frame(width: 90)
-                                    TextField("账号", text: $account.username,
-                                              prompt: Text("用户名 / 邮箱"))
+                    ForEach(Array(draft.extraAccounts.enumerated()), id: \.element.id) { index, _ in
+                        Section("账号 \(index + 2)") {
+                            TextField("账号", text: $draft.extraAccounts[index].username,
+                                      prompt: Text("用户名 / 邮箱 / 手机号"))
+                            HStack {
+                                TextField("密码", text: $draft.extraAccounts[index].password)
+                                    .font(.body.monospaced())
+                                Button {
+                                    draft.extraAccounts[index].password = PasswordGenerator.generate()
+                                } label: {
+                                    Image(systemName: "dice")
                                 }
-                                HStack(spacing: 8) {
-                                    TextField("密码", text: $account.password)
-                                        .font(.body.monospaced())
-                                    Button {
-                                        account.password = PasswordGenerator.generate()
-                                    } label: {
-                                        Image(systemName: "dice")
-                                    }
-                                    .buttonStyle(.borderless)
-                                    .help("生成强密码")
-                                    Button {
-                                        draft.extraAccounts.removeAll { $0.id == account.id }
-                                    } label: {
-                                        Image(systemName: "minus.circle.fill")
-                                            .foregroundStyle(.red)
-                                    }
-                                    .buttonStyle(.borderless)
-                                }
+                                .buttonStyle(.borderless)
+                                .help("生成强密码")
                             }
-                            .padding(.vertical, 2)
+                            HStack {
+                                TextField("两步验证密钥（TOTP）",
+                                          text: $draft.extraAccounts[index].totpSecret,
+                                          prompt: Text("base32 密钥或 otpauth:// 链接"))
+                                Button {
+                                    draft.extraAccounts.remove(at: index)
+                                } label: {
+                                    Label("删除此账号", systemImage: "minus.circle.fill")
+                                        .labelStyle(.iconOnly)
+                                        .foregroundStyle(.red)
+                                }
+                                .buttonStyle(.borderless)
+                                .help("删除账号 \(index + 2)")
+                            }
                         }
+                    }
+                    Section {
                         Button {
                             draft.extraAccounts.append(.init())
                         } label: {
-                            Label("添加一组账号", systemImage: "person.badge.plus")
+                            Label("再添加一个账号", systemImage: "person.badge.plus")
                         }
                         .buttonStyle(.borderless)
                     }
