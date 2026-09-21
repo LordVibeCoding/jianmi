@@ -133,22 +133,22 @@ struct EntryDetailView: View {
                     }
                 }
 
-                // Markdown 笔记（安全笔记类型 = 正文直接渲染，不加「笔记」标签）
+                // Markdown 笔记
                 if !body.notesMarkdown.isEmpty {
                     if entry.type == .note {
-                        Card {
-                            Markdown(body.notesMarkdown.noteMarkdown)
-                                .markdownTheme(.gitHub)
-                                .textSelection(.enabled)
-                                .padding(16)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
+                        // 安全笔记 = 备忘录风格：正文直接铺在窗口上，无框无块背景
+                        Divider().opacity(0.4)
+                        Markdown(body.notesMarkdown.noteMarkdown)
+                            .markdownTheme(.jianmi)
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 2)
                     } else {
                         VStack(alignment: .leading, spacing: 6) {
                             sectionLabel("笔记")
                             Card {
                                 Markdown(body.notesMarkdown.noteMarkdown)
-                                    .markdownTheme(.gitHub)
+                                    .markdownTheme(.jianmi)
                                     .textSelection(.enabled)
                                     .padding(14)
                                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -187,9 +187,9 @@ struct EntryDetailView: View {
 
                 footer
             }
-            .padding(20)
-            .frame(maxWidth: 560, alignment: .leading)
-            .frame(maxWidth: .infinity)
+            .padding(entry.type == .note ? 28 : 20)
+            .frame(maxWidth: entry.type == .note ? 760 : 560, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: entry.type == .note ? .leading : .center)
         }
     }
 

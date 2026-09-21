@@ -1,4 +1,15 @@
+import MarkdownUI
 import SwiftUI
+
+// ── Markdown 主题 ──────────────────────────────────────
+extension MarkdownUI.Theme {
+    /// 简密笔记主题：gitHub 的排版（标题分隔线/代码块/引用样式），
+    /// 但去掉每块文本的背景色 —— 直接融入窗口背景，备忘录风格。
+    static let jianmi = Theme.gitHub.text {
+        FontSize(15)
+        ForegroundColor(.primary)
+    }
+}
 
 // ── 类型配色（1Password 风格的彩色圆角图标）─────────────────
 extension EntryType {
