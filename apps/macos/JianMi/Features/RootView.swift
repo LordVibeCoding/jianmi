@@ -4,6 +4,12 @@ struct RootView: View {
     @EnvironmentObject private var app: AppState
 
     var body: some View {
+        content
+            .onAppear { AppDelegate.showInDock() }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         switch app.state {
         case .needsSetup:
             OnboardingView()

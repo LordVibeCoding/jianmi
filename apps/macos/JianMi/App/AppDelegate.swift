@@ -38,6 +38,30 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         setupIdleAutoLock()
+        setupDockIconPolicy()
+    }
+
+    // ── 程序坞图标：主窗口开 → 显示；主窗口关 → 退回纯菜单栏 ──
+    private func setupDockIconPolicy() {
+        NotificationCenter.default.addObserver(
+            forName: NSWindow.willCloseNotification, object: nil, queue: .main
+        ) { notification in
+            guard let window = notification.object as? NSWindow,
+                  window.identifier?.rawValue.contains("main") == true else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                let mainStillOpen = NSApp.windows.contains {
+                    $0.isVisible && $0.identifier?.rawValue.contains("main") == true
+                }
+                if !mainStillOpen {
+                    NSApp.setActivationPolicy(.accessory)
+                }
+            }
+        }
+    }
+
+    static func showInDock() {
+        NSApp.setActivationPolicy(.regular)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     // ── 快速捕获 ──────────────────────────────────────────
