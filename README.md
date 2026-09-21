@@ -1,11 +1,11 @@
-# SelfVault · 密码储存器
+# 简密 JianMi
 
+> 简单记录你的密码，但你的密码将会 100% 的安全。
 > 自托管 · 零知识加密 · 原生 macOS 密码管理器
-> 代号 SelfVault（可随时改名）
 
 ## 这是什么
 
-一个为个人打造的密码/机密管理器：
+一个为个人打造的密码/机密管理器（纯本地编译自用，不上架 App Store，无需开发者账号）：
 
 - **原生 macOS App**：菜单栏常驻、全局快捷键唤起、Spotlight 式快速捕获/搜索浮窗、三栏主窗口、可钉住悬浮小窗
 - **自托管同步**：数据同步到自己的服务器（Rust 单二进制），零知识 —— 服务器只见密文
@@ -23,6 +23,17 @@
 | 同步服务端 | Rust (axum) | 单二进制、几 MB 内存、零运行时依赖 |
 | Web 端 | 静态页 + libsodium.js/argon2-wasm | 浏览器内解密，服务器零知识 |
 
+## 本地构建（无需开发者账号）
+
+```bash
+brew install xcodegen          # 首次
+cd apps/macos
+xcodegen generate              # 生成 JianMi.xcodeproj
+open JianMi.xcodeproj          # Xcode 中 ⌘R 运行，或：
+xcodebuild -scheme JianMi build
+xcodebuild -scheme JianMi test # 跑全部单元测试
+```
+
 ## 仓库结构
 
 ```
@@ -36,7 +47,7 @@
 ## 路线图
 
 - [x] **M0** 仓库初始化 + 完整设计文档
-- [ ] **M1** 核心：加密引擎、本地库、主窗口 CRUD、主密码 + Touch ID 解锁
+- [x] **M1** 核心：加密引擎、本地库、主窗口 CRUD、主密码 + Touch ID 解锁
 - [ ] **M2** 效率：全局快捷键、快速捕获（⌥⌘N）、快速搜索（⌥⌘P）、菜单栏、剪贴板安全
 - [ ] **M3** 同步：Rust 服务端、token 鉴权、条目级增量同步、local_only
 - [ ] **M4** Web：浏览器内解密只读视图

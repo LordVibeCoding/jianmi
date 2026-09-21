@@ -1,0 +1,630 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0C4233FF9DEEEF31B41A5FDC /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B57CEC1781F94F5E0462AEC /* VaultManager.swift */; };
+		0CF1B3B44DFE4FF7CA400E54 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 620B97D08F471CDF09397D9C /* Sodium */; };
+		26CF7E8C85818443FC967424 /* RecoveryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A861DFE34F4CC5D3A51D0A /* RecoveryCode.swift */; };
+		2B87DAC96AAB921629AEDC0D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D1054CB30A31DBF33DB057 /* AppState.swift */; };
+		3EE4B21EE20EE53E051CF9D7 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D914999EA175A7D777A899A8 /* RootView.swift */; };
+		459C31F7BA32AA832567C74A /* EntryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EB1B1EC2F5153797CA4735 /* EntryStore.swift */; };
+		4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A754AB0E851585AEA1972F67 /* CryptoTests.swift */; };
+		8516FBE21DCBD6820DE58875 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076615F3C3B182971551D6B2 /* Entry.swift */; };
+		88FF93E335AA62D4686EA49F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818991779B679961A780C377 /* MainView.swift */; };
+		8F38199495046854E7677252 /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E3264965F7935C34A2A6BA /* UnlockView.swift */; };
+		92A21430A900A3959A521F55 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF587926DF336D5981610E7D /* EntryDetailView.swift */; };
+		A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81C2324DF37714272D1036 /* AppDatabase.swift */; };
+		A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */; };
+		A89DA9ABED238130484F2044 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 15E093A8FFCEDC337A161022 /* GRDB */; };
+		B26B83D7B0AC9ED11CA6915A /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9620FF2A1E609C61C9BB6E08 /* MenuBarView.swift */; };
+		B7CB5699A052DE51CF32DF15 /* EntryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4524EC5978685A6CB0FE474 /* EntryEditorView.swift */; };
+		C9B705BAEE69D5C4E29068B6 /* SecurePasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */; };
+		D752252C6044A4A33138BC0D /* JianMiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB6C368A5AC8B7D8655B466 /* JianMiApp.swift */; };
+		E158EE8ABE233F66A9944714 /* VaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254269614F1CFD3F8058443C /* VaultTests.swift */; };
+		E286917EDC47B09E06F2AD60 /* CryptoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */; };
+		EF0316E081B037BE2EA818DE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0512A58C2CFC6D9052003CC /* OnboardingView.swift */; };
+		FFA2EB59E0B0AA15068926FC /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		156E4F24B47DBD24F8F4B9DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 93FD33CCCD236D2EE5F44BE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 767F7614345FC6EC791AAE2B;
+			remoteInfo = JianMi;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		076615F3C3B182971551D6B2 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		0A81C2324DF37714272D1036 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
+		1B57CEC1781F94F5E0462AEC /* VaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManager.swift; sourceTree = "<group>"; };
+		254269614F1CFD3F8058443C /* VaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTests.swift; sourceTree = "<group>"; };
+		60E3264965F7935C34A2A6BA /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
+		8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		818991779B679961A780C377 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		82D1054CB30A31DBF33DB057 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		8AB6C368A5AC8B7D8655B466 /* JianMiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JianMiApp.swift; sourceTree = "<group>"; };
+		95DEC6979E07842001A88A7F /* JianMiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JianMiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9620FF2A1E609C61C9BB6E08 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		9CDFBB4EC14F9329914E4282 /* JianMi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JianMi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0512A58C2CFC6D9052003CC /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A754AB0E851585AEA1972F67 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
+		B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoEngine.swift; sourceTree = "<group>"; };
+		C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
+		C6A861DFE34F4CC5D3A51D0A /* RecoveryCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryCode.swift; sourceTree = "<group>"; };
+		CF72272BB260B88D8B6B81B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D6EB1B1EC2F5153797CA4735 /* EntryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryStore.swift; sourceTree = "<group>"; };
+		D914999EA175A7D777A899A8 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		DF587926DF336D5981610E7D /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
+		E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurePasteboard.swift; sourceTree = "<group>"; };
+		E4524EC5978685A6CB0FE474 /* EntryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryEditorView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C4990F67E54760DCDF129076 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A89DA9ABED238130484F2044 /* GRDB in Frameworks */,
+				0CF1B3B44DFE4FF7CA400E54 /* Sodium in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03D59DF2FF83E8F3781D2B81 = {
+			isa = PBXGroup;
+			children = (
+				4E744523AD27D6C27088BD09 /* JianMi */,
+				9C70A87C14BAF50A797ED08C /* JianMiTests */,
+				850CBB63EB5B1ADD13EDE559 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0BC0F4CB458365AF58CED08B /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				DF587926DF336D5981610E7D /* EntryDetailView.swift */,
+				E4524EC5978685A6CB0FE474 /* EntryEditorView.swift */,
+				818991779B679961A780C377 /* MainView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		10BBEA9236173684D1C75096 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				D914999EA175A7D777A899A8 /* RootView.swift */,
+				0BC0F4CB458365AF58CED08B /* Main */,
+				34A35BB38D08BA25FE93BF3A /* MenuBar */,
+				E695B182912D1213574FFB40 /* Onboarding */,
+				119617CE07487F095AAE9106 /* Unlock */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		119617CE07487F095AAE9106 /* Unlock */ = {
+			isa = PBXGroup;
+			children = (
+				60E3264965F7935C34A2A6BA /* UnlockView.swift */,
+			);
+			path = Unlock;
+			sourceTree = "<group>";
+		};
+		176AF87E9031C4BC615BC047 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				82D1054CB30A31DBF33DB057 /* AppState.swift */,
+				8AB6C368A5AC8B7D8655B466 /* JianMiApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		34A35BB38D08BA25FE93BF3A /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				9620FF2A1E609C61C9BB6E08 /* MenuBarView.swift */,
+			);
+			path = MenuBar;
+			sourceTree = "<group>";
+		};
+		427A61AFAC45356410B399AD /* Vault */ = {
+			isa = PBXGroup;
+			children = (
+				8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */,
+				1B57CEC1781F94F5E0462AEC /* VaultManager.swift */,
+			);
+			path = Vault;
+			sourceTree = "<group>";
+		};
+		47013597A1483127721A8E55 /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */,
+				C6A861DFE34F4CC5D3A51D0A /* RecoveryCode.swift */,
+			);
+			path = Crypto;
+			sourceTree = "<group>";
+		};
+		4E744523AD27D6C27088BD09 /* JianMi */ = {
+			isa = PBXGroup;
+			children = (
+				CF72272BB260B88D8B6B81B4 /* Info.plist */,
+				176AF87E9031C4BC615BC047 /* App */,
+				C5460C4FD60E7888197A72C9 /* Core */,
+				10BBEA9236173684D1C75096 /* Features */,
+			);
+			path = JianMi;
+			sourceTree = "<group>";
+		};
+		850CBB63EB5B1ADD13EDE559 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9CDFBB4EC14F9329914E4282 /* JianMi.app */,
+				95DEC6979E07842001A88A7F /* JianMiTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9C70A87C14BAF50A797ED08C /* JianMiTests */ = {
+			isa = PBXGroup;
+			children = (
+				A754AB0E851585AEA1972F67 /* CryptoTests.swift */,
+				254269614F1CFD3F8058443C /* VaultTests.swift */,
+			);
+			path = JianMiTests;
+			sourceTree = "<group>";
+		};
+		9F2F00656F0A736DC722ED93 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				D6EB1B1EC2F5153797CA4735 /* EntryStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		B63C02FB2925024705987ED4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				076615F3C3B182971551D6B2 /* Entry.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C5460C4FD60E7888197A72C9 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				47013597A1483127721A8E55 /* Crypto */,
+				CF600224BDE6ABC326F42BF1 /* Database */,
+				B63C02FB2925024705987ED4 /* Models */,
+				9F2F00656F0A736DC722ED93 /* Store */,
+				D29D344F6DAAC117540528FD /* Util */,
+				427A61AFAC45356410B399AD /* Vault */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		CF600224BDE6ABC326F42BF1 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				0A81C2324DF37714272D1036 /* AppDatabase.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		D29D344F6DAAC117540528FD /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */,
+				E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		E695B182912D1213574FFB40 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				A0512A58C2CFC6D9052003CC /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		600B6A3EBEE454B01FD094B0 /* JianMiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA14C45D6AC8564CF78F3D8E /* Build configuration list for PBXNativeTarget "JianMiTests" */;
+			buildPhases = (
+				91A33D3D75D0C2A024E480A7 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6998D0F055EE42D8E9178689 /* PBXTargetDependency */,
+			);
+			name = JianMiTests;
+			packageProductDependencies = (
+			);
+			productName = JianMiTests;
+			productReference = 95DEC6979E07842001A88A7F /* JianMiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		767F7614345FC6EC791AAE2B /* JianMi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A4EB5E8F111003ECFED2DA1F /* Build configuration list for PBXNativeTarget "JianMi" */;
+			buildPhases = (
+				E396003733A7C2FCB5A3BC65 /* Sources */,
+				C4990F67E54760DCDF129076 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = JianMi;
+			packageProductDependencies = (
+				15E093A8FFCEDC337A161022 /* GRDB */,
+				620B97D08F471CDF09397D9C /* Sodium */,
+			);
+			productName = JianMi;
+			productReference = 9CDFBB4EC14F9329914E4282 /* JianMi.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		93FD33CCCD236D2EE5F44BE1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					600B6A3EBEE454B01FD094B0 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+					767F7614345FC6EC791AAE2B = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 7C5E6612DE600144888809C0 /* Build configuration list for PBXProject "JianMi" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 03D59DF2FF83E8F3781D2B81;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				75AE954095AA994E4054F1AE /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				7E7A77B709D62E2EAE8CC7C3 /* XCRemoteSwiftPackageReference "swift-sodium" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 850CBB63EB5B1ADD13EDE559 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				767F7614345FC6EC791AAE2B /* JianMi */,
+				600B6A3EBEE454B01FD094B0 /* JianMiTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		91A33D3D75D0C2A024E480A7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */,
+				E158EE8ABE233F66A9944714 /* VaultTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E396003733A7C2FCB5A3BC65 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */,
+				2B87DAC96AAB921629AEDC0D /* AppState.swift in Sources */,
+				E286917EDC47B09E06F2AD60 /* CryptoEngine.swift in Sources */,
+				8516FBE21DCBD6820DE58875 /* Entry.swift in Sources */,
+				92A21430A900A3959A521F55 /* EntryDetailView.swift in Sources */,
+				B7CB5699A052DE51CF32DF15 /* EntryEditorView.swift in Sources */,
+				459C31F7BA32AA832567C74A /* EntryStore.swift in Sources */,
+				D752252C6044A4A33138BC0D /* JianMiApp.swift in Sources */,
+				A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */,
+				88FF93E335AA62D4686EA49F /* MainView.swift in Sources */,
+				B26B83D7B0AC9ED11CA6915A /* MenuBarView.swift in Sources */,
+				EF0316E081B037BE2EA818DE /* OnboardingView.swift in Sources */,
+				FFA2EB59E0B0AA15068926FC /* PasswordGenerator.swift in Sources */,
+				26CF7E8C85818443FC967424 /* RecoveryCode.swift in Sources */,
+				3EE4B21EE20EE53E051CF9D7 /* RootView.swift in Sources */,
+				C9B705BAEE69D5C4E29068B6 /* SecurePasteboard.swift in Sources */,
+				8F38199495046854E7677252 /* UnlockView.swift in Sources */,
+				0C4233FF9DEEEF31B41A5FDC /* VaultManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6998D0F055EE42D8E9178689 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 767F7614345FC6EC791AAE2B /* JianMi */;
+			targetProxy = 156E4F24B47DBD24F8F4B9DF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1CC6E47A233E02E052E31206 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = JianMi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jianmi.JianMi;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		290E8A9DBDFE3D263E34C71A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jianmi.JianMiTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JianMi.app/Contents/MacOS/JianMi";
+			};
+			name = Release;
+		};
+		372144A0E35B13C7D218836E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B299BEF898C56A5CA082F400 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CB6704E07B37F25087E095DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jianmi.JianMiTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JianMi.app/Contents/MacOS/JianMi";
+			};
+			name = Debug;
+		};
+		FD74B25C666A8E5E8CAFC3C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = JianMi/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jianmi.JianMi;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7C5E6612DE600144888809C0 /* Build configuration list for PBXProject "JianMi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				372144A0E35B13C7D218836E /* Debug */,
+				B299BEF898C56A5CA082F400 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A4EB5E8F111003ECFED2DA1F /* Build configuration list for PBXNativeTarget "JianMi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CC6E47A233E02E052E31206 /* Debug */,
+				FD74B25C666A8E5E8CAFC3C2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FA14C45D6AC8564CF78F3D8E /* Build configuration list for PBXNativeTarget "JianMiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB6704E07B37F25087E095DE /* Debug */,
+				290E8A9DBDFE3D263E34C71A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		75AE954095AA994E4054F1AE /* XCRemoteSwiftPackageReference "GRDB.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/groue/GRDB.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
+		7E7A77B709D62E2EAE8CC7C3 /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jedisct1/swift-sodium";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		15E093A8FFCEDC337A161022 /* GRDB */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 75AE954095AA994E4054F1AE /* XCRemoteSwiftPackageReference "GRDB.swift" */;
+			productName = GRDB;
+		};
+		620B97D08F471CDF09397D9C /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7E7A77B709D62E2EAE8CC7C3 /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 93FD33CCCD236D2EE5F44BE1 /* Project object */;
+}

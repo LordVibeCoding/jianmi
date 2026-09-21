@@ -1,4 +1,4 @@
-# SelfVault 设计文档（M0）
+# 简密（JianMi）设计文档
 
 > 状态：定稿 v1 · 2025-06
 > 本文档是整个项目的单一事实来源（Single Source of Truth），所有实现以此为准。
@@ -61,7 +61,7 @@
 ### 加密格式（版本化，为未来算法升级留门）
 
 ```
-blob = magic(2B "SV") | fmt_ver(1B) | nonce(24B) | ciphertext+tag
+blob = magic(2B "JM") | fmt_ver(1B) | nonce(24B) | ciphertext+tag
 ```
 
 ---
@@ -165,7 +165,7 @@ GET  /api/health
 | 抓浏览器当前 URL | 自动化(Apple Events)，首次弹窗 | M2（可拒绝降级） |
 | Auto-Type 模拟键入 | 辅助功能 | M5 可选 |
 | 系统级自动填充 | `ASCredentialProviderExtension` + Apple 开发者账号 entitlement，扩展强制沙盒 | M5 |
-| 分发 | Developer ID 签名 + 公证；自用可 ad-hoc（每次更新需手动放行） | M5 |
+| 分发 | **已决策：无开发者账号，本地编译 ad-hoc 签名自用**；系统 AutoFill 扩展因此不可用，以 Auto-Type + 快速搜索复制替代 | — |
 
 ### 5.4 安全行为
 

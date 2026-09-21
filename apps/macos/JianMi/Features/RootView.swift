@@ -1,0 +1,20 @@
+import SwiftUI
+
+struct RootView: View {
+    @EnvironmentObject private var app: AppState
+
+    var body: some View {
+        switch app.state {
+        case .needsSetup:
+            OnboardingView()
+        case .locked:
+            UnlockView()
+        case .unlocked:
+            if let store = app.store {
+                MainView(store: store)
+            } else {
+                ProgressView()
+            }
+        }
+    }
+}
