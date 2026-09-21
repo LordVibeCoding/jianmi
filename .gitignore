@@ -1,0 +1,34 @@
+# macOS
+.DS_Store
+
+# Xcode
+apps/macos/**/xcuserdata/
+apps/macos/**/*.xcuserstate
+apps/macos/**/DerivedData/
+apps/macos/**/build/
+*.xcworkspace/xcuserdata/
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Rust
+server/target/
+**/*.rs.bk
+
+# Node（如 web 端引入构建工具）
+node_modules/
+
+# 密钥与本地配置 —— 永远不进仓库
+*.pem
+*.key
+*.p12
+.env
+.env.*
+secrets/
+config.local.*
+
+# 本地数据库/测试库
+*.sqlite
+*.sqlite3
+*.db
