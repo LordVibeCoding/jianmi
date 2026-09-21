@@ -48,8 +48,8 @@ final class CategoryStore: ObservableObject {
         Category(id: "ssh", name: "服务器/SSH", icon: "terminal",
                  colorHex: "#9558F6",
                  fields: [.url, .username, .password], isBuiltin: true),
-        Category(id: "identity", name: "证件", icon: "person.text.rectangle",
-                 colorHex: "#2FA8A8", fields: [], isBuiltin: true),
+        // 「证件」已移除：需要的话用自定义分类创建；
+        // 存量 identity 条目仍可在全部条目中查看（兑底样式）并可改分类
         Category(id: "note", name: "安全笔记", icon: "note.text",
                  colorHex: "#E3B341", fields: [],
                  isNoteLike: true, isBuiltin: true),
