@@ -36,8 +36,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func toggleQuickCapture() {
         if capturePanel.isVisible { capturePanel.hide(); return }
         searchPanel.hide()
-        // 先抓浏览器标签（此刻前台还是浏览器），再弹面板
-        let tab = BrowserURLGrabber.grabFrontmost()
+        // 前台是浏览器 → 用扩展实时上报的标签页预填（零权限，无需任何授权弹窗）
+        var tab: BrowserTab?
+        if let bundleID = NSWorkspace.shared.frontmostApplication?.bundleIdentifier,
+           BridgeServer.browserBundleIDs.contains(bundleID) {
+            tab = BridgeServer.shared.lastTab
+        }
         capturePanel.show(AnyView(
             QuickCaptureView(prefill: tab) { [weak self] in
                 self?.capturePanel.hide()

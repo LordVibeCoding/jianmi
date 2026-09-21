@@ -13,6 +13,8 @@ struct SettingsView: View {
                 .tabItem { Label("安全", systemImage: "lock.shield") }
             SyncSettingsView()
                 .tabItem { Label("同步", systemImage: "arrow.triangle.2.circlepath") }
+            BrowserExtensionSettings()
+                .tabItem { Label("浏览器扩展", systemImage: "puzzlepiece.extension") }
             AboutSettings()
                 .tabItem { Label("关于", systemImage: "info.circle") }
         }
@@ -292,6 +294,65 @@ struct SyncStatusLabel: View {
         case .failed(let message):
             Label(message, systemImage: "exclamationmark.icloud")
                 .font(.caption).foregroundStyle(.red).lineLimit(1)
+        }
+    }
+}
+
+// ── 浏览器扩展 ───────────────────────────────────
+struct BrowserExtensionSettings: View {
+    @State private var token = ""
+    @State private var copied = false
+    @State private var confirmRegenerate = false
+
+    var body: some View {
+        Form {
+            Section {
+                LabeledContent("桥接服务") {
+                    Label("运行中 · 127.0.0.1:\(String(BridgeServer.defaultPort))",
+                          systemImage: "circle.fill")
+                        .foregroundStyle(.green)
+                        .font(.caption)
+                }
+                HStack {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("配对令牌")
+                        Text(token)
+                            .font(.caption.monospaced())
+                            .foregroundStyle(.secondary)
+                            .textSelection(.enabled)
+                            .lineLimit(1)
+                            .truncationMode(.middle)
+                    }
+                    Spacer()
+                    Button(copied ? "已复制" : "复制") {
+                        SecurePasteboard.copy(token, clearAfter: 0)
+                        copied = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { copied = false }
+                    }
+                }
+                Button("重新生成令牌…", role: .destructive) { confirmRegenerate = true }
+            }
+
+            Section("安装扩展（Chrome / Edge / Arc / Brave）") {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("1. 打开 chrome://extensions，开启右上角「开发者模式」")
+                    Text("2. 点「加载已解压的扩展程序」，选择仓库里的 extension/ 文件夹")
+                    Text("3. 点扩展图标 → 粘贴上方配对令牌 → 完成")
+                }
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                Text("扩展会实时上报当前标签页 → ⌥⌘N 零权限预填网址；在网页上点扩展图标可直接填充 / 保存账号。")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+        }
+        .formStyle(.grouped)
+        .padding(.vertical, 8)
+        .onAppear { token = BridgeServer.shared.token }
+        .confirmationDialog("重新生成后，所有浏览器扩展需要重新配对。", isPresented: $confirmRegenerate) {
+            Button("重新生成", role: .destructive) {
+                token = BridgeServer.shared.regenerateToken()
+            }
         }
     }
 }

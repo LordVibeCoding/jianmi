@@ -50,7 +50,6 @@ targets:
         CFBundleDisplayName: 简密
         CFBundleName: JianMi
         LSUIElement: true
-        NSAppleEventsUsageDescription: 简密需要读取浏览器当前页面地址，用于快速捕获时自动填写网址。
         NSFaceIDUsageDescription: 使用触控 ID 解锁您的密码库。
         NSHumanReadableCopyright: © 2025 简密. 本地私用构建.
         CFBundleIconFile: AppIcon

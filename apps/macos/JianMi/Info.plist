@@ -31,8 +31,6 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSAppleEventsUsageDescription</key>
-	<string>简密需要读取浏览器当前页面地址，用于快速捕获时自动填写网址。</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>使用触控 ID 解锁您的密码库。</string>
 	<key>NSHumanReadableCopyright</key>

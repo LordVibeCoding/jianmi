@@ -18,6 +18,7 @@
 		4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A754AB0E851585AEA1972F67 /* CryptoTests.swift */; };
 		576255995766E881869007E7 /* AutoTyper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6566B9FEB09660CC52B3828E /* AutoTyper.swift */; };
 		5A379265CEE33CB2FCFBC360 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4505E208AFB7A0227B6C9A /* SettingsView.swift */; };
+		65F5EA08FC5D92A4893ED22F /* BridgeServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA2A8DE0A835F92CE38DA38 /* BridgeServer.swift */; };
 		8516FBE21DCBD6820DE58875 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076615F3C3B182971551D6B2 /* Entry.swift */; };
 		853A5E0DE4A39D06AA0D5EE0 /* SpotlightPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BBBAAB83E3BDA713B40087 /* SpotlightPanel.swift */; };
 		88FF93E335AA62D4686EA49F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818991779B679961A780C377 /* MainView.swift */; };
@@ -35,6 +36,7 @@
 		C36D92BD02E375E6CE9EE8E6 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 71AC972C9D01A5D691DCCD43 /* MarkdownUI */; };
 		C9B705BAEE69D5C4E29068B6 /* SecurePasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */; };
 		D1155DCBCE27641295412563 /* PinnedEntryPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F17B1771CC0DC91D9429099 /* PinnedEntryPanel.swift */; };
+		D73F6B7ECB05C351C702CD2A /* BridgeServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722BBCAEE0E0A82F008F4600 /* BridgeServerTests.swift */; };
 		D752252C6044A4A33138BC0D /* JianMiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB6C368A5AC8B7D8655B466 /* JianMiApp.swift */; };
 		DB0652B175FD503A8D91639E /* QuickCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DAA1F769A32FE957F428DA /* QuickCaptureView.swift */; };
 		E158EE8ABE233F66A9944714 /* VaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254269614F1CFD3F8058443C /* VaultTests.swift */; };
@@ -42,7 +44,6 @@
 		E549E3CB5C96E2ABE2C51DA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88004022A7972BEA90C5A565 /* AppDelegate.swift */; };
 		E69105584B2247234846D41F /* QuickSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926E2DA6C0C75575898F6D53 /* QuickSearchView.swift */; };
 		EF0316E081B037BE2EA818DE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0512A58C2CFC6D9052003CC /* OnboardingView.swift */; };
-		F91C4463A4E16AF1C664D55D /* BrowserURLGrabber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28311CBEE3F832919A862F30 /* BrowserURLGrabber.swift */; };
 		FFA2EB59E0B0AA15068926FC /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,12 +64,13 @@
 		1B57CEC1781F94F5E0462AEC /* VaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManager.swift; sourceTree = "<group>"; };
 		22BBBAAB83E3BDA713B40087 /* SpotlightPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightPanel.swift; sourceTree = "<group>"; };
 		254269614F1CFD3F8058443C /* VaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTests.swift; sourceTree = "<group>"; };
-		28311CBEE3F832919A862F30 /* BrowserURLGrabber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserURLGrabber.swift; sourceTree = "<group>"; };
 		30F77E58F84A0EE5DB46B52C /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		3C77876BF1D30A11051CE08F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		4F17B1771CC0DC91D9429099 /* PinnedEntryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedEntryPanel.swift; sourceTree = "<group>"; };
 		60E3264965F7935C34A2A6BA /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
 		6566B9FEB09660CC52B3828E /* AutoTyper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTyper.swift; sourceTree = "<group>"; };
+		6EA2A8DE0A835F92CE38DA38 /* BridgeServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeServer.swift; sourceTree = "<group>"; };
+		722BBCAEE0E0A82F008F4600 /* BridgeServerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeServerTests.swift; sourceTree = "<group>"; };
 		8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		818991779B679961A780C377 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		82D1054CB30A31DBF33DB057 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
@@ -171,6 +173,14 @@
 			path = Panels;
 			sourceTree = "<group>";
 		};
+		26BC97A10FB99CA8E96CCAD0 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				6EA2A8DE0A835F92CE38DA38 /* BridgeServer.swift */,
+			);
+			path = Bridge;
+			sourceTree = "<group>";
+		};
 		34A35BB38D08BA25FE93BF3A /* MenuBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +248,7 @@
 		9C70A87C14BAF50A797ED08C /* JianMiTests */ = {
 			isa = PBXGroup;
 			children = (
+				722BBCAEE0E0A82F008F4600 /* BridgeServerTests.swift */,
 				A754AB0E851585AEA1972F67 /* CryptoTests.swift */,
 				254269614F1CFD3F8058443C /* VaultTests.swift */,
 				A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */,
@@ -272,6 +283,7 @@
 		C5460C4FD60E7888197A72C9 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				26BC97A10FB99CA8E96CCAD0 /* Bridge */,
 				47013597A1483127721A8E55 /* Crypto */,
 				CF600224BDE6ABC326F42BF1 /* Database */,
 				B63C02FB2925024705987ED4 /* Models */,
@@ -304,7 +316,6 @@
 			isa = PBXGroup;
 			children = (
 				6566B9FEB09660CC52B3828E /* AutoTyper.swift */,
-				28311CBEE3F832919A862F30 /* BrowserURLGrabber.swift */,
 				C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */,
 				E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */,
 				A5A14BF135009ECB02E50F50 /* TOTP.swift */,
@@ -425,6 +436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D73F6B7ECB05C351C702CD2A /* BridgeServerTests.swift in Sources */,
 				4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */,
 				E158EE8ABE233F66A9944714 /* VaultTests.swift in Sources */,
 				940C822F47BE88D4F649B1FE /* WebFixtureTests.swift in Sources */,
@@ -439,7 +451,7 @@
 				E549E3CB5C96E2ABE2C51DA2 /* AppDelegate.swift in Sources */,
 				2B87DAC96AAB921629AEDC0D /* AppState.swift in Sources */,
 				576255995766E881869007E7 /* AutoTyper.swift in Sources */,
-				F91C4463A4E16AF1C664D55D /* BrowserURLGrabber.swift in Sources */,
+				65F5EA08FC5D92A4893ED22F /* BridgeServer.swift in Sources */,
 				E286917EDC47B09E06F2AD60 /* CryptoEngine.swift in Sources */,
 				8516FBE21DCBD6820DE58875 /* Entry.swift in Sources */,
 				92A21430A900A3959A521F55 /* EntryDetailView.swift in Sources */,

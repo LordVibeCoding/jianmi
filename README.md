@@ -37,8 +37,16 @@ xcodebuild -scheme JianMi test # 跑全部单元测试
 ```
 
 **全局快捷键**（可在设置中自定义）：
-- `⌥⌘N` 快速捕获 —— 自动抓取浏览器当前网址，填账号密码回车即存
+- `⌥⌘N` 快速捕获 —— 浏览器当前网址自动预填（由扩展上报，零权限），填账号密码回车即存
 - `⌥⌘P` 快速搜索 —— ↩复制密码 / ⌥↩复制账号 / ⌘↩打开网址 / ⌃↩自动键入
+
+### 浏览器扩展（Chrome / Edge / Arc / Brave）
+
+与本地 App 通过 `127.0.0.1:48787` 桥接（配对令牌鉴权，外网不可达）：
+
+1. 打开 `chrome://extensions` → 开启「开发者模式」→「加载已解压的扩展程序」→ 选 `extension/` 目录
+2. 简密 App → 设置 → 浏览器扩展 → 复制配对令牌 → 粘到扩展里
+3. 之后：点扩展图标可**一键填充**当前网站账号密码 / 复制密码和 2FA 验证码 / 保存新账号；扩展实时上报当前标签页，⌥⌘N 无需任何系统权限即可预填网址
 
 ### 同步服务端（自己的服务器）
 
@@ -55,10 +63,11 @@ cd server && cargo build --release
 
 ```
 ├── docs/           设计文档（先读 docs/DESIGN.md）
-├── apps/macos/     macOS 客户端（Xcode 工程，M1 开始）
-├── server/         Rust 同步服务端（M3 开始）
-├── web/            静态 Web 只读视图（M4 开始）
-└── scripts/        构建/部署脚本
+├── apps/macos/     macOS 客户端（Swift/SwiftUI，xcodegen 工程）
+├── extension/      浏览器扩展（Manifest V3，与本地 App 桥接）
+├── server/         Rust 同步服务端（单二进制，零知识）
+├── web/            静态 Web 只读视图（浏览器内解密）
+└── scripts/        构建/部署/验证脚本
 ```
 
 ## 路线图

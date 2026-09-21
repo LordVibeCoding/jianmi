@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  :root {
+    --bg: #16191f; --panel: #1f242c; --border: #303743;
+    --text: #e8edf4; --dim: #8b96a5; --accent: #4c7dff;
+    --green: #3fb950; --red: #f85149; --orange: #d29922;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 340px; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    font-size: 13px;
+  }
+  header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 14px; border-bottom: 1px solid var(--border);
+  }
+  .logo {
+    width: 24px; height: 24px; border-radius: 6px;
+    background: linear-gradient(135deg, #5a8cff, #1f38d9);
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+  header b { font-size: 14px; flex: 1; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.on { background: var(--green); }
+  .dot.off { background: var(--red); }
+  .dot.locked { background: var(--orange); }
+
+  #search {
+    width: calc(100% - 24px); margin: 10px 12px 6px;
+    padding: 8px 10px; border-radius: 8px; font-size: 13px;
+    background: var(--panel); border: 1px solid var(--border);
+    color: var(--text); outline: none;
+  }
+  #search:focus { border-color: var(--accent); }
+
+  #list { max-height: 320px; overflow-y: auto; padding: 4px 8px 8px; }
+  .entry {
+    display: flex; align-items: center; gap: 9px;
+    padding: 8px 8px; border-radius: 8px; cursor: default;
+  }
+  .entry:hover { background: var(--panel); }
+  .badge {
+    width: 30px; height: 30px; border-radius: 8px; flex: 0 0 30px;
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+  .info { flex: 1; min-width: 0; }
+  .title { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sub { font-size: 11px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .acts { display: flex; gap: 4px; opacity: 0; transition: opacity .12s; }
+  .entry:hover .acts { opacity: 1; }
+  .acts button {
+    padding: 5px 8px; font-size: 11px; border-radius: 6px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); cursor: pointer;
+  }
+  .acts button:hover { border-color: var(--accent); color: var(--accent); }
+  .acts button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .acts button.ok { background: var(--green); border-color: var(--green); color: #fff; }
+
+  .state { padding: 28px 20px; text-align: center; color: var(--dim); line-height: 1.7; }
+  .state .big { font-size: 26px; margin-bottom: 6px; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 10px 12px;
+  }
+  footer .savebtn {
+    width: 100%; padding: 8px; border-radius: 8px; border: 1px dashed var(--border);
+    background: transparent; color: var(--dim); cursor: pointer; font-size: 12px;
+  }
+  footer .savebtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* 保存表单 */
+  #saveForm { display: none; }
+  #saveForm.show { display: block; }
+  #saveForm input {
+    width: 100%; margin-bottom: 6px; padding: 7px 9px; border-radius: 7px;
+    background: var(--bg); border: 1px solid var(--border); color: var(--text);
+    font-size: 12px; outline: none;
+  }
+  #saveForm input:focus { border-color: var(--accent); }
+  .pwrow { display: flex; gap: 6px; }
+  .pwrow input { flex: 1; }
+  .pwrow button, .saverow button {
+    padding: 7px 10px; border-radius: 7px; border: 1px solid var(--border);
+    background: var(--panel); color: var(--text); cursor: pointer; font-size: 12px;
+  }
+  .saverow { display: flex; gap: 6px; margin-top: 2px; }
+  .saverow .go { flex: 1; background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .toast {
+    position: fixed; left: 50%; top: 10px; transform: translateX(-50%);
+    background: var(--green); color: #fff; padding: 6px 14px; border-radius: 99px;
+    font-size: 12px; font-weight: 500; z-index: 99;
+  }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">🔑</div>
+    <b>简密</b>
+    <div class="dot off" id="dot"></div>
+  </header>
+  <div id="content"></div>
+  <script src="popup.js"></script>
+</body>
+</html>

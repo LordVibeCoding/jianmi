@@ -147,6 +147,28 @@ final class EntryStore: ObservableObject {
         }) ?? []
     }
 
+    /// 按域名匹配（浏览器扩展用）：精确匹配或子域名匹配。
+    func matching(host: String, limit: Int = 20) -> [Entry] {
+        let h = host.lowercased()
+        // 去 www 前缀的主域名，让 www.github.com 能匹配 github.com 条目
+        let bare = h.hasPrefix("www.") ? String(h.dropFirst(4)) : h
+        return (try? dbQueue.read { db in
+            try Entry.fetchAll(db, sql: """
+                SELECT * FROM entry
+                WHERE deletedAt IS NULL AND urlHost IS NOT NULL AND (
+                    urlHost = ?1 OR urlHost = ?2 OR
+                    urlHost LIKE '%.' || ?2 OR ?2 LIKE '%.' || urlHost
+                )
+                ORDER BY favorite DESC, updatedAt DESC LIMIT ?3
+                """, arguments: [h, bare, limit])
+        }) ?? []
+    }
+
+    /// 按 uuid 取单条（浏览器扩展用）。
+    func entry(uuid: String) -> Entry? {
+        try? dbQueue.read { db in try Entry.fetchOne(db, key: uuid) }
+    }
+
     // ── 加解密 ────────────────────────────────────────────
     private func key() throws -> [UInt8] {
         guard let key = vault.vaultKey else { throw VaultError.notUnlocked }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    background: #16191f; color: #e8edf4; display: flex; justify-content: center;
+    padding-top: 60px; min-height: 100vh; margin: 0;
+  }
+  .card {
+    width: 420px; background: #1f242c; border: 1px solid #303743;
+    border-radius: 14px; padding: 30px;
+  }
+  h1 { font-size: 18px; margin: 0 0 6px; }
+  p { font-size: 13px; color: #8b96a5; line-height: 1.7; margin: 0 0 18px; }
+  input {
+    width: 100%; padding: 10px 12px; border-radius: 8px; box-sizing: border-box;
+    background: #16191f; border: 1px solid #303743; color: #e8edf4;
+    font-size: 13px; outline: none;
+  }
+  input:focus { border-color: #4c7dff; }
+  button {
+    width: 100%; margin-top: 14px; padding: 10px; border-radius: 8px; border: none;
+    background: #4c7dff; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .msg { margin-top: 12px; font-size: 13px; text-align: center; min-height: 18px; }
+  .ok { color: #3fb950; } .err { color: #f85149; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔑 简密 · 配对</h1>
+    <p>打开 Mac 上的简密 App → 设置 → 浏览器扩展，复制「配对令牌」粘贴到下方。令牌只保存在本浏览器中，与 App 的通信仅走本机回环地址（127.0.0.1）。</p>
+    <input id="token" type="password" placeholder="配对令牌">
+    <button id="save">保存并测试连接</button>
+    <div class="msg" id="msg"></div>
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
