@@ -9,8 +9,13 @@ struct MainView: View {
 
     @State private var selectedID: Entry.ID?
     @State private var showingEditor = false
-    @State private var editingCategory: Category?
-    @State private var showingCategoryEditor = false
+    @State private var categorySheet: CategorySheetTarget?
+
+    /// sheet(item:) 目标：避免 isPresented + 独立状态的时序问题
+    struct CategorySheetTarget: Identifiable {
+        let id: String
+        let category: Category?    // nil = 新建
+    }
 
     var body: some View {
         NavigationSplitView {
@@ -66,8 +71,7 @@ struct MainView: View {
                                label: category.name, icon: category.icon)
                         .contextMenu {
                             Button("编辑分类…") {
-                                editingCategory = category
-                                showingCategoryEditor = true
+                                categorySheet = .init(id: category.id, category: category)
                             }
                             if category.isBuiltin, categories.isOverridden(category.id) {
                                 Button("恢复默认") {
@@ -90,8 +94,7 @@ struct MainView: View {
                     Text("分类")
                     Spacer()
                     Button {
-                        editingCategory = nil
-                        showingCategoryEditor = true
+                        categorySheet = .init(id: "new", category: nil)
                     } label: {
                         Image(systemName: "plus.circle")
                             .font(.system(size: 12))
@@ -124,8 +127,8 @@ struct MainView: View {
                 .background(.bar)
             }
         }
-        .sheet(isPresented: $showingCategoryEditor) {
-            CategoryEditorView(editing: editingCategory)
+        .sheet(item: $categorySheet) { target in
+            CategoryEditorView(editing: target.category)
         }
     }
 
