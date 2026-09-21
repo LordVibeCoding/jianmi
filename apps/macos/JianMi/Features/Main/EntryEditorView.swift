@@ -1,6 +1,8 @@
+import MarkdownUI
 import SwiftUI
 
 /// 新建 / 编辑条目（sheet）。
+/// 安全笔记类型 = 纯 Markdown 文档模式：不显示账号/密码/网址等凭证字段。
 struct EntryEditorView: View {
     @ObservedObject var store: EntryStore
     let editing: Entry?
@@ -15,7 +17,10 @@ struct EntryEditorView: View {
     @State private var error: String?
     @State private var showGenerator = false
     @State private var revealPassword = true
+    @State private var previewNotes = false
     @State private var loaded = false
+
+    private var isNote: Bool { draft.type == .note }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -37,7 +42,9 @@ struct EntryEditorView: View {
                             Label(t.label, systemImage: t.icon).tag(t)
                         }
                     }
-                    TextField("名称", text: $draft.title, prompt: Text("如：GitHub"))
+                    TextField("名称", text: $draft.title,
+                              prompt: Text(isNote ? "笔记标题" : "如：GitHub"))
+                    if !isNote {
                     TextField("网址", text: $draft.urlFull, prompt: Text("github.com"))
                     TextField("账号", text: $draft.username, prompt: Text("用户名 / 邮箱 / 手机号"))
                     HStack {
@@ -75,6 +82,7 @@ struct EntryEditorView: View {
                     }
                     TextField("两步验证密钥（TOTP）", text: $totpSecret,
                               prompt: Text("base32 密钥或 otpauth:// 链接"))
+                    }
                 }
 
                 Section {
@@ -91,6 +99,7 @@ struct EntryEditorView: View {
                     .disabled(draft.type.forcesLocalOnly)
                 }
 
+                if !isNote {
                 Section("自定义字段") {
                     ForEach($customFields) { $field in
                         HStack(spacing: 8) {
@@ -119,11 +128,29 @@ struct EntryEditorView: View {
                     }
                     .buttonStyle(.borderless)
                 }
+                }
 
-                Section("笔记（支持 Markdown）") {
-                    TextEditor(text: $draft.notesMarkdown)
-                        .font(.body.monospaced())
-                        .frame(minHeight: 90)
+                Section(isNote ? "内容（Markdown）" : "笔记（支持 Markdown）") {
+                    Picker("", selection: $previewNotes) {
+                        Text("编写").tag(false)
+                        Text("预览").tag(true)
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+
+                    if previewNotes {
+                        ScrollView {
+                            Markdown(draft.notesMarkdown.isEmpty ? "*暂无内容*" : draft.notesMarkdown)
+                                .markdownTheme(.gitHub)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.vertical, 4)
+                        }
+                        .frame(minHeight: isNote ? 280 : 90)
+                    } else {
+                        TextEditor(text: $draft.notesMarkdown)
+                            .font(.body.monospaced())
+                            .frame(minHeight: isNote ? 280 : 90)
+                    }
                 }
             }
             .formStyle(.grouped)
@@ -139,7 +166,8 @@ struct EntryEditorView: View {
                 Button(editing == nil ? "保存" : "更新") { save() }
                     .keyboardShortcut(.defaultAction)
                     .buttonStyle(.borderedProminent)
-                    .disabled(draft.title.isEmpty && draft.urlFull.isEmpty)
+                    .disabled(draft.title.isEmpty && draft.urlFull.isEmpty
+                              && draft.notesMarkdown.isEmpty)
             }
             .padding(14)
         }

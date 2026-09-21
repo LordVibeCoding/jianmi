@@ -133,16 +133,26 @@ struct EntryDetailView: View {
                     }
                 }
 
-                // Markdown 笔记
+                // Markdown 笔记（安全笔记类型 = 正文直接渲染，不加「笔记」标签）
                 if !body.notesMarkdown.isEmpty {
-                    VStack(alignment: .leading, spacing: 6) {
-                        sectionLabel("笔记")
+                    if entry.type == .note {
                         Card {
                             Markdown(body.notesMarkdown)
                                 .markdownTheme(.gitHub)
                                 .textSelection(.enabled)
-                                .padding(14)
+                                .padding(16)
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    } else {
+                        VStack(alignment: .leading, spacing: 6) {
+                            sectionLabel("笔记")
+                            Card {
+                                Markdown(body.notesMarkdown)
+                                    .markdownTheme(.gitHub)
+                                    .textSelection(.enabled)
+                                    .padding(14)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                     }
                 }
