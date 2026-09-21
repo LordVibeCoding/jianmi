@@ -7,11 +7,14 @@ import Foundation
 final class AppState: ObservableObject {
     enum VaultState { case needsSetup, locked, unlocked }
 
+    static let shared = AppState()
+
     @Published private(set) var state: VaultState
     @Published var lastError: String?
 
     let vault: VaultManager
     private(set) var store: EntryStore?
+    private(set) var sync: SyncEngine?
 
     init(vault: VaultManager = VaultManager()) {
         self.vault = vault
@@ -19,26 +22,33 @@ final class AppState: ObservableObject {
         registerAutoLock()
     }
 
+    private func attachStore() throws {
+        let store = try EntryStore(vault: vault)
+        let sync = SyncEngine(store: store, vault: vault)
+        store.onChange = { [weak sync] in sync?.scheduleDebounced() }
+        self.store = store
+        self.sync = sync
+        state = .unlocked
+        Task { await sync.syncIfEnabled() }   // 解锁后自动同步
+    }
+
     // ── 生命周期 ──────────────────────────────────────────
     /// 创建密码库，返回恢复码（仅展示一次）。
     func completeSetup(masterPassword: String) throws -> String {
         let recoveryCode = try vault.create(masterPassword: masterPassword)
-        store = try EntryStore(vault: vault)
-        state = .unlocked
+        try attachStore()
         return recoveryCode
     }
 
     func unlock(masterPassword: String) throws {
         try vault.unlock(masterPassword: masterPassword)
-        store = try EntryStore(vault: vault)
-        state = .unlocked
+        try attachStore()
     }
 
     func unlockWithBiometrics() async {
         do {
             try await vault.unlockWithBiometrics()
-            store = try EntryStore(vault: vault)
-            state = .unlocked
+            try attachStore()
         } catch {
             lastError = error.localizedDescription
         }
@@ -46,8 +56,10 @@ final class AppState: ObservableObject {
 
     func lock() {
         store = nil
+        sync = nil
         vault.lock()
         if state == .unlocked { state = .locked }
+        PinnedPanelManager.shared.closeAll()
     }
 
     // ── 自动锁定 ──────────────────────────────────────────

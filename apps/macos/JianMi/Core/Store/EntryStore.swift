@@ -34,6 +34,8 @@ struct EntryDraft {
     var urlFull: String = ""
     var username: String = ""
     var password: String = ""
+    var totpSecret: String = ""
+    var customFields: [SecretBody.CustomField] = []
     var notesMarkdown: String = ""
     var tags: [String] = []
     var localOnly: Bool = false
@@ -43,6 +45,7 @@ struct EntryDraft {
         EntryDraft(
             type: entry.type, title: entry.title, urlFull: body.urlFull,
             username: body.username, password: body.password,
+            totpSecret: body.totpSecret, customFields: body.customFields,
             notesMarkdown: body.notesMarkdown, tags: entry.tags,
             localOnly: entry.localOnly, favorite: entry.favorite)
     }
@@ -52,10 +55,14 @@ struct EntryDraft {
 @MainActor
 final class EntryStore: ObservableObject {
     @Published private(set) var entries: [Entry] = []
+    @Published private(set) var counts: [SidebarFilter: Int] = [:]
     @Published var searchText: String = "" { didSet { reload() } }
     @Published var filter: SidebarFilter = .all { didSet { reload() } }
 
-    private let dbQueue: DatabaseQueue
+    /// 数据变更回调（AppState 用于触发防抖同步）
+    var onChange: (() -> Void)?
+
+    let dbQueue: DatabaseQueue
     private let vault: VaultManager
     private let crypto = CryptoEngine.shared
 
@@ -91,10 +98,53 @@ final class EntryStore: ObservableObject {
                 sql += " ORDER BY entry.favorite DESC, entry.updatedAt DESC"
                 return try Entry.fetchAll(db, sql: sql, arguments: StatementArguments(args))
             }
+            reloadCounts()
         } catch {
             NSLog("EntryStore.reload 失败: \(error)")
             entries = []
         }
+    }
+
+    private func reloadCounts() {
+        var result: [SidebarFilter: Int] = [:]
+        do {
+            try dbQueue.read { db in
+                result[.all] = try Int.fetchOne(
+                    db, sql: "SELECT COUNT(*) FROM entry WHERE deletedAt IS NULL") ?? 0
+                result[.favorites] = try Int.fetchOne(
+                    db, sql: "SELECT COUNT(*) FROM entry WHERE deletedAt IS NULL AND favorite = 1") ?? 0
+                result[.localOnly] = try Int.fetchOne(
+                    db, sql: "SELECT COUNT(*) FROM entry WHERE deletedAt IS NULL AND localOnly = 1") ?? 0
+                let rows = try Row.fetchAll(
+                    db, sql: "SELECT type, COUNT(*) AS c FROM entry WHERE deletedAt IS NULL GROUP BY type")
+                for row in rows {
+                    if let t = EntryType(rawValue: row["type"]) {
+                        result[.type(t)] = row["c"]
+                    }
+                }
+            }
+        } catch {}
+        counts = result
+    }
+
+    /// 快速搜索面板专用（不干扰主窗口的筛选状态）。
+    func quickSearch(_ query: String, limit: Int = 8) -> [Entry] {
+        let q = query.trimmingCharacters(in: .whitespaces)
+        return (try? dbQueue.read { db in
+            if q.isEmpty {
+                return try Entry.fetchAll(db, sql: """
+                    SELECT * FROM entry WHERE deletedAt IS NULL
+                    ORDER BY favorite DESC, updatedAt DESC LIMIT ?
+                    """, arguments: [limit])
+            }
+            guard let pattern = FTS5Pattern(matchingAllPrefixesIn: q) else { return [] }
+            return try Entry.fetchAll(db, sql: """
+                SELECT entry.* FROM entry
+                JOIN entry_fts ON entry_fts.rowid = entry.rowid AND entry_fts MATCH ?
+                WHERE entry.deletedAt IS NULL
+                ORDER BY entry.favorite DESC, entry.updatedAt DESC LIMIT ?
+                """, arguments: [pattern, limit])
+        }) ?? []
     }
 
     // ── 加解密 ────────────────────────────────────────────
@@ -122,6 +172,8 @@ final class EntryStore: ObservableObject {
         body.username = draft.username
         body.password = draft.password
         body.urlFull = draft.urlFull
+        body.totpSecret = draft.totpSecret
+        body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
         let now = Date()
@@ -137,10 +189,12 @@ final class EntryStore: ObservableObject {
             createdAt: now,
             updatedAt: now,
             deletedAt: nil,
-            secretBlob: try encrypt(body, uuid: uuid))
+            secretBlob: try encrypt(body, uuid: uuid),
+            syncedVersion: 0)
 
         try dbQueue.write { db in try entry.insert(db) }
         reload()
+        onChange?()
         return entry
     }
 
@@ -155,6 +209,8 @@ final class EntryStore: ObservableObject {
         body.username = draft.username
         body.password = draft.password
         body.urlFull = draft.urlFull
+        body.totpSecret = draft.totpSecret
+        body.customFields = draft.customFields
         body.notesMarkdown = draft.notesMarkdown
 
         var updated = entry
@@ -170,14 +226,17 @@ final class EntryStore: ObservableObject {
 
         try dbQueue.write { db in try updated.update(db) }
         reload()
+        onChange?()
     }
 
     func toggleFavorite(_ entry: Entry) throws {
         var updated = entry
         updated.favorite.toggle()
+        updated.version += 1
         updated.updatedAt = Date()
         try dbQueue.write { db in try updated.update(db) }
         reload()
+        onChange?()
     }
 
     /// 软删除（墓碑）—— 同步协议需要，且防误删。
@@ -187,10 +246,11 @@ final class EntryStore: ObservableObject {
         updated.version += 1
         try dbQueue.write { db in try updated.update(db) }
         reload()
+        onChange?()
     }
 
     // ── 工具 ──────────────────────────────────────────────
-    static func host(from urlString: String) -> String? {
+    nonisolated static func host(from urlString: String) -> String? {
         guard !urlString.isEmpty else { return nil }
         var s = urlString
         if !s.contains("://") { s = "https://" + s }

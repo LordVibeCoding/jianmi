@@ -9,25 +9,39 @@
 /* Begin PBXBuildFile section */
 		0C4233FF9DEEEF31B41A5FDC /* VaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B57CEC1781F94F5E0462AEC /* VaultManager.swift */; };
 		0CF1B3B44DFE4FF7CA400E54 /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = 620B97D08F471CDF09397D9C /* Sodium */; };
+		1797F18929B85AB5147A297A /* TOTP.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A14BF135009ECB02E50F50 /* TOTP.swift */; };
+		179D84B2A49B47C00C6BA18E /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 3870863A9205618EAEA6B165 /* KeyboardShortcuts */; };
 		26CF7E8C85818443FC967424 /* RecoveryCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A861DFE34F4CC5D3A51D0A /* RecoveryCode.swift */; };
 		2B87DAC96AAB921629AEDC0D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D1054CB30A31DBF33DB057 /* AppState.swift */; };
 		3EE4B21EE20EE53E051CF9D7 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D914999EA175A7D777A899A8 /* RootView.swift */; };
 		459C31F7BA32AA832567C74A /* EntryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EB1B1EC2F5153797CA4735 /* EntryStore.swift */; };
 		4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A754AB0E851585AEA1972F67 /* CryptoTests.swift */; };
+		576255995766E881869007E7 /* AutoTyper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6566B9FEB09660CC52B3828E /* AutoTyper.swift */; };
+		5A379265CEE33CB2FCFBC360 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4505E208AFB7A0227B6C9A /* SettingsView.swift */; };
 		8516FBE21DCBD6820DE58875 /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076615F3C3B182971551D6B2 /* Entry.swift */; };
+		853A5E0DE4A39D06AA0D5EE0 /* SpotlightPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BBBAAB83E3BDA713B40087 /* SpotlightPanel.swift */; };
 		88FF93E335AA62D4686EA49F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818991779B679961A780C377 /* MainView.swift */; };
 		8F38199495046854E7677252 /* UnlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E3264965F7935C34A2A6BA /* UnlockView.swift */; };
 		92A21430A900A3959A521F55 /* EntryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF587926DF336D5981610E7D /* EntryDetailView.swift */; };
+		96768C9241850B35EDEF9176 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 30F77E58F84A0EE5DB46B52C /* AppIcon.icns */; };
 		A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81C2324DF37714272D1036 /* AppDatabase.swift */; };
 		A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */; };
 		A89DA9ABED238130484F2044 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 15E093A8FFCEDC337A161022 /* GRDB */; };
 		B26B83D7B0AC9ED11CA6915A /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9620FF2A1E609C61C9BB6E08 /* MenuBarView.swift */; };
+		B3C42EDDEEAB3F43FE608D26 /* SyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBD0E27D228221D87FDBFD6 /* SyncEngine.swift */; };
+		B70E57FF4B71994B8845A958 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C77876BF1D30A11051CE08F /* Theme.swift */; };
 		B7CB5699A052DE51CF32DF15 /* EntryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4524EC5978685A6CB0FE474 /* EntryEditorView.swift */; };
+		C36D92BD02E375E6CE9EE8E6 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 71AC972C9D01A5D691DCCD43 /* MarkdownUI */; };
 		C9B705BAEE69D5C4E29068B6 /* SecurePasteboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */; };
+		D1155DCBCE27641295412563 /* PinnedEntryPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F17B1771CC0DC91D9429099 /* PinnedEntryPanel.swift */; };
 		D752252C6044A4A33138BC0D /* JianMiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB6C368A5AC8B7D8655B466 /* JianMiApp.swift */; };
+		DB0652B175FD503A8D91639E /* QuickCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DAA1F769A32FE957F428DA /* QuickCaptureView.swift */; };
 		E158EE8ABE233F66A9944714 /* VaultTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254269614F1CFD3F8058443C /* VaultTests.swift */; };
 		E286917EDC47B09E06F2AD60 /* CryptoEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */; };
+		E549E3CB5C96E2ABE2C51DA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88004022A7972BEA90C5A565 /* AppDelegate.swift */; };
+		E69105584B2247234846D41F /* QuickSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926E2DA6C0C75575898F6D53 /* QuickSearchView.swift */; };
 		EF0316E081B037BE2EA818DE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0512A58C2CFC6D9052003CC /* OnboardingView.swift */; };
+		F91C4463A4E16AF1C664D55D /* BrowserURLGrabber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28311CBEE3F832919A862F30 /* BrowserURLGrabber.swift */; };
 		FFA2EB59E0B0AA15068926FC /* PasswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */; };
 /* End PBXBuildFile section */
 
@@ -43,18 +57,28 @@
 
 /* Begin PBXFileReference section */
 		076615F3C3B182971551D6B2 /* Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		0A4505E208AFB7A0227B6C9A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		0A81C2324DF37714272D1036 /* AppDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatabase.swift; sourceTree = "<group>"; };
 		1B57CEC1781F94F5E0462AEC /* VaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultManager.swift; sourceTree = "<group>"; };
+		22BBBAAB83E3BDA713B40087 /* SpotlightPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightPanel.swift; sourceTree = "<group>"; };
 		254269614F1CFD3F8058443C /* VaultTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultTests.swift; sourceTree = "<group>"; };
+		28311CBEE3F832919A862F30 /* BrowserURLGrabber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserURLGrabber.swift; sourceTree = "<group>"; };
+		30F77E58F84A0EE5DB46B52C /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
+		3C77876BF1D30A11051CE08F /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		4F17B1771CC0DC91D9429099 /* PinnedEntryPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedEntryPanel.swift; sourceTree = "<group>"; };
 		60E3264965F7935C34A2A6BA /* UnlockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockView.swift; sourceTree = "<group>"; };
+		6566B9FEB09660CC52B3828E /* AutoTyper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoTyper.swift; sourceTree = "<group>"; };
 		8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
 		818991779B679961A780C377 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		82D1054CB30A31DBF33DB057 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		88004022A7972BEA90C5A565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8AB6C368A5AC8B7D8655B466 /* JianMiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JianMiApp.swift; sourceTree = "<group>"; };
+		926E2DA6C0C75575898F6D53 /* QuickSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSearchView.swift; sourceTree = "<group>"; };
 		95DEC6979E07842001A88A7F /* JianMiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JianMiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9620FF2A1E609C61C9BB6E08 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
 		9CDFBB4EC14F9329914E4282 /* JianMi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JianMi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0512A58C2CFC6D9052003CC /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A5A14BF135009ECB02E50F50 /* TOTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTP.swift; sourceTree = "<group>"; };
 		A754AB0E851585AEA1972F67 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
 		B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoEngine.swift; sourceTree = "<group>"; };
 		C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
@@ -63,8 +87,10 @@
 		D6EB1B1EC2F5153797CA4735 /* EntryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryStore.swift; sourceTree = "<group>"; };
 		D914999EA175A7D777A899A8 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		DF587926DF336D5981610E7D /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
+		DFBD0E27D228221D87FDBFD6 /* SyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncEngine.swift; sourceTree = "<group>"; };
 		E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurePasteboard.swift; sourceTree = "<group>"; };
 		E4524EC5978685A6CB0FE474 /* EntryEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryEditorView.swift; sourceTree = "<group>"; };
+		F5DAA1F769A32FE957F428DA /* QuickCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCaptureView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +100,8 @@
 			files = (
 				A89DA9ABED238130484F2044 /* GRDB in Frameworks */,
 				0CF1B3B44DFE4FF7CA400E54 /* Sodium in Frameworks */,
+				179D84B2A49B47C00C6BA18E /* KeyboardShortcuts in Frameworks */,
+				C36D92BD02E375E6CE9EE8E6 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,6 +134,8 @@
 				0BC0F4CB458365AF58CED08B /* Main */,
 				34A35BB38D08BA25FE93BF3A /* MenuBar */,
 				E695B182912D1213574FFB40 /* Onboarding */,
+				2040980D441A812117328923 /* Panels */,
+				7E8DB4B432137A98BCBC915D /* Settings */,
 				119617CE07487F095AAE9106 /* Unlock */,
 			);
 			path = Features;
@@ -122,10 +152,21 @@
 		176AF87E9031C4BC615BC047 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				88004022A7972BEA90C5A565 /* AppDelegate.swift */,
 				82D1054CB30A31DBF33DB057 /* AppState.swift */,
 				8AB6C368A5AC8B7D8655B466 /* JianMiApp.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		2040980D441A812117328923 /* Panels */ = {
+			isa = PBXGroup;
+			children = (
+				4F17B1771CC0DC91D9429099 /* PinnedEntryPanel.swift */,
+				F5DAA1F769A32FE957F428DA /* QuickCaptureView.swift */,
+				926E2DA6C0C75575898F6D53 /* QuickSearchView.swift */,
+			);
+			path = Panels;
 			sourceTree = "<group>";
 		};
 		34A35BB38D08BA25FE93BF3A /* MenuBar */ = {
@@ -161,8 +202,26 @@
 				176AF87E9031C4BC615BC047 /* App */,
 				C5460C4FD60E7888197A72C9 /* Core */,
 				10BBEA9236173684D1C75096 /* Features */,
+				C50583CE6AC7868336699E0D /* Resources */,
+				C94938A30D0E9F00F96C452F /* UI */,
 			);
 			path = JianMi;
+			sourceTree = "<group>";
+		};
+		7872DCB552583D4D55F29738 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				DFBD0E27D228221D87FDBFD6 /* SyncEngine.swift */,
+			);
+			path = Sync;
+			sourceTree = "<group>";
+		};
+		7E8DB4B432137A98BCBC915D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				0A4505E208AFB7A0227B6C9A /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		850CBB63EB5B1ADD13EDE559 /* Products */ = {
@@ -199,6 +258,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		C50583CE6AC7868336699E0D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				30F77E58F84A0EE5DB46B52C /* AppIcon.icns */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C5460C4FD60E7888197A72C9 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,10 +273,20 @@
 				CF600224BDE6ABC326F42BF1 /* Database */,
 				B63C02FB2925024705987ED4 /* Models */,
 				9F2F00656F0A736DC722ED93 /* Store */,
+				7872DCB552583D4D55F29738 /* Sync */,
 				D29D344F6DAAC117540528FD /* Util */,
 				427A61AFAC45356410B399AD /* Vault */,
 			);
 			path = Core;
+			sourceTree = "<group>";
+		};
+		C94938A30D0E9F00F96C452F /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				22BBBAAB83E3BDA713B40087 /* SpotlightPanel.swift */,
+				3C77876BF1D30A11051CE08F /* Theme.swift */,
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 		CF600224BDE6ABC326F42BF1 /* Database */ = {
@@ -223,8 +300,11 @@
 		D29D344F6DAAC117540528FD /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				6566B9FEB09660CC52B3828E /* AutoTyper.swift */,
+				28311CBEE3F832919A862F30 /* BrowserURLGrabber.swift */,
 				C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */,
 				E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */,
+				A5A14BF135009ECB02E50F50 /* TOTP.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -263,6 +343,7 @@
 			buildConfigurationList = A4EB5E8F111003ECFED2DA1F /* Build configuration list for PBXNativeTarget "JianMi" */;
 			buildPhases = (
 				E396003733A7C2FCB5A3BC65 /* Sources */,
+				55120600421393F06482EE0A /* Resources */,
 				C4990F67E54760DCDF129076 /* Frameworks */,
 			);
 			buildRules = (
@@ -273,6 +354,8 @@
 			packageProductDependencies = (
 				15E093A8FFCEDC337A161022 /* GRDB */,
 				620B97D08F471CDF09397D9C /* Sodium */,
+				3870863A9205618EAEA6B165 /* KeyboardShortcuts */,
+				71AC972C9D01A5D691DCCD43 /* MarkdownUI */,
 			);
 			productName = JianMi;
 			productReference = 9CDFBB4EC14F9329914E4282 /* JianMi.app */;
@@ -308,6 +391,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				75AE954095AA994E4054F1AE /* XCRemoteSwiftPackageReference "GRDB.swift" */,
+				E4838FBACC4F8AB6E458BBEF /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				FB9B46C83813A2B89F921882 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 				7E7A77B709D62E2EAE8CC7C3 /* XCRemoteSwiftPackageReference "swift-sodium" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -320,6 +405,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		55120600421393F06482EE0A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				96768C9241850B35EDEF9176 /* AppIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		91A33D3D75D0C2A024E480A7 /* Sources */ = {
@@ -336,7 +432,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */,
+				E549E3CB5C96E2ABE2C51DA2 /* AppDelegate.swift in Sources */,
 				2B87DAC96AAB921629AEDC0D /* AppState.swift in Sources */,
+				576255995766E881869007E7 /* AutoTyper.swift in Sources */,
+				F91C4463A4E16AF1C664D55D /* BrowserURLGrabber.swift in Sources */,
 				E286917EDC47B09E06F2AD60 /* CryptoEngine.swift in Sources */,
 				8516FBE21DCBD6820DE58875 /* Entry.swift in Sources */,
 				92A21430A900A3959A521F55 /* EntryDetailView.swift in Sources */,
@@ -348,9 +447,17 @@
 				B26B83D7B0AC9ED11CA6915A /* MenuBarView.swift in Sources */,
 				EF0316E081B037BE2EA818DE /* OnboardingView.swift in Sources */,
 				FFA2EB59E0B0AA15068926FC /* PasswordGenerator.swift in Sources */,
+				D1155DCBCE27641295412563 /* PinnedEntryPanel.swift in Sources */,
+				DB0652B175FD503A8D91639E /* QuickCaptureView.swift in Sources */,
+				E69105584B2247234846D41F /* QuickSearchView.swift in Sources */,
 				26CF7E8C85818443FC967424 /* RecoveryCode.swift in Sources */,
 				3EE4B21EE20EE53E051CF9D7 /* RootView.swift in Sources */,
 				C9B705BAEE69D5C4E29068B6 /* SecurePasteboard.swift in Sources */,
+				5A379265CEE33CB2FCFBC360 /* SettingsView.swift in Sources */,
+				853A5E0DE4A39D06AA0D5EE0 /* SpotlightPanel.swift in Sources */,
+				B3C42EDDEEAB3F43FE608D26 /* SyncEngine.swift in Sources */,
+				1797F18929B85AB5147A297A /* TOTP.swift in Sources */,
+				B70E57FF4B71994B8845A958 /* Theme.swift in Sources */,
 				8F38199495046854E7677252 /* UnlockView.swift in Sources */,
 				0C4233FF9DEEEF31B41A5FDC /* VaultManager.swift in Sources */,
 			);
@@ -611,6 +718,22 @@
 				minimumVersion = 0.9.1;
 			};
 		};
+		E4838FBACC4F8AB6E458BBEF /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		FB9B46C83813A2B89F921882 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -619,10 +742,20 @@
 			package = 75AE954095AA994E4054F1AE /* XCRemoteSwiftPackageReference "GRDB.swift" */;
 			productName = GRDB;
 		};
+		3870863A9205618EAEA6B165 /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E4838FBACC4F8AB6E458BBEF /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
 		620B97D08F471CDF09397D9C /* Sodium */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7E7A77B709D62E2EAE8CC7C3 /* XCRemoteSwiftPackageReference "swift-sodium" */;
 			productName = Sodium;
+		};
+		71AC972C9D01A5D691DCCD43 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FB9B46C83813A2B89F921882 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -22,9 +22,7 @@ struct OnboardingView: View {
     // ── 第一步：设主密码 ──────────────────────────────────
     private var setupView: some View {
         VStack(spacing: 20) {
-            Image(systemName: "key.fill")
-                .font(.system(size: 44))
-                .foregroundStyle(.tint)
+            AppBadge(size: 72)
             Text("欢迎使用简密")
                 .font(.largeTitle.bold())
             Text("简单记录你的密码，但你的密码将会 100% 安全。\n请设置主密码 —— 它是打开一切的唯一钥匙，请务必牢记。")
@@ -34,6 +32,13 @@ struct OnboardingView: View {
             VStack(spacing: 12) {
                 SecureField("主密码（建议 12 位以上）", text: $password)
                 SecureField("再次输入主密码", text: $confirm)
+                if !password.isEmpty {
+                    HStack {
+                        Text("强度").font(.caption).foregroundStyle(.secondary)
+                        PasswordStrengthBar(password: password)
+                        Spacer()
+                    }
+                }
             }
             .textFieldStyle(.roundedBorder)
             .frame(width: 320)

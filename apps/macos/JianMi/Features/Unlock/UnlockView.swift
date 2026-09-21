@@ -9,9 +9,13 @@ struct UnlockView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-            Image(systemName: "lock.fill")
-                .font(.system(size: 44))
-                .foregroundStyle(.tint)
+            ZStack(alignment: .bottomTrailing) {
+                AppBadge(size: 72)
+                Image(systemName: "lock.circle.fill")
+                    .font(.system(size: 24))
+                    .foregroundStyle(.white, .orange)
+                    .offset(x: 6, y: 6)
+            }
             Text("简密已锁定")
                 .font(.largeTitle.bold())
 

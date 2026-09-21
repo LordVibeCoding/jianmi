@@ -41,6 +41,17 @@ enum AppDatabase {
                 t.column("tags")
             }
         }
+
+        // v2: 同步支持 —— 已同步版本标记 + 键值元数据表（lastSeq 等）
+        migrator.registerMigration("v2-sync") { db in
+            try db.alter(table: "entry") { t in
+                t.add(column: "syncedVersion", .integer).notNull().defaults(to: 0)
+            }
+            try db.create(table: "app_meta") { t in
+                t.primaryKey("key", .text)
+                t.column("value", .text).notNull()
+            }
+        }
         return migrator
     }
 }

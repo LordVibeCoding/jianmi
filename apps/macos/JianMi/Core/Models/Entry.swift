@@ -59,6 +59,8 @@ struct Entry: Identifiable, Equatable, Codable, FetchableRecord, PersistableReco
     var updatedAt: Date
     var deletedAt: Date?
     var secretBlob: Data
+    /// 服务器已确认的版本（0 = 从未同步）；version > syncedVersion 即本地有待推更改
+    var syncedVersion: Int = 0
 
     var id: String { uuid }
 }

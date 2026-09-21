@@ -8,48 +8,93 @@ struct MainView: View {
     @State private var selectedID: Entry.ID?
     @State private var showingEditor = false
 
-    private static let sidebarFilters: [SidebarFilter] =
-        [.all, .favorites, .localOnly] + EntryType.allCases.map { .type($0) }
-
     var body: some View {
         NavigationSplitView {
-            List(Self.sidebarFilters, id: \.self, selection: filterBinding) { f in
-                Label(f.label, systemImage: f.icon)
-            }
-            .navigationSplitViewColumnWidth(min: 160, ideal: 180)
+            sidebar
         } content: {
             entryList
-                .navigationSplitViewColumnWidth(min: 220, ideal: 260)
+                .navigationSplitViewColumnWidth(min: 240, ideal: 280)
         } detail: {
             if let entry = store.entries.first(where: { $0.id == selectedID }) {
-                EntryDetailView(store: store, entry: entry)
-                    .id(entry.id)   // 切换条目时重建视图（重新解密）
+                EntryDetailView(store: store, entry: entry) {
+                    selectedID = nil
+                }
+                .id("\(entry.id)-\(entry.version)")
             } else {
-                ContentUnavailableView(
-                    "选择一个条目", systemImage: "key",
-                    description: Text("或按 ⌘N 新建"))
+                emptyDetail
             }
         }
-        .searchable(text: $store.searchText, placement: .sidebar, prompt: "搜索标题、网址、标签")
+        .searchable(text: $store.searchText, placement: .sidebar, prompt: "搜索")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button { showingEditor = true } label: {
                     Label("新建条目", systemImage: "plus")
                 }
                 .keyboardShortcut("n", modifiers: .command)
+                .help("新建条目 (⌘N)")
             }
             ToolbarItem {
                 Button { app.lock() } label: {
                     Label("锁定", systemImage: "lock")
                 }
                 .keyboardShortcut("l", modifiers: [.command, .shift])
+                .help("立即锁定 (⇧⌘L)")
             }
         }
         .sheet(isPresented: $showingEditor) {
             EntryEditorView(store: store, editing: nil) { newEntry in
-                selectedID = newEntry?.id
+                if let newEntry { selectedID = newEntry.id }
             }
         }
+    }
+
+    // ── 侧栏 ─────────────────────────────────────────────
+    private var sidebar: some View {
+        List(selection: filterBinding) {
+            Section("资料库") {
+                sidebarRow(.all)
+                sidebarRow(.favorites)
+                sidebarRow(.localOnly)
+            }
+            Section("分类") {
+                ForEach(EntryType.allCases) { type in
+                    sidebarRow(.type(type))
+                }
+            }
+        }
+        .navigationSplitViewColumnWidth(min: 170, ideal: 190)
+        .safeAreaInset(edge: .bottom) {
+            if let sync = app.sync, SyncSettings.isConfigured {
+                VStack(spacing: 0) {
+                    Divider()
+                    HStack {
+                        SyncStatusLabel(sync: sync)
+                        Spacer()
+                        Button {
+                            Task { await sync.syncNow() }
+                        } label: {
+                            Image(systemName: "arrow.triangle.2.circlepath")
+                                .font(.caption)
+                        }
+                        .buttonStyle(.borderless)
+                        .help("立即同步")
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                }
+                .background(.bar)
+            }
+        }
+    }
+
+    private func sidebarRow(_ filter: SidebarFilter) -> some View {
+        Label {
+            Text(filter.label)
+        } icon: {
+            Image(systemName: filter.icon)
+        }
+        .badge(store.counts[filter] ?? 0)
+        .tag(filter)
     }
 
     private var filterBinding: Binding<SidebarFilter?> {
@@ -58,47 +103,85 @@ struct MainView: View {
             set: { store.filter = $0 ?? .all })
     }
 
+    // ── 条目列表 ─────────────────────────────────────────
     private var entryList: some View {
         List(store.entries, selection: $selectedID) { entry in
-            HStack(spacing: 10) {
-                Image(systemName: entry.type.icon)
-                    .foregroundStyle(.tint)
-                    .frame(width: 18)
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 4) {
-                        Text(entry.title).lineLimit(1)
-                        if entry.favorite {
-                            Image(systemName: "star.fill")
-                                .font(.caption2).foregroundStyle(.yellow)
-                        }
-                        if entry.localOnly {
-                            Image(systemName: "lock.laptopcomputer")
-                                .font(.caption2).foregroundStyle(.secondary)
-                        }
+            EntryRow(entry: entry)
+                .tag(entry.id)
+                .contextMenu {
+                    Button(entry.favorite ? "取消收藏" : "收藏") {
+                        try? store.toggleFavorite(entry)
                     }
-                    if let host = entry.urlHost {
-                        Text(host).font(.caption).foregroundStyle(.secondary).lineLimit(1)
+                    Button("钉在屏幕上") {
+                        PinnedPanelManager.shared.pin(entry: entry, store: store)
+                    }
+                    Divider()
+                    Button("删除", role: .destructive) {
+                        try? store.softDelete(entry)
+                        if selectedID == entry.id { selectedID = nil }
                     }
                 }
-            }
-            .tag(entry.id)
-            .contextMenu {
-                Button(entry.favorite ? "取消收藏" : "收藏") {
-                    try? store.toggleFavorite(entry)
-                }
-                Divider()
-                Button("删除", role: .destructive) {
-                    try? store.softDelete(entry)
-                    if selectedID == entry.id { selectedID = nil }
-                }
-            }
         }
+        .listStyle(.inset)
         .overlay {
             if store.entries.isEmpty {
-                ContentUnavailableView(
-                    store.searchText.isEmpty ? "还没有条目" : "无匹配结果",
-                    systemImage: "tray")
+                ContentUnavailableView {
+                    Label(store.searchText.isEmpty ? "还没有条目" : "无匹配结果",
+                          systemImage: store.searchText.isEmpty ? "tray" : "magnifyingglass")
+                } description: {
+                    if store.searchText.isEmpty {
+                        Text("按 ⌘N 新建，或在任何地方按 ⌥⌘N 快速捕获")
+                    }
+                }
             }
         }
+    }
+
+    private var emptyDetail: some View {
+        ContentUnavailableView {
+            Label("选择一个条目", systemImage: "key.fill")
+        } description: {
+            VStack(spacing: 6) {
+                Text("全局快捷键随时可用：")
+                HStack(spacing: 12) {
+                    HStack(spacing: 4) { KeyCap(text: "⌥⌘N"); Text("快速捕获") }
+                    HStack(spacing: 4) { KeyCap(text: "⌥⌘P"); Text("快速搜索") }
+                }
+                .font(.caption)
+            }
+        }
+    }
+}
+
+/// 列表行。
+struct EntryRow: View {
+    let entry: Entry
+
+    var body: some View {
+        HStack(spacing: 10) {
+            TypeBadge(type: entry.type, size: 32)
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 5) {
+                    Text(entry.title)
+                        .font(.system(size: 13, weight: .medium))
+                        .lineLimit(1)
+                    if entry.favorite {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 9))
+                            .foregroundStyle(.yellow)
+                    }
+                    if entry.localOnly {
+                        Image(systemName: "lock.laptopcomputer")
+                            .font(.system(size: 9))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Text(entry.urlHost ?? entry.type.label)
+                    .font(.system(size: 11))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+        }
+        .padding(.vertical, 3)
     }
 }
