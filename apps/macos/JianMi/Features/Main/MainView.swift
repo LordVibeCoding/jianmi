@@ -7,6 +7,7 @@ struct MainView: View {
     @EnvironmentObject private var app: AppState
     @ObservedObject var store: EntryStore
     @ObservedObject private var categories = CategoryStore.shared
+    @Environment(\.openSettings) private var openSettings
 
     @State private var selectedID: Entry.ID?
     @State private var showingEditor = false
@@ -62,6 +63,16 @@ struct MainView: View {
                 }
                 .keyboardShortcut("l", modifiers: [.command, .shift])
                 .help("立即锁定 (⇧⌘L)")
+            }
+            ToolbarItem {
+                Button {
+                    openSettings()
+                    NSApp.activate(ignoringOtherApps: true)
+                } label: {
+                    Label("设置", systemImage: "gearshape")
+                }
+                .keyboardShortcut(",", modifiers: .command)
+                .help("设置：快捷键 / 触控 ID / 同步 / 浏览器扩展 (⌘,)")
             }
         }
         .sheet(isPresented: $showingEditor) {
