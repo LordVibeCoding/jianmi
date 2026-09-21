@@ -1,83 +1,123 @@
-# 简密 JianMi
+# JianMi 简密
 
-> 简单记录你的密码，但你的密码将会 100% 的安全。
-> 自托管 · 零知识加密 · 原生 macOS 密码管理器
+**English** | [简体中文](README_zh.md)
 
-## 这是什么
+> Simply record your passwords — and keep them 100% safe.
 
-一个为个人打造的密码/机密管理器（纯本地编译自用，不上架 App Store，无需开发者账号）：
+A self-hosted, zero-knowledge password manager built natively for macOS, with a browser extension, a Rust sync server, and an in-browser web vault.
 
-- **原生 macOS App**：菜单栏常驻、全局快捷键唤起、Spotlight 式快速捕获/搜索浮窗、三栏主窗口、可钉住悬浮小窗
-- **自托管同步**：数据同步到自己的服务器（Rust 单二进制），零知识 —— 服务器只见密文
-- **选择性同步**：钱包助记词等敏感条目可标记 `local_only`，物理上永不出本机
-- **简易 Web 页**：`ip:端口 + token` 访问，浏览器内输入主密码本地解密（WebCrypto），服务器始终零知识
-- **Markdown 笔记**：每个条目 = 结构化字段（账号/密码/URL/TOTP/自定义字段）+ Markdown 富文本笔记
+## Highlights
 
-## 技术栈
+- 🖥 **Native macOS app** (Swift/SwiftUI) — menu bar resident, cold start in milliseconds, ~30 MB RAM. No Electron.
+- ⚡️ **Global hotkeys** — `⌥⌘N` Spotlight-style quick capture (URL prefilled from your browser), `⌥⌘P` quick search: hit Enter to copy a password in under 2 seconds.
+- 🧩 **Browser extension** (Chrome / Edge / Arc / Brave / Firefox) — one-click autofill, copy 2FA codes, and save new logins. Talks to the app over `127.0.0.1` only, paired with a token.
+- 🔐 **Zero-knowledge encryption** — Argon2id + XChaCha20-Poly1305. Your master password never leaves RAM; the server, the network, and even your disk only ever see ciphertext.
+- ☁️ **Self-hosted sync** — a single-binary Rust server (~10 MB RAM). Entry-level incremental sync with conflict copies; nothing is ever silently lost.
+- 🏠 **Local-only entries** — mark wallet seeds & sensitive secrets as *local-only*: they physically never enter the sync pipeline (enforced in code, wallet-type entries are forced).
+- 🌐 **Web vault** — open `http://your-server:8787`, enter your token + master password, and decrypt *inside the browser* (libsodium.js). The server stays zero-knowledge.
+- 🔑 **Touch ID unlock**, TOTP (2FA) generator, auto-type, password generator & history, Markdown notes, pinnable floating windows, auto-lock, clipboard auto-clear.
 
-| 层 | 选型 | 理由 |
-|---|---|---|
-| macOS 客户端 | Swift 6 + SwiftUI/AppKit | 冷启动 <100ms、NSPanel 非激活浮窗、Touch ID/Secure Enclave、系统 AutoFill 均为原生独占 |
-| 本地存储 | SQLite (GRDB) + 字段级加密 | 标题/URL/标签建 FTS5 全文索引即时搜索，敏感字段全密文 |
-| 加密 | Argon2id + XChaCha20-Poly1305 | 主密码派生 MasterKey → 解密 VaultKey → 条目级加密 |
-| 同步服务端 | Rust (axum) | 单二进制、几 MB 内存、零运行时依赖 |
-| Web 端 | 静态页 + libsodium.js/argon2-wasm | 浏览器内解密，服务器零知识 |
+## Install
 
-## 快速上手
+### macOS App
 
-### macOS App（无需开发者账号）
+Grab `JianMi-x.y.z.dmg` from [Releases](https://github.com/LordVibeCoding/jianmi/releases/latest), drag **JianMi** into **Applications**.
+
+> Builds are ad-hoc signed (no Apple Developer account). On first launch: **right-click → Open**, or run `xattr -cr /Applications/JianMi.app`.
+
+Or build from source:
 
 ```bash
-brew install xcodegen          # 首次
-cd apps/macos
-xcodegen generate              # 生成 JianMi.xcodeproj
-open JianMi.xcodeproj          # Xcode 中 ⌘R 运行，或：
-xcodebuild -scheme JianMi build
-xcodebuild -scheme JianMi test # 跑全部单元测试
+brew install xcodegen
+cd apps/macos && xcodegen generate
+xcodebuild -scheme JianMi -configuration Release build   # or open in Xcode → ⌘R
 ```
 
-**全局快捷键**（可在设置中自定义）：
-- `⌥⌘N` 快速捕获 —— 浏览器当前网址自动预填（由扩展上报，零权限），填账号密码回车即存
-- `⌥⌘P` 快速搜索 —— ↩复制密码 / ⌥↩复制账号 / ⌘↩打开网址 / ⌃↩自动键入
+### Browser extension
 
-### 浏览器扩展（Chrome / Edge / Arc / Brave）
+Inside the app: **Settings → Browser Extension → Export extension pack**, then:
 
-与本地 App 通过 `127.0.0.1:48787` 桥接（配对令牌鉴权，外网不可达）：
+- **Chrome / Edge / Arc / Brave**: unzip → `chrome://extensions` → enable *Developer mode* → *Load unpacked*
+- **Firefox**: `about:debugging` → *This Firefox* → *Load Temporary Add-on* → pick the zip
+  (for permanent install use Firefox Developer Edition with `xpinstall.signatures.required = false`)
 
-1. 打开 `chrome://extensions` → 开启「开发者模式」→「加载已解压的扩展程序」→ 选 `extension/` 目录
-2. 简密 App → 设置 → 浏览器扩展 → 复制配对令牌 → 粘到扩展里
-3. 之后：点扩展图标可**一键填充**当前网站账号密码 / 复制密码和 2FA 验证码 / 保存新账号；扩展实时上报当前标签页，⌥⌘N 无需任何系统权限即可预填网址
+Paste the pairing token from the same settings page into the extension. Done.
 
-### 同步服务端（自己的服务器）
+### Sync server (your own box)
 
 ```bash
 cd server && cargo build --release
 ./target/release/jianmi-server --addr 0.0.0.0:8787 --data ./data
-# 首次启动打印访问令牌 → 填入 App 设置→同步；浏览器访问同地址即 Web 视图
-
-# 或一键部署到 Linux 服务器（含 systemd 守护）：
-./scripts/deploy_server.sh user@your-server-ip
+# First run prints an access token → paste into App Settings → Sync.
+# The same address serves the web vault in any browser.
 ```
 
-## 仓库结构
+One-command deploy to a Linux host (static musl binary + hardened systemd unit):
 
-```
-├── docs/           设计文档（先读 docs/DESIGN.md）
-├── apps/macos/     macOS 客户端（Swift/SwiftUI，xcodegen 工程）
-├── extension/      浏览器扩展（Manifest V3，与本地 App 桥接）
-├── server/         Rust 同步服务端（单二进制，零知识）
-├── web/            静态 Web 只读视图（浏览器内解密）
-└── scripts/        构建/部署/验证脚本
+```bash
+./scripts/deploy_server.sh user@your-server
 ```
 
-## 路线图
+## Security model
 
-- [x] **M0** 仓库初始化 + 完整设计文档
-- [x] **M1** 核心：加密引擎、本地库、主窗口 CRUD、主密码 + Touch ID 解锁
-- [x] **M2** 效率：全局快捷键、快速捕获（⌥⌘N + 浏览器网址抓取）、快速搜索（⌥⌘P）、菜单栏、剪贴板安全、设置窗口、钉住悬浮窗
-- [x] **M3** 同步：Rust 服务端、token 鉴权、条目级增量同步、冲突副本、local_only 硬隔离
-- [x] **M4** Web：浏览器内解密只读视图（跨语言加密兼容性已由自动化验证）
-- [x] **M5（部分）** TOTP 两步验证码、Auto-Type 自动键入、改主密码、自定义字段、密码历史
-- [ ] **待办** 附件、安全审计（弱密码/重复检测）、导入导出（系统 AutoFill 需开发者账号，已用 Auto-Type 替代）
+| Threat | Defense |
+|---|---|
+| Server breach | Zero-knowledge: server stores only `uuid + version + ciphertext` |
+| Network sniffing | Payloads are ciphertext before they leave the device |
+| Token leak | A token only yields ciphertext; rotate anytime |
+| Stolen Mac (locked) | Field-level encryption; nothing decryptable without the master password |
+| Walk-away Mac | Auto-lock on screen lock / sleep / idle; keys are zeroed (memzero) |
+| Clipboard sniffers | Concealed pasteboard type + auto-clear after 30 s |
+| Crypto-wallet secrets | `local_only` entries never reach the network layer, enforced in code |
+| Forgotten master password | No backdoor (by design). A one-time recovery code is your only escape hatch |
 
-详细设计见 [docs/DESIGN.md](docs/DESIGN.md)。
+**Key chain**: master password → Argon2id (64 MB, t=3) → MasterKey → unwraps → VaultKey → XChaCha20-Poly1305 per-entry AEAD (AAD = entry UUID, anti-swap). Cross-language compatibility (Swift encrypt → browser JS decrypt) is verified by an automated test (`scripts/verify_web_crypto.mjs`).
+
+## Architecture
+
+```
+┌── macOS app (Swift) ──┐   127.0.0.1:48787   ┌─ Browser extension ─┐
+│ SQLite + FTS5         │ ←── pairing token ──→│ autofill / save     │
+│ crypto core (sodium)  │                      └─────────────────────┘
+│ sync engine           │
+└──────────┬────────────┘
+           │  HTTPS/HTTP — ciphertext only
+           ▼
+┌── Rust server (axum, single binary) ──┐
+│ incremental sync store (SQLite)       │──► Web vault (decrypts in-browser)
+└───────────────────────────────────────┘
+```
+
+Full design doc (Chinese): [docs/DESIGN.md](docs/DESIGN.md)
+
+## Repository layout
+
+```
+├── apps/macos/     macOS app (SwiftUI, xcodegen project)
+├── extension/      Browser extension (Manifest V3)
+├── server/         Rust sync server
+├── web/            Static web vault (in-browser decryption)
+├── scripts/        build / deploy / verification scripts
+└── docs/           design documents
+```
+
+## Development
+
+```bash
+# macOS app tests (17 tests: crypto vectors, vault lifecycle,
+# plaintext-leak-on-disk check, TCP loopback bridge tests)
+cd apps/macos && xcodebuild -scheme JianMi test
+
+# Cross-language crypto verification (Swift → JS)
+node scripts/verify_web_crypto.mjs
+
+# Server
+cd server && cargo build --release
+
+# Distribution artifacts (DMG + extension zips)
+./scripts/build_dmg.sh
+```
+
+## License
+
+[MIT](LICENSE)

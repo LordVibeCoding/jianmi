@@ -29,6 +29,9 @@ node_modules/
 secrets/
 config.local.*
 
+# 分发产物（由 scripts/build_dmg.sh 生成，发布到 GitHub Releases）
+dist/
+
 # 本地数据库/测试库
 *.sqlite
 *.sqlite3

@@ -333,15 +333,40 @@ struct BrowserExtensionSettings: View {
                 Button("重新生成令牌…", role: .destructive) { confirmRegenerate = true }
             }
 
-            Section("安装扩展（Chrome / Edge / Arc / Brave）") {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("1. 打开 chrome://extensions，开启右上角「开发者模式」")
-                    Text("2. 点「加载已解压的扩展程序」，选择仓库里的 extension/ 文件夹")
-                    Text("3. 点扩展图标 → 粘贴上方配对令牌 → 完成")
+            Section("安装扩展") {
+                // Chrome 系
+                HStack(spacing: 10) {
+                    Image(systemName: "globe")
+                        .font(.title3).foregroundStyle(.blue).frame(width: 24)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Chrome / Edge / Arc / Brave")
+                        Text("导出后解压 → chrome://extensions → 开启开发者模式 → 加载已解压的扩展")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Button("导出扩展包…") { exportZip("jianmi-extension-chrome") }
+                }
+                // Firefox
+                HStack(spacing: 10) {
+                    Image(systemName: "flame")
+                        .font(.title3).foregroundStyle(.orange).frame(width: 24)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Firefox")
+                        Text("about:debugging → 此 Firefox → 临时加载附加组件 → 选导出的 zip")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Spacer()
+                    Button("导出扩展包…") { exportZip("jianmi-extension-firefox") }
+                }
+                HStack {
+                    Link(destination: URL(string: "https://github.com/LordVibeCoding/jianmi/releases/latest")!) {
+                        Label("GitHub 发布页（最新扩展包 / 安装镜像）", systemImage: "arrow.up.forward.app")
+                    }
+                    Spacer()
                 }
                 .font(.callout)
-                .foregroundStyle(.secondary)
-                Text("扩展会实时上报当前标签页 → ⌥⌘N 零权限预填网址；在网页上点扩展图标可直接填充 / 保存账号。")
+
+                Text("配对后：扩展实时上报当前标签页 → ⌥⌘N 零权限预填网址；点扩展图标可一键填充 / 复制 2FA / 保存新账号。Firefox 正式版需签名扩展，临时加载重启后需重新加载；长期使用建议 Firefox Developer Edition（关闭签名校验）。")
                     .font(.caption)
                     .foregroundStyle(.tertiary)
             }
@@ -354,6 +379,21 @@ struct BrowserExtensionSettings: View {
                 token = BridgeServer.shared.regenerateToken()
             }
         }
+    }
+
+    /// 从 App 资源导出扩展 zip（保存到用户选择的位置并在访达中显示）。
+    private func exportZip(_ name: String) {
+        guard let source = Bundle.main.url(forResource: name, withExtension: "zip") else { return }
+        let panel = NSSavePanel()
+        panel.nameFieldStringValue = "\(name).zip"
+        panel.canCreateDirectories = true
+        panel.directoryURL = FileManager.default.urls(for: .downloadsDirectory, in: .userDomainMask).first
+        guard panel.runModal() == .OK, let dest = panel.url else { return }
+        try? FileManager.default.removeItem(at: dest)
+        do {
+            try FileManager.default.copyItem(at: source, to: dest)
+            NSWorkspace.shared.activateFileViewerSelecting([dest])
+        } catch {}
     }
 }
 
