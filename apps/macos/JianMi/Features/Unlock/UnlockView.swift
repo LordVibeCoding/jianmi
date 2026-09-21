@@ -39,7 +39,7 @@ struct UnlockView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(isWorking || password.isEmpty)
+                .disabled(isWorking)
 
                 if app.vault.biometricEnabled {
                     Button {
@@ -59,7 +59,7 @@ struct UnlockView: View {
     }
 
     private func unlock() {
-        guard !password.isEmpty else { return }
+        guard !isWorking else { return }
         error = nil
         isWorking = true
         let pwd = password

@@ -37,6 +37,15 @@ final class VaultTests: XCTestCase {
         XCTAssertTrue(vault.isUnlocked)
     }
 
+    func testEmptyMasterPassword() throws {
+        // 空主密码：允许创建与解锁，且错误密码仍须失败
+        try vault.create(masterPassword: "")
+        vault.lock()
+        XCTAssertThrowsError(try vault.unlock(masterPassword: "不是空的"))
+        try vault.unlock(masterPassword: "")
+        XCTAssertTrue(vault.isUnlocked)
+    }
+
     func testRecoveryCodeUnlock() throws {
         let recovery = try vault.create(masterPassword: "主密码abc")
         let keyBefore = vault.vaultKey!.bytes

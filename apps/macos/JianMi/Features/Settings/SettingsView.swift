@@ -133,8 +133,12 @@ struct ChangePasswordSheet: View {
             Text("修改主密码").font(.headline)
             VStack(spacing: 10) {
                 SecureField("当前主密码", text: $current)
-                SecureField("新主密码（至少 8 位）", text: $newPassword)
+                SecureField("新主密码（可留空，位数不限）", text: $newPassword)
                 SecureField("再次输入新主密码", text: $confirm)
+                if newPassword.isEmpty {
+                    Label("留空 = 不设主密码，解锁时直接回车即可", systemImage: "exclamationmark.triangle")
+                        .font(.caption).foregroundStyle(.orange)
+                }
             }
             .textFieldStyle(.roundedBorder)
 
@@ -153,7 +157,7 @@ struct ChangePasswordSheet: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .keyboardShortcut(.defaultAction)
-                .disabled(isWorking || current.isEmpty || newPassword.isEmpty)
+                .disabled(isWorking)
             }
         }
         .padding(24)
@@ -162,7 +166,6 @@ struct ChangePasswordSheet: View {
 
     private func change() {
         error = nil
-        guard newPassword.count >= 8 else { error = "新密码至少 8 位"; return }
         guard newPassword == confirm else { error = "两次输入不一致"; return }
         isWorking = true
         Task {

@@ -336,7 +336,7 @@ struct InlineUnlockView: View {
     }
 
     private func unlock() {
-        guard !password.isEmpty, !isWorking else { return }
+        guard !isWorking else { return }
         isWorking = true
         error = nil
         let pwd = password

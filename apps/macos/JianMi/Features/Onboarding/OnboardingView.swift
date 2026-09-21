@@ -30,7 +30,7 @@ struct OnboardingView: View {
                 .foregroundStyle(.secondary)
 
             VStack(spacing: 12) {
-                SecureField("主密码（建议 12 位以上）", text: $password)
+                SecureField("主密码（可留空，位数不限）", text: $password)
                 SecureField("再次输入主密码", text: $confirm)
                 if !password.isEmpty {
                     HStack {
@@ -38,6 +38,11 @@ struct OnboardingView: View {
                         PasswordStrengthBar(password: password)
                         Spacer()
                     }
+                } else {
+                    Label("不设主密码：任何能登录这台 Mac 的人都可打开密码库",
+                          systemImage: "exclamationmark.triangle")
+                        .font(.caption)
+                        .foregroundStyle(.orange)
                 }
             }
             .textFieldStyle(.roundedBorder)
@@ -57,17 +62,13 @@ struct OnboardingView: View {
                 }
             }
             .buttonStyle(.borderedProminent)
-            .disabled(isWorking || password.isEmpty)
+            .disabled(isWorking)
         }
         .padding(40)
     }
 
     private func createVault() {
         error = nil
-        guard password.count >= 8 else {
-            error = "主密码至少 8 位"
-            return
-        }
         guard password == confirm else {
             error = "两次输入不一致"
             return
