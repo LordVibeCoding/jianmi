@@ -8,6 +8,7 @@ struct MainView: View {
     @ObservedObject var store: EntryStore
     @ObservedObject private var categories = CategoryStore.shared
     @Environment(\.openSettings) private var openSettings
+    @Environment(\.openWindow) private var openWindow
 
     @State private var selectedID: Entry.ID?
     @State private var showingEditor = false
@@ -209,6 +210,21 @@ struct MainView: View {
                     .help("新建分类")
                     .padding(.trailing, 10)
                 }
+            }
+            Section("小工具") {
+                Button {
+                    openWindow(id: "passwordGenerator")
+                    NSApp.activate(ignoringOtherApps: true)
+                } label: {
+                    Label {
+                        Text("密码生成器")
+                    } icon: {
+                        Image(systemName: "dice")
+                    }
+                    .foregroundStyle(.primary)
+                }
+                .buttonStyle(.plain)
+                .help("生成强密码，用完即走不保存")
             }
         }
         .navigationSplitViewColumnWidth(min: 170, ideal: 190)

@@ -17,6 +17,12 @@ struct JianMiApp: App {
         .defaultSize(width: 1000, height: 640)
         .windowToolbarStyle(.unified)
 
+        // 小工具 · 密码生成器（独立窗口，锁定状态也可用）
+        Window("密码生成器", id: "passwordGenerator") {
+            PasswordGeneratorToolView()
+        }
+        .windowResizability(.contentSize)
+
         Settings {
             SettingsView()
                 .environmentObject(app)

@@ -31,6 +31,7 @@
 		940C822F47BE88D4F649B1FE /* WebFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */; };
 		96768C9241850B35EDEF9176 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 30F77E58F84A0EE5DB46B52C /* AppIcon.icns */; };
 		9F25366C2A82949FCEC052C3 /* MarkdownHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1DE10DC1491B1D8547E5BD /* MarkdownHelper.swift */; };
+		A1F20E7C48F6C3ED58E40AE1 /* PasswordGeneratorTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF89EABE7DCCBBF9B8DE9F22 /* PasswordGeneratorTool.swift */; };
 		A5D153D5B5117416A8198AE9 /* AppDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A81C2324DF37714272D1036 /* AppDatabase.swift */; };
 		A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8130DB9A21CF5081119A1F4F /* KeychainHelper.swift */; };
 		A89DA9ABED238130484F2044 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 15E093A8FFCEDC337A161022 /* GRDB */; };
@@ -100,6 +101,7 @@
 		C6A861DFE34F4CC5D3A51D0A /* RecoveryCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryCode.swift; sourceTree = "<group>"; };
 		CD2C6717334F1E648B6F3411 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		CF72272BB260B88D8B6B81B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CF89EABE7DCCBBF9B8DE9F22 /* PasswordGeneratorTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGeneratorTool.swift; sourceTree = "<group>"; };
 		D6EB1B1EC2F5153797CA4735 /* EntryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryStore.swift; sourceTree = "<group>"; };
 		D914999EA175A7D777A899A8 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		DF587926DF336D5981610E7D /* EntryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryDetailView.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				E695B182912D1213574FFB40 /* Onboarding */,
 				2040980D441A812117328923 /* Panels */,
 				7E8DB4B432137A98BCBC915D /* Settings */,
+				7933F6393CE64795D0323F82 /* Tools */,
 				119617CE07487F095AAE9106 /* Unlock */,
 			);
 			path = Features;
@@ -239,6 +242,14 @@
 				DFBD0E27D228221D87FDBFD6 /* SyncEngine.swift */,
 			);
 			path = Sync;
+			sourceTree = "<group>";
+		};
+		7933F6393CE64795D0323F82 /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				CF89EABE7DCCBBF9B8DE9F22 /* PasswordGeneratorTool.swift */,
+			);
+			path = Tools;
 			sourceTree = "<group>";
 		};
 		7E8DB4B432137A98BCBC915D /* Settings */ = {
@@ -487,6 +498,7 @@
 				B26B83D7B0AC9ED11CA6915A /* MenuBarView.swift in Sources */,
 				EF0316E081B037BE2EA818DE /* OnboardingView.swift in Sources */,
 				FFA2EB59E0B0AA15068926FC /* PasswordGenerator.swift in Sources */,
+				A1F20E7C48F6C3ED58E40AE1 /* PasswordGeneratorTool.swift in Sources */,
 				D1155DCBCE27641295412563 /* PinnedEntryPanel.swift in Sources */,
 				DB0652B175FD503A8D91639E /* QuickCaptureView.swift in Sources */,
 				E69105584B2247234846D41F /* QuickSearchView.swift in Sources */,

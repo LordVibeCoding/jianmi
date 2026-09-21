@@ -34,6 +34,13 @@ struct MenuBarView: View {
 
         Divider()
 
+        Button("密码生成器") {
+            openWindow(id: "passwordGenerator")
+            NSApp.activate(ignoringOtherApps: true)
+        }
+
+        Divider()
+
         if app.state == .unlocked {
             if SyncSettings.isConfigured {
                 Button("立即同步") {
