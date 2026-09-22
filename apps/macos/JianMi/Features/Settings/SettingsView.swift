@@ -39,6 +39,12 @@ struct GeneralSettings: View {
                     }
                 }
 
+            Toggle("显示网站图标", isOn: Binding(
+                get: { UserDefaults.standard.object(forKey: "favicons.enabled") as? Bool ?? true },
+                set: { UserDefaults.standard.set($0, forKey: "favicons.enabled") }))
+            Text("联网获取各站点 favicon（仅域名，不含任何账号信息）；关闭则统一显示分类徽章。")
+                .font(.caption).foregroundStyle(.secondary)
+
             Picker("空闲自动锁定", selection: $autoLockMinutes) {
                 Text("1 分钟").tag(1)
                 Text("5 分钟").tag(5)

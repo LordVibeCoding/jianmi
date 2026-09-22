@@ -151,8 +151,12 @@ async function mainView() {
       const [icon, color] = TYPE_ICON[e.type] || ["🔒", "#4c7dff"];
       const div = document.createElement("div");
       div.className = "entry";
+      const badgeHTML = e.host
+        ? `<div class="badge" style="background:#ffffff14;border:1px solid ${color}33">` +
+          `<img src="https://icons.duckduckgo.com/ip3/${esc(e.host)}.ico" width="18" height="18" style="border-radius:4px"></div>`
+        : `<div class="badge" style="background:${color}22;border:1px solid ${color}55">${icon}</div>`;
       div.innerHTML = `
-        <div class="badge" style="background:${color}22;border:1px solid ${color}55">${icon}</div>
+        ${badgeHTML}
         <div class="info">
           <div class="title">${esc(e.title)}</div>
           <div class="sub">${esc(e.username || e.host)}</div>
@@ -162,6 +166,15 @@ async function mainView() {
           <button data-act="copy" title="复制密码">密码</button>
           ${e.hasTotp ? `<button data-act="totp" title="复制验证码">2FA</button>` : ""}
         </div>`;
+      const img = div.querySelector(".badge img");
+      if (img) {
+        img.onerror = () => {
+          const badge = img.parentNode;
+          badge.style.background = color + "22";
+          badge.style.border = "1px solid " + color + "55";
+          badge.textContent = icon;
+        };
+      }
       div.querySelectorAll("button").forEach(btn => {
         btn.onclick = () => act(btn.dataset.act, e, btn);
       });

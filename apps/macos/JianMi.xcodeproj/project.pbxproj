@@ -18,6 +18,7 @@
 		3E26B7D7F868500B5CE6D19F /* CategoryEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 712831FC96155DC8EDE8C463 /* CategoryEditorView.swift */; };
 		3EE4B21EE20EE53E051CF9D7 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D914999EA175A7D777A899A8 /* RootView.swift */; };
 		459C31F7BA32AA832567C74A /* EntryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EB1B1EC2F5153797CA4735 /* EntryStore.swift */; };
+		4C9224827C738DAE4D909228 /* FaviconLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE82B8CEB11917624C92144C /* FaviconLoader.swift */; };
 		4EFA601925BE7EABDD7E73F3 /* CryptoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A754AB0E851585AEA1972F67 /* CryptoTests.swift */; };
 		576255995766E881869007E7 /* AutoTyper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6566B9FEB09660CC52B3828E /* AutoTyper.swift */; };
 		5A379265CEE33CB2FCFBC360 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A4505E208AFB7A0227B6C9A /* SettingsView.swift */; };
@@ -98,6 +99,7 @@
 		A494E138D8E3A7E9FEC0BB74 /* WebFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebFixtureTests.swift; sourceTree = "<group>"; };
 		A5A14BF135009ECB02E50F50 /* TOTP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTP.swift; sourceTree = "<group>"; };
 		A754AB0E851585AEA1972F67 /* CryptoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTests.swift; sourceTree = "<group>"; };
+		AE82B8CEB11917624C92144C /* FaviconLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FaviconLoader.swift; sourceTree = "<group>"; };
 		B66C21E922A04B2B01BF87E2 /* CryptoEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoEngine.swift; sourceTree = "<group>"; };
 		BBD69D36C71C5AFC25D83342 /* MarkdownHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHelperTests.swift; sourceTree = "<group>"; };
 		C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordGenerator.swift; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 			isa = PBXGroup;
 			children = (
 				6566B9FEB09660CC52B3828E /* AutoTyper.swift */,
+				AE82B8CEB11917624C92144C /* FaviconLoader.swift */,
 				1F1DE10DC1491B1D8547E5BD /* MarkdownHelper.swift */,
 				C15DDC4BE74DE133A7403795 /* PasswordGenerator.swift */,
 				E3DC312DAE5352BC9E2D0FE2 /* SecurePasteboard.swift */,
@@ -498,6 +501,7 @@
 				B7CB5699A052DE51CF32DF15 /* EntryEditorView.swift in Sources */,
 				459C31F7BA32AA832567C74A /* EntryStore.swift in Sources */,
 				977526CAFD62CECE84100380 /* ExportSheet.swift in Sources */,
+				4C9224827C738DAE4D909228 /* FaviconLoader.swift in Sources */,
 				D752252C6044A4A33138BC0D /* JianMiApp.swift in Sources */,
 				A7F7E0732A5748F52BD5C639 /* KeychainHelper.swift in Sources */,
 				88FF93E335AA62D4686EA49F /* MainView.swift in Sources */,

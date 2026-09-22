@@ -64,7 +64,7 @@ struct PinnedEntryView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
-                TypeBadge(typeID: entry.type, size: 24)
+                FaviconBadge(typeID: entry.type, host: entry.urlHost, size: 24)
                 Text(entry.title).font(.headline).lineLimit(1)
                 Spacer()
             }

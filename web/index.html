@@ -260,8 +260,13 @@ function listView(query = "") {
     const [icon, color] = TYPE_STYLE[e.type] || ["🔒", "#4c7dff"];
     const div = document.createElement("div");
     div.className = "entry";
+    const badgeHTML = e.urlHost
+      ? `<div class="badge" style="background:#ffffff14;border:1px solid ${color}33">` +
+        `<img src="https://icons.duckduckgo.com/ip3/${esc(e.urlHost)}.ico" width="20" height="20" style="border-radius:4px" ` +
+        `onerror="this.parentNode.style.background='${color}22';this.parentNode.textContent='${icon}'"></div>`
+      : `<div class="badge" style="background:${color}22;border:1px solid ${color}55">${icon}</div>`;
     div.innerHTML = `
-      <div class="badge" style="background:${color}22;border:1px solid ${color}55">${icon}</div>
+      ${badgeHTML}
       <div class="info">
         <div class="title">${esc(e.title)} ${e.favorite ? "⭐" : ""}</div>
         <div class="host">${esc(e.urlHost || "")}</div>
