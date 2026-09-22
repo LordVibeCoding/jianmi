@@ -115,14 +115,29 @@ final class BridgeServer {
             lastTab = BrowserTab(title: obj["title"] as? String ?? "", url: url)
             return .init(status: 204, json: nil)
 
+        case ("GET", "/api/bridge/categories"):
+            let items = CategoryStore.shared.all.map { ["id": $0.id, "name": $0.name] }
+            return .init(status: 200, json: ["categories": items])
+
         case ("GET", "/api/bridge/entries"):
             guard let store = app.store else {
                 return .init(status: 423, json: ["locked": true])
             }
+            let q = request.query["q"] ?? ""
+            let category = request.query["category"] ?? ""
+            let host = request.query["host"] ?? ""
             let list: [Entry]
-            if let q = request.query["q"], !q.isEmpty {
+            if !category.isEmpty {
+                // 指定分类（可叠加搜索）
+                if !q.isEmpty {
+                    list = store.quickSearch(q, limit: 50)
+                        .filter { CategoryStore.normalize($0.type) == category }
+                } else {
+                    list = Array(store.allEntries(categoryID: category).prefix(50))
+                }
+            } else if !q.isEmpty {
                 list = store.quickSearch(q, limit: 20)
-            } else if let host = request.query["host"], !host.isEmpty {
+            } else if !host.isEmpty {
                 list = store.matching(host: host, limit: 20)
             } else {
                 list = store.quickSearch("", limit: 20)

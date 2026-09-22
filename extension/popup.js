@@ -87,12 +87,15 @@ function lockedView() {
 }
 
 // ── 主视图 ───────────────────────────────────────────────
+let catFilter = "";   // "" = 当前站点, "*" = 全部, 其他 = 分类 id
+
 async function mainView() {
   $dot.className = "dot on";
   const host = currentTab?.url ? new URL(currentTab.url).hostname : "";
 
   $content.innerHTML = `
     <input id="search" placeholder="搜索简密…" autocomplete="off">
+    <div id="cats"></div>
     <div id="list"></div>
     <footer>
       <button class="savebtn" id="toggleSave">＋ 保存当前页面的新账号</button>
@@ -112,12 +115,42 @@ async function mainView() {
 
   const $list = document.getElementById("list");
   const $search = document.getElementById("search");
+  const $cats = document.getElementById("cats");
+
+  // 分类胶囊（含自定义分类，动态拉取）
+  try {
+    const { categories } = await api("/api/bridge/categories");
+    const chips = [
+      { id: "", name: "当前站点" },
+      { id: "*", name: "全部" },
+      ...(categories || []),
+    ];
+    for (const c of chips) {
+      const el = document.createElement("div");
+      el.className = "chip" + (catFilter === c.id ? " on" : "");
+      el.textContent = c.name;
+      el.onclick = () => {
+        catFilter = c.id;
+        $cats.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+        el.classList.add("on");
+        load($search.value.trim());
+      };
+      $cats.appendChild(el);
+    }
+  } catch (_) {}
 
   async function load(query) {
+    const params = new URLSearchParams();
+    if (query) params.set("q", query);
+    if (catFilter && catFilter !== "*") {
+      params.set("category", catFilter);
+    } else if (catFilter === "" && !query) {
+      params.set("host", host);
+    }
+    // "*"（全部）不带 host/category → 服务端返回最近条目
     let data;
     try {
-      data = await api("/api/bridge/entries?" +
-        (query ? "q=" + encodeURIComponent(query) : "host=" + encodeURIComponent(host)));
+      data = await api("/api/bridge/entries?" + params.toString());
     } catch (e) {
       if (e.message === "locked") return lockedView();
       return offlineView();
@@ -128,8 +161,10 @@ async function mainView() {
   function render(entries, query) {
     $list.innerHTML = "";
     if (!entries.length) {
-      $list.innerHTML = `<div class="state" style="padding:18px">
-        ${query ? "无匹配结果" : "没有匹配 <b>" + esc(host) + "</b> 的条目"}</div>`;
+      const hint = query ? "无匹配结果"
+        : catFilter === "" ? "没有匹配 <b>" + esc(host) + "</b> 的条目"
+        : "该分类下暂无条目";
+      $list.innerHTML = `<div class="state" style="padding:18px">${hint}</div>`;
       return;
     }
     for (const e of entries) {

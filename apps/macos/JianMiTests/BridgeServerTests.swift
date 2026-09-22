@@ -65,6 +65,18 @@ final class BridgeServerTests: XCTestCase {
         XCTAssertEqual(tab?.suggestedName, "Github")
     }
 
+    func testCategoriesEndpoint() async throws {
+        await ensureServer()
+        let token = await MainActor.run { BridgeServer.shared.token }
+        let (status, data) = try await request("/api/bridge/categories", token: token)
+        XCTAssertEqual(status, 200)
+        let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+        let categories = json?["categories"] as? [[String: String]]
+        let ids = categories?.map { $0["id"] ?? "" } ?? []
+        XCTAssertTrue(ids.contains("login"), "必须包含内置「账号」分类")
+        XCTAssertTrue(ids.contains("note"), "必须包含内置「安全笔记」分类")
+    }
+
     func testUnknownPathAnd404() async throws {
         await ensureServer()
         let token = await MainActor.run { BridgeServer.shared.token }
