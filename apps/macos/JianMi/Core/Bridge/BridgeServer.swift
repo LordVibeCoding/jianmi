@@ -183,6 +183,8 @@ final class BridgeServer {
                 return .init(status: 400, json: ["error": "bad request"])
             }
             var draft = EntryDraft()
+            let rawCategory = obj["category"] as? String ?? "login"
+            draft.type = CategoryStore.normalize(rawCategory.isEmpty ? "login" : rawCategory)
             draft.title = obj["title"] as? String ?? ""
             draft.urlFull = obj["url"] as? String ?? ""
             draft.username = obj["username"] as? String ?? ""

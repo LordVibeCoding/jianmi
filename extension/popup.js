@@ -87,21 +87,17 @@ function lockedView() {
 }
 
 // ── 主视图 ───────────────────────────────────────────────
-let catFilter = "";   // "" = 当前站点, 其他 = 分类 id
-
 async function mainView() {
   $dot.className = "dot on";
   const host = currentTab?.url ? new URL(currentTab.url).hostname : "";
 
   $content.innerHTML = `
-    <div id="topRow">
-      <input id="search" placeholder="搜索简密…" autocomplete="off">
-      <select id="catSel"><option value="">当前站点</option></select>
-    </div>
+    <input id="search" placeholder="搜索简密…" autocomplete="off">
     <div id="list"></div>
     <footer>
       <button class="savebtn" id="toggleSave">＋ 保存当前页面的新账号</button>
       <div id="saveForm">
+        <select id="sCat"></select>
         <input id="sTitle" placeholder="名称">
         <input id="sUser" placeholder="账号">
         <div class="pwrow">
@@ -117,32 +113,23 @@ async function mainView() {
 
   const $list = document.getElementById("list");
   const $search = document.getElementById("search");
-  const $catSel = document.getElementById("catSel");
-
-  // 分类下拉（含自定义分类，动态拉取）
+  // 保存表单的分类选项（含自定义分类，动态拉取；默认「账号」）
+  const $sCat = document.getElementById("sCat");
   try {
     const { categories } = await api("/api/bridge/categories");
     for (const c of (categories || [])) {
       const opt = document.createElement("option");
       opt.value = c.id;
-      opt.textContent = c.name;
-      $catSel.appendChild(opt);
+      opt.textContent = "保存到：" + c.name;
+      $sCat.appendChild(opt);
     }
-    $catSel.value = catFilter;
-    $catSel.onchange = () => {
-      catFilter = $catSel.value;
-      load($search.value.trim());
-    };
+    $sCat.value = "login";
   } catch (_) {}
 
   async function load(query) {
     const params = new URLSearchParams();
     if (query) params.set("q", query);
-    if (catFilter) {
-      params.set("category", catFilter);
-    } else if (!query) {
-      params.set("host", host);   // 默认只查当前站点，绝不摊开全部
-    }
+    else params.set("host", host);   // 默认只查当前站点
     let data;
     try {
       data = await api("/api/bridge/entries?" + params.toString());
@@ -156,9 +143,7 @@ async function mainView() {
   function render(entries, query) {
     $list.innerHTML = "";
     if (!entries.length) {
-      const hint = query ? "无匹配结果"
-        : catFilter ? "该分类下暂无条目"
-        : "当前网站没有已保存的账号";
+      const hint = query ? "无匹配结果" : "当前网站没有已保存的账号";
       $list.innerHTML = `<div class="state" style="padding:18px">${hint}</div>`;
       return;
     }
@@ -236,6 +221,7 @@ async function mainView() {
       await api("/api/bridge/save", {
         method: "POST",
         body: JSON.stringify({
+          category: $sCat.value || "login",
           title: document.getElementById("sTitle").value.trim(),
           url: currentTab?.url || "",
           username: document.getElementById("sUser").value.trim(),
