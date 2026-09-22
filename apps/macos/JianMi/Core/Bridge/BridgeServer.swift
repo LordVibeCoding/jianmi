@@ -140,7 +140,7 @@ final class BridgeServer {
             } else if !host.isEmpty {
                 list = store.matching(host: host, limit: 20)
             } else {
-                list = store.quickSearch("", limit: 20)
+                list = []   // 无任何条件不返回数据（扩展默认只查当前站点）
             }
             let items: [[String: Any]] = list.map { entry in
                 let body = try? store.decryptBody(of: entry)

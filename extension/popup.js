@@ -87,15 +87,17 @@ function lockedView() {
 }
 
 // ── 主视图 ───────────────────────────────────────────────
-let catFilter = "";   // "" = 当前站点, "*" = 全部, 其他 = 分类 id
+let catFilter = "";   // "" = 当前站点, 其他 = 分类 id
 
 async function mainView() {
   $dot.className = "dot on";
   const host = currentTab?.url ? new URL(currentTab.url).hostname : "";
 
   $content.innerHTML = `
-    <input id="search" placeholder="搜索简密…" autocomplete="off">
-    <div id="cats"></div>
+    <div id="topRow">
+      <input id="search" placeholder="搜索简密…" autocomplete="off">
+      <select id="catSel"><option value="">当前站点</option></select>
+    </div>
     <div id="list"></div>
     <footer>
       <button class="savebtn" id="toggleSave">＋ 保存当前页面的新账号</button>
@@ -115,39 +117,32 @@ async function mainView() {
 
   const $list = document.getElementById("list");
   const $search = document.getElementById("search");
-  const $cats = document.getElementById("cats");
+  const $catSel = document.getElementById("catSel");
 
-  // 分类胶囊（含自定义分类，动态拉取）
+  // 分类下拉（含自定义分类，动态拉取）
   try {
     const { categories } = await api("/api/bridge/categories");
-    const chips = [
-      { id: "", name: "当前站点" },
-      { id: "*", name: "全部" },
-      ...(categories || []),
-    ];
-    for (const c of chips) {
-      const el = document.createElement("div");
-      el.className = "chip" + (catFilter === c.id ? " on" : "");
-      el.textContent = c.name;
-      el.onclick = () => {
-        catFilter = c.id;
-        $cats.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
-        el.classList.add("on");
-        load($search.value.trim());
-      };
-      $cats.appendChild(el);
+    for (const c of (categories || [])) {
+      const opt = document.createElement("option");
+      opt.value = c.id;
+      opt.textContent = c.name;
+      $catSel.appendChild(opt);
     }
+    $catSel.value = catFilter;
+    $catSel.onchange = () => {
+      catFilter = $catSel.value;
+      load($search.value.trim());
+    };
   } catch (_) {}
 
   async function load(query) {
     const params = new URLSearchParams();
     if (query) params.set("q", query);
-    if (catFilter && catFilter !== "*") {
+    if (catFilter) {
       params.set("category", catFilter);
-    } else if (catFilter === "" && !query) {
-      params.set("host", host);
+    } else if (!query) {
+      params.set("host", host);   // 默认只查当前站点，绝不摊开全部
     }
-    // "*"（全部）不带 host/category → 服务端返回最近条目
     let data;
     try {
       data = await api("/api/bridge/entries?" + params.toString());
@@ -162,8 +157,8 @@ async function mainView() {
     $list.innerHTML = "";
     if (!entries.length) {
       const hint = query ? "无匹配结果"
-        : catFilter === "" ? "没有匹配 <b>" + esc(host) + "</b> 的条目"
-        : "该分类下暂无条目";
+        : catFilter ? "该分类下暂无条目"
+        : "当前网站没有已保存的账号";
       $list.innerHTML = `<div class="state" style="padding:18px">${hint}</div>`;
       return;
     }

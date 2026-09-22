@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "简密",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "简密浏览器助手 —— 与本地简密 App 联动：一键填充、保存账号、零权限捕获当前网址",
   "permissions": ["tabs", "storage"],
   "host_permissions": ["http://127.0.0.1:48787/*"],
