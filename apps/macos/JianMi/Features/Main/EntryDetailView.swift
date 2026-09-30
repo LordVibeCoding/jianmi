@@ -259,7 +259,7 @@ struct EntryDetailView: View {
 
     private var header: some View {
         HStack(spacing: 14) {
-            FaviconBadge(typeID: entry.type, host: entry.urlHost, size: 48)
+            FaviconBadge(entry: entry, size: 48)
             VStack(alignment: .leading, spacing: 3) {
                 Text(entry.title).font(.title2.bold())
                 HStack(spacing: 8) {

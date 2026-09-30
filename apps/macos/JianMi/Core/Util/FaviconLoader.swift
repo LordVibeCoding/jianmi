@@ -2,7 +2,7 @@ import AppKit
 import SwiftUI
 
 /// 站点图标加载：内存 NSCache + 磁盘缓存（~/Library/Caches/JianMi/favicons）。
-/// 来源：站点自身 /favicon.ico → DuckDuckGo 图标服务兜底；失败记录避免反复请求。
+/// 来源：站点自身 /favicon.ico（沿用网址的协议+端口）→ DuckDuckGo 图标服务兜底；失败记录避免反复请求。
 actor FaviconLoader {
     static let shared = FaviconLoader()
 
@@ -17,11 +17,23 @@ actor FaviconLoader {
         try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
 
-    func icon(for host: String) async -> NSImage? {
-        let key = host.lowercased()
+    /// urlString：条目完整网址，可省略协议、可带端口（如 84.32.63.86:3000）
+    func icon(forURL urlString: String) async -> NSImage? {
+        let hasScheme = urlString.contains("://")
+        guard let comps = URLComponents(string: hasScheme ? urlString : "https://" + urlString),
+              let host = comps.host?.lowercased(), !host.isEmpty else { return nil }
+        let authority = comps.port.map { "\(host):\($0)" } ?? host
+        // 不同端口视为不同站点；无端口时仍用纯域名作 key，旧磁盘缓存继续有效
+        let key = comps.port.map { "\(host)_\($0)" } ?? host
         if let hit = cache.object(forKey: key as NSString) { return hit }
         if failed.contains(key) { return nil }
         if let running = inflight[key] { return await running.value }
+
+        // 站点直取（未写协议则 https/http 都试）→ DDG 兜底（IP/内网站点 DDG 取不到）
+        let scheme = comps.scheme?.lowercased() ?? "https"
+        let schemes = hasScheme && ["http", "https"].contains(scheme) ? [scheme] : ["https", "http"]
+        let sources = schemes.map { "\($0)://\(authority)/favicon.ico" }
+            + ["https://icons.duckduckgo.com/ip3/\(host).ico"]
 
         let task = Task<NSImage?, Never> { [directory] in
             // 磁盘缓存
@@ -30,11 +42,7 @@ actor FaviconLoader {
                let image = NSImage(data: data), image.isValid {
                 return image
             }
-            // 网络（站点直取 → DDG 兜底）
-            let sources = [
-                "https://\(key)/favicon.ico",
-                "https://icons.duckduckgo.com/ip3/\(key).ico",
-            ]
+            // 网络
             for source in sources {
                 guard let url = URL(string: source) else { continue }
                 var request = URLRequest(url: url, timeoutInterval: 6)
@@ -61,11 +69,10 @@ actor FaviconLoader {
     }
 }
 
-/// 条目徽章：有网址 → 站点 favicon（白底圆角卡），无网址/加载失败 → 分类徽章。
+/// 条目徽章：有网址（任意分类）→ 站点 favicon（白底圆角卡），无网址/加载失败 → 分类徽章。
 /// 可在 设置 → 通用 关闭联网获取。
 struct FaviconBadge: View {
-    let typeID: String
-    let host: String?
+    let entry: Entry
     var size: CGFloat = 30
 
     @State private var icon: NSImage?
@@ -93,15 +100,18 @@ struct FaviconBadge: View {
                             .strokeBorder(.separator.opacity(0.55), lineWidth: 1))
                     .shadow(color: .black.opacity(0.08), radius: 1.5, y: 1)
             } else {
-                TypeBadge(typeID: typeID, size: size)
+                TypeBadge(typeID: entry.type, size: size)
             }
         }
-        .task(id: host) {
-            guard Self.enabled, let host, !host.isEmpty else {
+        .task(id: "\(entry.uuid)#\(entry.version)") {
+            // 明文只有域名，协议/端口在密文完整网址里
+            guard Self.enabled, entry.urlHost != nil,
+                  let url = try? AppState.shared.store?.decryptBody(of: entry).urlFull,
+                  !url.isEmpty else {
                 icon = nil
                 return
             }
-            icon = await FaviconLoader.shared.icon(for: host)
+            icon = await FaviconLoader.shared.icon(forURL: url)
         }
     }
 }

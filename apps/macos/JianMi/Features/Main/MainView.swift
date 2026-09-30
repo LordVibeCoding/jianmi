@@ -374,7 +374,7 @@ struct EntryRow: View {
 
     var body: some View {
         HStack(spacing: 10) {
-            FaviconBadge(typeID: entry.type, host: entry.urlHost, size: 32)
+            FaviconBadge(entry: entry, size: 32)
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 5) {
                     Text(entry.title)
